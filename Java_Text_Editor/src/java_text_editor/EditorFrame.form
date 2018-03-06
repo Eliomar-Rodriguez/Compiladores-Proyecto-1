@@ -113,7 +113,7 @@
             <Component class="javax.swing.JButton" name="newFile">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/java_text_editor/open_new_file.png"/>
+                  <Image iconType="3" name="/Images/open_new_file.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="New File"/>
                 <Property name="focusable" type="boolean" value="false"/>
@@ -127,7 +127,7 @@
             <Component class="javax.swing.JButton" name="saveButton">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/java_text_editor/Save_icon.png"/>
+                  <Image iconType="3" name="/Images/Save_icon.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Save"/>
                 <Property name="focusable" type="boolean" value="false"/>
@@ -141,7 +141,7 @@
             <Component class="javax.swing.JButton" name="increase">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/java_text_editor/increase_font.png"/>
+                  <Image iconType="3" name="/Images/increase_font.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Increase Font"/>
                 <Property name="focusable" type="boolean" value="false"/>
@@ -155,7 +155,7 @@
             <Component class="javax.swing.JButton" name="decrease">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/java_text_editor/decrease_font.png"/>
+                  <Image iconType="3" name="/Images/decrease_font.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Decrease Font"/>
                 <Property name="focusable" type="boolean" value="false"/>

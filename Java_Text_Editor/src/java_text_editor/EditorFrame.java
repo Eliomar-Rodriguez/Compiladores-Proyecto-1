@@ -34,7 +34,7 @@ public class EditorFrame extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         
         try {
-            this.setIconImage(ImageIO.read(EditorFrame.class.getResource("/java_text_editor/genuine_coder_logo.png")));
+            this.setIconImage(ImageIO.read(EditorFrame.class.getResource("/Images/genuine_coder_logo.png")));
         } catch (IOException ex) {
             Logger.getLogger(EditorFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -98,28 +98,28 @@ public class EditorFrame extends javax.swing.JFrame {
         openFile.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(openFile);
 
-        newFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/java_text_editor/open_new_file.png"))); // NOI18N
+        newFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/open_new_file.png"))); // NOI18N
         newFile.setText("New File");
         newFile.setFocusable(false);
         newFile.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         newFile.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(newFile);
 
-        saveButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/java_text_editor/Save_icon.png"))); // NOI18N
+        saveButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Save_icon.png"))); // NOI18N
         saveButton.setText("Save");
         saveButton.setFocusable(false);
         saveButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         saveButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(saveButton);
 
-        increase.setIcon(new javax.swing.ImageIcon(getClass().getResource("/java_text_editor/increase_font.png"))); // NOI18N
+        increase.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/increase_font.png"))); // NOI18N
         increase.setText("Increase Font");
         increase.setFocusable(false);
         increase.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         increase.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(increase);
 
-        decrease.setIcon(new javax.swing.ImageIcon(getClass().getResource("/java_text_editor/decrease_font.png"))); // NOI18N
+        decrease.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/decrease_font.png"))); // NOI18N
         decrease.setText("Decrease Font");
         decrease.setFocusable(false);
         decrease.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);

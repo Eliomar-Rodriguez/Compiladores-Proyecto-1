@@ -162,29 +162,6 @@ public class TextEditorController extends WindowAdapter implements ActionListene
         }
     }
 
-    @Override
-    public void actionPerformed(ActionEvent event) {
-        //create a new file
-        if (event.getActionCommand().equals(editor.openFile.getActionCommand())) {
-            this.openFile(editor.fileOpener);
-        } else if (event.getActionCommand().equals(editor.newFile.getActionCommand())) {
-            this.setCurrentFile(null);
-            this.editor.display.setText("");
-            
-        } else if (event.getActionCommand().equals(editor.saveButton.getActionCommand())) {
-            this.saveFileChanges();
-        } else if (event.getActionCommand().equals(editor.increase.getActionCommand())) {
-            this.setFontSize(this.fontSize + 1);
-            this.editor.display.setFont(new java.awt.Font("Monospaced", 0, this.fontSize));
-        } else if (event.getActionCommand().equals(editor.decrease.getActionCommand())) {
-            this.setFontSize(this.fontSize - 1);
-            this.editor.display.setFont(new java.awt.Font("Monospaced", 0, this.fontSize));
-        } //execute button was pressed
-        else {
-            JOptionPane.showMessageDialog(this.editor.getRootPane(), "Compilación exitosa", "Done", JOptionPane.INFORMATION_MESSAGE);
-        }
-    }
-
     /**
      * 
      * @param toLine linea a la que se debe mover el cursor
@@ -200,7 +177,6 @@ public class TextEditorController extends WindowAdapter implements ActionListene
         int lineCount=1;
         int count=0;
         int charCount=0;
-        int finalPosition;
         while(lineCount < toLine){
             if(texto.charAt(count)==enter){
                 lineCount++;
@@ -256,4 +232,30 @@ public class TextEditorController extends WindowAdapter implements ActionListene
     public void windowClosing(WindowEvent event) {
         this.askForSaving();
     }
+    
+    @Override
+    public void actionPerformed(ActionEvent event) {
+        
+        //create a new file
+        if (event.getActionCommand().equals(editor.openFile.getActionCommand())) {
+            this.openFile(editor.fileOpener);
+        } else if (event.getActionCommand().equals(editor.newFile.getActionCommand())) {
+            this.setCurrentFile(null);
+            this.editor.display.setText("");
+            
+        } else if (event.getActionCommand().equals(editor.saveButton.getActionCommand())) {
+            this.saveFileChanges();
+        } else if (event.getActionCommand().equals(editor.increase.getActionCommand())) {
+            this.setFontSize(this.fontSize + 1);
+            this.editor.display.setFont(new java.awt.Font("Monospaced", 0, this.fontSize));
+        } else if (event.getActionCommand().equals(editor.decrease.getActionCommand())) {
+            this.setFontSize(this.fontSize - 1);
+            this.editor.display.setFont(new java.awt.Font("Monospaced", 0, this.fontSize));
+        } //execute button was pressed
+        else {
+            JOptionPane.showMessageDialog(this.editor.getRootPane(), "Compilación exitosa", "Done", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    
 }

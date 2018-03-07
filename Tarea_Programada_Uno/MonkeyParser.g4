@@ -1,4 +1,4 @@
-parser grammar MonkeyParser;
+parser grammar monkeyParser;
 
 options{
     tokenVocab= Scanner;
@@ -6,32 +6,33 @@ options{
 
 program  		: statement*;
 statement  	: LET letStatement | RETURN returnStatement | expressionStatement;
-letStatement          	: IDENTIFIER = expression ( PyCOMA | ε);
-returnStatement	: expression ( PyCOMA | ε);
-expressionStatement 	: expression ( PyCOMA | ε);
+letStatement          	: ID ASSIGN expression ( PyCOMA | EPS);
+returnStatement	: expression ( PyCOMA |EPS);
+expressionStatement 	: expression ( PyCOMA | EPS);
 expression             	: additionExpression comparison;
 comparison            	: ((MENOR|MAYOR|MENORIGUAL|MAYORIGUAL|IGUALCOMP) additionExpression)*;
 additionExpression	: multiplicationExpression additionFactor;
 additionFactor       	: ((SUM|SUB) multiplicationExpression)*;
 multiplicationExpression : elementExpression multiplicationFactor;
-multiplicationFactor	: ((MUL|DIV) elementExpression)*;
-elementExpression 	: primitiveExpression elementAccess;
-elementAccess       	: (CIZQ expression CDER);
-primitiveExpression	: INTEGER | STRING | IDENTIFIER | BOOLEAN | PIZQ expression PDER | arrayLiteral | arrayFunctions PIZQ expressionList PDER | functionLiteral | hashLiteral | functionCallExpression | printExpression | ifExpression;
+multiplicationFactor	: ((MUL|DIV) elementExpression);
+elementExpression 	: primitiveExpression (elementAccess | callExpression);
+elementAccess       	: CIZQ expression CDER | EPS;
+callExpression	: ( expressionList ) | EPS;
+primitiveExpression	: INTEGER | STRING | ID | BOOLEAN | PIZQ expression PDER | arrayLiteral | arrayFunctions PIZQ expressionList PDER | functionLiteral | hashLiteral | printExpression | ifExpression;
 arrayFunctions	: LEN | FIRST | LAST | REST | PUSH;
 arrayLiteral        	: CIZQ expressionList CDER;
-funtionLiteral	: FN PIZQ functionParameters PDER blockStatement;
-functionParameters	: IDENTIFIER moreIdentifiers;
-moreIdentifiers	: (COMA IDENTIFIER)*;
-hashLiteral		: LZQ hashContent moreHasContent LDER;
+functionLiteral	: FN PIZQ functionParameters PDER blockStatement;
+functionParameters	: ID moreIdentifiers;
+moreIdentifiers	: (COMA ID)*;
+hashLiteral		:  LIZQ hashContent moreHashContent LDER;
 hashContent	: expression DOSPUN expression;
 moreHashContent	: (COMA hashContent)*;
-functionCallExpression   : expression PIZQ expressionList PDER;
-expressionList       	: expression moreExpressions | ε;
-moreExpressions    	: (COMA expression)*;
-printExpressión      	: PUTS PIZQ expression PDER;
-ifExpression	: IF expression blockStatement (ELSE blockStatement | ε);
-blockStatement	: LIZQ statement* PDER;
+expressionList  : expression moreExpressions | EPS;
+moreExpressions : (COMA expression)*;
+printExpression : PUTS PIZQ expression PDER;
+ifExpression	: IF expression blockStatement (ELSE blockStatement | EPS);
+blockStatement	: LIZQ statement* LDER;
+
 
 
 

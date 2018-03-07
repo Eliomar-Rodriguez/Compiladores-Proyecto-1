@@ -7,7 +7,10 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.FileReader;
 import java.util.List;
-
+import generated.*;
+import generated.monkeyParser;
+import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.tree.ParseTree;
 /**
  * Created by oviquez on 28/2/2018.
  */
@@ -15,15 +18,15 @@ import java.util.List;
 public class Main {
     public static void main(String[] args){
         Scanner inst = null;
-        // Parser2  parser= null;
+        monkeyParser  parser= null;
         ANTLRInputStream input=null; //clase que se va a entender con el archivo
         CommonTokenStream tokens = null; //lista de tokens
         try {
             input = new ANTLRInputStream(new FileReader("test.txt")); //esta es la entrada para el scanner
             inst = new Scanner(input); // esta es la instancia de scanner, y lee el archivo
              //hay qe hacer la instancia del parser con la variable que tiene los tokens
-           // tokens= new CommonTokenStream(inst); //DEBE INCIALIZARSE DE ESTA MANERA
-           // parser= new Parser2(tokens);
+            tokens= new CommonTokenStream(inst); //DEBE INCIALIZARSE DE ESTA MANERA
+            parser= new monkeyParser(tokens);
         }
         catch(Exception e){System.out.println("No hay archivo");}
 
@@ -39,7 +42,7 @@ public class Main {
         inst.reset(); //vuelve a poner al scanner al inicio del archivo de scanner.tokens
                         // para leer nuevamente cuando el parse necesite
                         //de los tokens
-        /*
+
         try{
             ParseTree tree= parser.program();
             System.out.println("Compilación Exitosa!! \n ");
@@ -47,7 +50,9 @@ public class Main {
         catch (RecognitionException e){
             System.out.println("Compilación fallida!! ");
         }
-        */
+
     }
 
 }
+
+

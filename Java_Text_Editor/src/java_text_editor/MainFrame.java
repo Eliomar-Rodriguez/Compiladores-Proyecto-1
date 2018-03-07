@@ -202,10 +202,11 @@ public class MainFrame extends javax.swing.JFrame {
         saveDialog = new javax.swing.JFileChooser();
         jPanel1 = new javax.swing.JPanel();
         jToolBar1 = new javax.swing.JToolBar();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        openFile = new javax.swing.JButton();
+        guardar = new javax.swing.JButton();
+        increase = new javax.swing.JButton();
+        decrease = new javax.swing.JButton();
+        execute = new javax.swing.JButton();
         line = new javax.swing.JLabel();
         column = new javax.swing.JLabel();
         editorPanel = new javax.swing.JScrollPane();
@@ -225,53 +226,65 @@ public class MainFrame extends javax.swing.JFrame {
         jToolBar1.setBackground(new java.awt.Color(255, 255, 255));
         jToolBar1.setRollover(true);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/java_text_editor/open_new_file.png"))); // NOI18N
-        jButton1.setText("Open");
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        openFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/java_text_editor/open_new_file.png"))); // NOI18N
+        openFile.setText("Open");
+        openFile.setFocusable(false);
+        openFile.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        openFile.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        openFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                openFileActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton1);
+        jToolBar1.add(openFile);
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/java_text_editor/Save_icon.png"))); // NOI18N
-        jButton2.setText("Save");
-        jButton2.setFocusable(false);
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        guardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/java_text_editor/Save_icon.png"))); // NOI18N
+        guardar.setText("Save");
+        guardar.setFocusable(false);
+        guardar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        guardar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        guardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                guardarActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton2);
+        jToolBar1.add(guardar);
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/java_text_editor/increase_font.png"))); // NOI18N
-        jButton3.setText("Increase Font");
-        jButton3.setFocusable(false);
-        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        increase.setIcon(new javax.swing.ImageIcon(getClass().getResource("/java_text_editor/increase_font.png"))); // NOI18N
+        increase.setText("Increase Font");
+        increase.setFocusable(false);
+        increase.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        increase.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        increase.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                increaseActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton3);
+        jToolBar1.add(increase);
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/java_text_editor/decrease_font.png"))); // NOI18N
-        jButton4.setText("Decrease Font");
-        jButton4.setFocusable(false);
-        jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        decrease.setIcon(new javax.swing.ImageIcon(getClass().getResource("/java_text_editor/decrease_font.png"))); // NOI18N
+        decrease.setText("Decrease Font");
+        decrease.setFocusable(false);
+        decrease.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        decrease.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        decrease.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                decreaseActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton4);
+        jToolBar1.add(decrease);
+
+        execute.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/execute.png"))); // NOI18N
+        execute.setText("Execute");
+        execute.setFocusable(false);
+        execute.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        execute.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        execute.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                executeActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(execute);
 
         display.setColumns(20);
         display.setRows(5);
@@ -331,7 +344,7 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void openFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openFileActionPerformed
         //Show File Open dialouge here
         int status = fileOpener.showOpenDialog(rootPane);
         if (status == JFileChooser.APPROVE_OPTION) {
@@ -361,10 +374,10 @@ public class MainFrame extends javax.swing.JFrame {
         } else {
             System.out.println("No file selected");
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_openFileActionPerformed
 
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
         //If we are editing a file opened, then we have to save the contents on the same file, currentEditingFile
         if (currentEditingFile != null) {
             try {
@@ -379,18 +392,22 @@ public class MainFrame extends javax.swing.JFrame {
            createNewFile();
         }
 
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_guardarActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void increaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_increaseActionPerformed
         display.setFont(new java.awt.Font("Monospaced", 0, ++fontSize));
         this.display.setCaretPosition(10);
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_increaseActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void decreaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decreaseActionPerformed
         display.setFont(new java.awt.Font("Monospaced", 0, --fontSize));
         this.display.moveCaretPosition(2);
         this.setCursorPosition(1,4,display);
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_decreaseActionPerformed
+
+    private void executeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_executeActionPerformed
+        JOptionPane.showMessageDialog(rootPane,"Compilación exitosa", "Done", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_executeActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -426,21 +443,22 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel column;
+    private javax.swing.JButton decrease;
     private javax.swing.JTextArea display;
     private javax.swing.JScrollPane editorPanel;
     private javax.swing.JScrollPane errors;
     private javax.swing.JTextArea errorsArea;
+    private javax.swing.JButton execute;
     private javax.swing.JScrollPane execution;
     private javax.swing.JTextArea executionArea;
     private javax.swing.JTabbedPane executionPanel;
     private javax.swing.JFileChooser fileOpener;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton guardar;
+    private javax.swing.JButton increase;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel line;
+    private javax.swing.JButton openFile;
     private javax.swing.JFileChooser saveDialog;
     // End of variables declaration//GEN-END:variables
 }

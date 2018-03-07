@@ -45,11 +45,12 @@ FN: 'fn';
 PUTS: 'puts';
 IF: 'if';
 ELSE: 'else';
-
+EPS:'ε';
 /*******************************
 Tipos Primitivos
 ********************************/
-IDENTIFIER: LETTER (LETTER |DIGIT)*;
+
+ID: LETTER (LETTER |DIGIT)*;
 BOOLEAN: TRUE|FALSE;
 INTEGER: DIGIT DIGIT*;
 STRING: '"' .*? '"';
@@ -68,5 +69,6 @@ fragment TRUE: 'true';
 fragment FALSE: 'false';
 fragment LETTER : 'a'..'z' | 'A'..'Z'|'_' ;
 fragment DIGIT : '0'..'9';
+fragment SYMBOLS : '!' | '#'..'/' | ':'..'@' | '['..'`' | '{'..'~';
 
 WS: [ \t\n\r]+ -> skip;

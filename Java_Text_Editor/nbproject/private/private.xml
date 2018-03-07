@@ -3,7 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Josua/Documents/2018%20I/Compiladores%20e%20Intérpretes/1%20Tarea%20programada/Java_Text_Editor/src/java_text_editor/MainFrame.java</file>
+            <file>file:/C:/Users/Josua/Documents/2018%20I/Compiladores%20e%20Intérpretes/1%20Tarea%20programada/Java_Text_Editor/src/java_text_editor/EditorFrame.java</file>
+            <file>file:/C:/Users/Josua/Documents/2018%20I/Compiladores%20e%20Intérpretes/1%20Tarea%20programada/Java_Text_Editor/src/clases/TextEditorController.java</file>
+            <file>file:/C:/Users/Josua/Documents/2018%20I/Compiladores%20e%20Intérpretes/1%20Tarea%20programada/Java_Text_Editor/src/java_text_editor/main.java</file>
         </group>
     </open-files>
 </project-private>

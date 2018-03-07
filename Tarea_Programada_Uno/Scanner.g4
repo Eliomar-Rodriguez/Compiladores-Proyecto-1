@@ -53,14 +53,15 @@ Tipos Primitivos
 ID: LETTER (LETTER |DIGIT)*;
 BOOLEAN: TRUE|FALSE;
 INTEGER: DIGIT DIGIT*;
-STRING: '"' .*? '"';
-
+STRING: '"' (~["\\\r\n] | '\\' (. | EOF))* '"';
+//STRING: '"' .*? '"';
 /*********************************
 Comentarios
 **********************************/
+
 //COMMENT: '/*' ~( '/''/' | '*''/'|'/''*')* '*/';
-COMMENT: '/*' .*? '*/';
-LINECOMMENT: '//' (~'\n')* '\n';
+COMMENT: '/*' (~[/])* '*/';
+LINECOMMENT: '//' (~[\n])* '\n';
 
 /*********************************
 Fragment
@@ -69,6 +70,6 @@ fragment TRUE: 'true';
 fragment FALSE: 'false';
 fragment LETTER : 'a'..'z' | 'A'..'Z'|'_' ;
 fragment DIGIT : '0'..'9';
-fragment SYMBOLS : '!' | '#'..'/' | ':'..'@' | '['..'`' | '{'..'~';
+//fragment SYMBOLS : '!' | '#'..'/' | ':'..'@' | '['..'`' | '{'..'~';
 
 WS: [ \t\n\r]+ -> skip;

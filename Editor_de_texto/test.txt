@@ -3,8 +3,6 @@ let age =1;
 let name = "Mo\\";
 let result = 10 * (20 / 2);
 
-
-
 let myArray = [1, 2, 3, 4, 5];
 
 let thorsten = {"name": "Thorsten", "age": 28};

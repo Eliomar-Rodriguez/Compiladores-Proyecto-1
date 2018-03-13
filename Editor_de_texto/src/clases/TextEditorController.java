@@ -11,20 +11,23 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.sun.prism.paint.Color;
 import editor_de_texto.EditorFrame;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+
+import static java.awt.Color.RED;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
+import generated.MonkeyParser;
+import generated.MonkeyScanner;
+import org.antlr.v4.runtime.misc.ParseCancellationException;
 
 /**
  *
@@ -37,6 +40,8 @@ public class TextEditorController extends WindowAdapter implements ActionListene
     private File currentFile;
     private EditorFrame editor;
     private int fontSize;
+    private TextEditorModel model;
+
 
     public TextEditorController(EditorFrame window) {
         this.editor = window;
@@ -44,7 +49,10 @@ public class TextEditorController extends WindowAdapter implements ActionListene
         this.currentLine = 1;
         this.currentFile = null;
         this.fontSize = 14;
+        model = new TextEditorModel();
+
     }
+
 
     public int getCurrentLine() {
         return currentLine;
@@ -70,11 +78,34 @@ public class TextEditorController extends WindowAdapter implements ActionListene
         this.currentFile = currentFile;
     }
 
-    
-    
+
     public void setFontSize(int fontSize) {
         this.fontSize = fontSize;
     }
+
+    public void showException(JTextArea errorArea,Exception exception){
+        StringWriter stackTraceWriter = new StringWriter();
+        exception.printStackTrace(new PrintWriter(stackTraceWriter));
+        errorArea.setText(stackTraceWriter.toString());
+        JOptionPane.showMessageDialog(editor.getRootPane(),"La compilación fue abortada debido a un que ocurrió un error" +
+                        " en el proceso","Alerta de sistema", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void execute(JTextArea errorArea){
+        errorArea.setForeground(RED);
+        try {
+            this.model.AnalizeAndExecute(this.currentFile.getPath());
+            JOptionPane.showMessageDialog(this.editor.getRootPane(), "Compilación exitosa", "Done", JOptionPane.INFORMATION_MESSAGE);
+        }
+        catch (IOException exception){
+            this.showException(errorArea,exception);
+        }
+        catch (ParseCancellationException exception){
+            this.showException(errorArea,exception);
+        }
+
+    }
+
 
     public void createFile(File file) {
         try {
@@ -83,7 +114,7 @@ public class TextEditorController extends WindowAdapter implements ActionListene
             printWriter.write(editor.display.getText());
             printWriter.close();
             JOptionPane.showMessageDialog(editor.getRootPane(), "Saved", "Done", JOptionPane.INFORMATION_MESSAGE);
-            
+
         } catch (IOException ex) {
             Logger.getLogger(EditorFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -163,43 +194,41 @@ public class TextEditorController extends WindowAdapter implements ActionListene
     }
 
     /**
-     * 
-     * @param toLine linea a la que se debe mover el cursor
-     * @param toCol col a la que se desea mover el cursor
-     * @param exhibidor 
-     * NOTA: este método asume que la columna destino existe en la línea destino
-     * Por lo que únicamente se calcula la llegada a la línea destino, y luego se suman
-     * la columna destino al contador de caracteres
+     * @param toLine    linea a la que se debe mover el cursor
+     * @param toCol     col a la que se desea mover el cursor
+     * @param exhibidor NOTA: este método asume que la columna destino existe en la línea destino
+     *                  Por lo que únicamente se calcula la llegada a la línea destino, y luego se suman
+     *                  la columna destino al contador de caracteres
      */
-    public void setCursorPosition(int toLine, int toCol,JTextArea exhibidor){
-        char enter= '\n';
-        String texto= exhibidor.getText();
-        int lineCount=1;
-        int count=0;
-        int charCount=0;
-        while(lineCount < toLine){
-            if(texto.charAt(count)==enter){
+    public void setCursorPosition(int toLine, int toCol, JTextArea exhibidor) {
+        char enter = '\n';
+        String texto = exhibidor.getText();
+        int lineCount = 1;
+        int count = 0;
+        int charCount = 0;
+        while (lineCount < toLine) {
+            if (texto.charAt(count) == enter) {
                 lineCount++;
             }
             charCount++;
             count++;
         }
-        exhibidor.setCaretPosition(charCount+toCol);
-        updateCaretPositions(toLine,toCol,this.editor.line,this.editor.column);
-        
-        
+        exhibidor.setCaretPosition(charCount + toCol);
+        updateCaretPositions(toLine, toCol, this.editor.line, this.editor.column);
+
+
     }
-    
+
     public void updateCaretPositions(int row, int col, JLabel line, JLabel column) {
         this.setCurrentLine(row);
         this.setCurrentCol(col);
-        line.setText("Line: "+String.valueOf(row));
-        column.setText("Column: "+String.valueOf(col));  
+        line.setText("Line: " + String.valueOf(row));
+        column.setText("Column: " + String.valueOf(col));
     }
 
     @Override
     public void caretUpdate(CaretEvent event) {
-        
+
         //edit area would have a method with it's possible to get the JTextArea Name that make the event
         JTextArea editArea = (JTextArea) event.getSource();
         int linenum = 1;
@@ -225,24 +254,24 @@ public class TextEditorController extends WindowAdapter implements ActionListene
         }
 
         // Once we know the position of the line and the column, pass it to a helper function for updating the status bar.
-        updateCaretPositions(linenum, columnnum,editor.line,editor.column);
+        updateCaretPositions(linenum, columnnum, editor.line, editor.column);
     }
-    
+
     @Override
     public void windowClosing(WindowEvent event) {
         this.askForSaving();
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent event) {
-        
+
         //create a new file
         if (event.getActionCommand().equals(editor.openFile.getActionCommand())) {
             this.openFile(editor.fileOpener);
         } else if (event.getActionCommand().equals(editor.newFile.getActionCommand())) {
             this.setCurrentFile(null);
             this.editor.display.setText("");
-            
+
         } else if (event.getActionCommand().equals(editor.saveButton.getActionCommand())) {
             this.saveFileChanges();
         } else if (event.getActionCommand().equals(editor.increase.getActionCommand())) {
@@ -253,9 +282,16 @@ public class TextEditorController extends WindowAdapter implements ActionListene
             this.editor.display.setFont(new java.awt.Font("Monospaced", 0, this.fontSize));
         } //execute button was pressed
         else {
-            JOptionPane.showMessageDialog(this.editor.getRootPane(), "Compilación exitosa", "Done", JOptionPane.INFORMATION_MESSAGE);
+            if ((this.currentFile == null) && (this.editor.display.getText().length() > 0)) {
+                this.saveFileChanges();
+            } else {
+                if (this.editor.display.getText().length() > 0) {
+                    this.editor.errorsArea.setText("");
+                    this.editor.executionArea.setText("");
+                    this.execute(this.editor.errorsArea);
+                }
+            }
         }
     }
 
-    
 }

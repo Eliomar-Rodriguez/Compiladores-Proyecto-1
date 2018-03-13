@@ -1,4 +1,4 @@
-lexer grammar Scanner;
+lexer grammar MonkeyScanner;
 
 /****************************
     Símbolos del lenguaje

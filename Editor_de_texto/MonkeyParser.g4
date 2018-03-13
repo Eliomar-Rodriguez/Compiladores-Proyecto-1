@@ -1,7 +1,7 @@
 parser grammar MonkeyParser;
 
 options{
-    tokenVocab= Scanner;
+    tokenVocab= MonkeyScanner;
 }
 
 program  		: statement*                                            #program_Mky;

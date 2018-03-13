@@ -32,4 +32,3 @@ moreExpressions    	: (COMA expression)*;
 printExpression      	: PUTS PIZQ expression PDER;
 ifExpression	: IF expression blockStatement (ELSE blockStatement | );
 blockStatement	: LIZQ statement* LDER;
-commentStatement : COMMENT | LINECOMMENT;

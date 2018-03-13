@@ -53,14 +53,7 @@ Tipos Primitivos
 ********************************/
 ID: LETTER (LETTER |DIGIT)*;
 INTEGER: DIGIT DIGIT*;
-STRING: '"' .*? '"';
-
-/*********************************
-Comentarios
-**********************************/
-//COMMENT: '/*' ~( '/''/' | '*''/'|'/''*')* '*/';
-COMMENT: '/*' .*? '*/';
-LINECOMMENT: '//' (~'\n')* '\n';
+STRING: '"' ( ~["\r\n] | '""' )* '"';
 
 /*********************************
 Fragment
@@ -68,4 +61,10 @@ Fragment
 fragment LETTER : 'a'..'z' | 'A'..'Z'|'_' ;
 fragment DIGIT : '0'..'9';
 
+/*********************************
+Comentarios
+**********************************/
+
+COMMENT: '/*' .*? '*/' -> skip;//channel(HIDDEN);
+LINECOMMENT: '//' (~'\n')* '\n' -> skip;
 WS: [ \t\n\r]+ -> skip;

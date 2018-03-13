@@ -7,6 +7,7 @@ import org.antlr.v4.runtime.misc.ParseCancellationException;
 import java.io.StringWriter;
 import java.io.PrintWriter;
 
+
 public class myAntlrErrorHandle extends BaseErrorListener {
 
 
@@ -18,34 +19,27 @@ public class myAntlrErrorHandle extends BaseErrorListener {
 
     public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol,
                             int line, int charPositionInLine,
-                            String msg, RecognitionException e) throws ParseCancellationException {
+                            String msg, RecognitionException e) throws RecognitionException {
         if (!REPORT_SYNTAX_ERRORS) {
             return;
         }
 
         String sourceName;
-        System.out.println("string linea provocador");
-        System.out.println(recognizer.getInputStream().getSourceName());
-        System.out.println("otro provocador");
-       // System.out.println(recognizer.getErrorHeader());
-        System.out.println("otro intento");
-        System.out.println(msg);
+        char quote='"';
         if (recognizer.getGrammarFileName().equals(this.scannerFile)){
             sourceName="Scanner error ";
         }
         else{
             sourceName="Parser error ";
         }
-        this.exceptionMessage=sourceName+"in line "+line+":"+charPositionInLine+" "+msg;
-        ParseCancellationException newException= new ParseCancellationException(this.exceptionMessage);
-        System.out.print("impresion"+"\n");
-        System.out.print("impresión después del ciclo" +
-                "sdsd");
 
-        StringWriter stackTraceWriter = new StringWriter();
-        newException.printStackTrace(new PrintWriter(stackTraceWriter));
-        System.out.println(stackTraceWriter.toString());
-        System.out.println("throw");
+        //if it's possible that contains a string with out a quote
+        if (msg.contains("\"")){
+            sourceName+=" ( You could have forgotten to close a string ) ";
+        }
+        this.exceptionMessage=sourceName+"in line "+line+":"+charPositionInLine+" "+msg;
+
+        ParseCancellationException newException= new ParseCancellationException(this.exceptionMessage);
         throw newException;
 
 

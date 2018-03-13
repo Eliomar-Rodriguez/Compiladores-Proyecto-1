@@ -84,6 +84,7 @@ public class TextEditorController extends WindowAdapter implements ActionListene
     }
 
     public void showException(JTextArea errorArea,Exception exception){
+        errorArea.setForeground(RED);
         StringWriter stackTraceWriter = new StringWriter();
         exception.printStackTrace(new PrintWriter(stackTraceWriter));
         errorArea.setText(stackTraceWriter.toString());
@@ -92,7 +93,6 @@ public class TextEditorController extends WindowAdapter implements ActionListene
     }
 
     public void execute(JTextArea errorArea){
-        errorArea.setForeground(RED);
         try {
             this.model.AnalizeAndExecute(this.currentFile.getPath());
             JOptionPane.showMessageDialog(this.editor.getRootPane(), "Compilación exitosa", "Done", JOptionPane.INFORMATION_MESSAGE);

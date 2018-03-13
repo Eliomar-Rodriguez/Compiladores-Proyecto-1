@@ -90,6 +90,7 @@ public class EditorFrame extends javax.swing.JFrame {
 
         jToolBar1.setBackground(new java.awt.Color(255, 255, 255));
         jToolBar1.setRollover(true);
+        jToolBar1.setEnabled(false);
 
         openFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Open_file.png"))); // NOI18N
         openFile.setText("Open");

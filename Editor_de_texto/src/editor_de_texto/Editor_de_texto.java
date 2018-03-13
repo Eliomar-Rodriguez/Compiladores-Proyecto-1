@@ -5,10 +5,6 @@
  */
 package editor_de_texto;
 
-/**
- *
- * @author Eliomar
- */
 public class Editor_de_texto {
 
     /**

@@ -51,13 +51,10 @@ public class EditorFrame extends javax.swing.JFrame {
         this.decrease.addActionListener((ActionListener) controller);
         this.execute.addActionListener((ActionListener) controller);
         this.display.addCaretListener((CaretListener)controller);
+        this.viewTree.addActionListener((ActionListener) controller);
         this.addWindowListener((WindowAdapter)controller);
     }
-    
 
-  
-    
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -72,6 +69,7 @@ public class EditorFrame extends javax.swing.JFrame {
         increase = new javax.swing.JButton();
         decrease = new javax.swing.JButton();
         execute = new javax.swing.JButton();
+        viewTree = new javax.swing.JButton();
         line = new javax.swing.JLabel();
         column = new javax.swing.JLabel();
         editorPanel = new javax.swing.JScrollPane();
@@ -133,6 +131,13 @@ public class EditorFrame extends javax.swing.JFrame {
         execute.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         execute.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(execute);
+
+        viewTree.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/tree.png"))); // NOI18N
+        viewTree.setText("Tree view");
+        viewTree.setFocusable(false);
+        viewTree.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        viewTree.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(viewTree);
 
         display.setColumns(20);
         display.setRows(5);
@@ -246,5 +251,6 @@ public class EditorFrame extends javax.swing.JFrame {
     public javax.swing.JButton openFile;
     public javax.swing.JButton saveButton;
     public javax.swing.JFileChooser saveDialog;
+    public javax.swing.JButton viewTree;
     // End of variables declaration//GEN-END:variables
 }

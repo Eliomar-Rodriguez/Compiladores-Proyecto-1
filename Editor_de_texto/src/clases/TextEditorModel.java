@@ -7,10 +7,10 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import javax.swing.*;
+import java.io.*;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class TextEditorModel {
 
@@ -18,6 +18,7 @@ public class TextEditorModel {
     private MonkeyScanner scanner;
     private CommonTokenStream tokens = null; //lista de tokens
     private myAntlrErrorHandle handleError;
+    private ParseTree tree;
 
     public TextEditorModel(){
         this.handleError =new myAntlrErrorHandle();
@@ -30,12 +31,21 @@ public class TextEditorModel {
         this.parser.addErrorListener(this.handleError);
     }
 
+    public ParseTree getTree(){
+        return this.tree;
+    }
+
+    public MonkeyParser getParser(){
+        return this.parser;
+    }
+
     public void AnalizeAndExecute(String filePath) throws IOException {
         ANTLRInputStream input= new ANTLRInputStream(new FileReader(filePath));
         this.scanner=new MonkeyScanner(input);
         this.tokens= new CommonTokenStream(this.scanner);
-        parser= new MonkeyParser(tokens);
+        this.parser= new MonkeyParser(tokens);
         this.setListeners();
+        /*
         List<Token> lista = (List<Token>) this.scanner.getAllTokens(); //la funcion getAllTokens casi no se usa, esto pone a correr al scanner
 
         for (Token t : lista)
@@ -45,7 +55,7 @@ public class TextEditorModel {
         this.scanner.reset(); //vuelve a poner al scanner al inicio del archivo de scanner.tokens
         // para leer nuevamente cuando el parse necesite
         //de los tokens
-        ParseTree tree= parser.program();
-
+         */
+         this.tree= this.parser.program();
     }
 }

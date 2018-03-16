@@ -9,17 +9,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import javax.swing.JLabel;
-import javax.swing.JTextArea;
+import javax.swing.*;
 import java.io.*;
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.sun.prism.paint.Color;
 import editor_de_texto.EditorFrame;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 
 import static java.awt.Color.RED;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
@@ -27,7 +25,9 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import generated.MonkeyParser;
 import generated.MonkeyScanner;
+import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
+import org.antlr.v4.runtime.tree.ParseTree;
 
 /**
  *
@@ -41,6 +41,7 @@ public class TextEditorController extends WindowAdapter implements ActionListene
     private EditorFrame editor;
     private int fontSize;
     private TextEditorModel model;
+    private boolean executeState;
 
 
     public TextEditorController(EditorFrame window) {
@@ -50,6 +51,7 @@ public class TextEditorController extends WindowAdapter implements ActionListene
         this.currentFile = null;
         this.fontSize = 14;
         model = new TextEditorModel();
+        this.executeState=false;
 
     }
 
@@ -96,12 +98,15 @@ public class TextEditorController extends WindowAdapter implements ActionListene
         try {
             this.model.AnalizeAndExecute(this.currentFile.getPath());
             JOptionPane.showMessageDialog(this.editor.getRootPane(), "Compilación exitosa", "Done", JOptionPane.INFORMATION_MESSAGE);
+            this.executeState=true;
         }
         catch (IOException exception){
             this.showException(errorArea,exception);
+            this.executeState=false;
         }
         catch (ParseCancellationException exception){
             this.showException(errorArea,exception);
+            this.executeState=false;
         }
 
     }
@@ -114,6 +119,7 @@ public class TextEditorController extends WindowAdapter implements ActionListene
             printWriter.write(editor.display.getText());
             printWriter.close();
             JOptionPane.showMessageDialog(editor.getRootPane(), "Saved", "Done", JOptionPane.INFORMATION_MESSAGE);
+            this.currentFile=file;
 
         } catch (IOException ex) {
             Logger.getLogger(EditorFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -190,6 +196,17 @@ public class TextEditorController extends WindowAdapter implements ActionListene
 
         } else {
             System.out.println("No file selected");
+        }
+    }
+
+    public void showTree(ParseTree tree, Parser parser){
+        java.util.concurrent.Future <JFrame> treeGUI = org.antlr.v4.gui.Trees.inspect(tree,parser);
+        try {
+            treeGUI.get().setVisible(true);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
         }
     }
 
@@ -281,16 +298,27 @@ public class TextEditorController extends WindowAdapter implements ActionListene
             this.setFontSize(this.fontSize - 1);
             this.editor.display.setFont(new java.awt.Font("Monospaced", 0, this.fontSize));
         } //execute button was pressed
-        else {
+        else if (event.getActionCommand().equals(this.editor.execute.getActionCommand())){
             if ((this.currentFile == null) && (this.editor.display.getText().length() > 0)) {
                 this.saveFileChanges();
             } else {
                 if (this.editor.display.getText().length() > 0) {
                     this.editor.errorsArea.setText("");
                     this.editor.executionArea.setText("");
+                    this.executeState=false;
                     this.execute(this.editor.errorsArea);
                 }
             }
+        }
+        // view tree
+        else {
+                if (this.executeState==true){
+                    this.showTree(this.model.getTree(),this.model.getParser());
+                }
+                else{
+                    JOptionPane.showMessageDialog(editor.getRootPane(), "Error Occured", "you have not run any program", JOptionPane.ERROR_MESSAGE);
+                }
+
         }
     }
 

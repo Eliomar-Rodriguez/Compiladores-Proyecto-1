@@ -5,6 +5,11 @@
  */
 package editor_de_texto;
 
+import generated.MonkeyParser;
+import org.antlr.v4.runtime.tree.ParseTree;
+import javax.swing.*;
+import java.util.concurrent.ExecutionException;
+
 public class Editor_de_texto {
 
     /**
@@ -13,5 +18,6 @@ public class Editor_de_texto {
     public static void main(String[] args) {
         EditorFrame editor = new EditorFrame();
         editor.setVisible(true);
-    }    
+
+    }
 }

@@ -5,7 +5,7 @@ let result = 10 * (20 / 2);
 /****
 ddfd
 */
-let myArray = [1, 2, 3, 4, 5];
+let myArray=  [1, 2, 3, 4, 5];
 
 let thorsten = {"name": "Thorsten", "age": 28};
 

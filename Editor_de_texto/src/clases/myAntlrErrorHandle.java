@@ -32,7 +32,8 @@ public class myAntlrErrorHandle extends BaseErrorListener {
         else{
             sourceName="Parser error ";
         }
-
+        System.out.println("excepcion real message");
+        System.out.println(msg);
         //if it's possible that contains a string with out a quote
         if (msg.contains("\"")){
             sourceName+=" ( You could have forgotten to close a string ) ";

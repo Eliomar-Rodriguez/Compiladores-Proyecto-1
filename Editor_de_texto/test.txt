@@ -1,11 +1,20 @@
 let age = 1;
 let name = "Monkey";
 let result = 10 * (20 / 2);
+<<<<<<< HEAD
 
+let myArray = [1, 2, 3, 4, 5];
+=======
+//tytyg
+/*fdfdf
+*/
+>>>>>>> 03f07dbcef3745c640076c8c4072980f28808599
+
+/*dfdf*/  */
 let myArray = [1, 2, 3, 4, 5];
 
 let thorsten = {"name": "Thorsten", "age": 28};
-
+let lista={"nombre":"marco","carros":[{"marca":"toyota"},{"marca":"suzuki"}] }
 myArray[0] // => 1
 thorsten["name"] // => "Thorsten"
 

@@ -18,6 +18,5 @@ public class Editor_de_texto {
     public static void main(String[] args) {
         EditorFrame editor = new EditorFrame();
         editor.setVisible(true);
-
     }
 }

@@ -203,9 +203,12 @@ public class TextEditorController extends WindowAdapter implements ActionListene
     }
 
     public void showTree(ParseTree tree, Parser parser){
-
-        JFrame treeGUI = (JFrame) org.antlr.v4.gui.Trees.inspect(tree,parser);
-        treeGUI.setVisible(true);
+        try {
+            JFrame treeGUI = (JFrame) org.antlr.v4.gui.Trees.inspect(tree,parser);
+            treeGUI.setVisible(true);
+        }catch (Exception e){
+            System.out.println("ERROR: " +e);
+        }
     }
 
 
@@ -274,42 +277,44 @@ public class TextEditorController extends WindowAdapter implements ActionListene
 
     @Override
     public void actionPerformed(ActionEvent event) {
+        try {
+            //create a new file
+            if (event.getActionCommand().equals(editor.openFile.getActionCommand())) {
+                this.openFile(editor.fileOpener);
+            } else if (event.getActionCommand().equals(editor.newFile.getActionCommand())) {
+                this.setCurrentFile(null);
+                this.editor.display.setText("");
 
-        //create a new file
-        if (event.getActionCommand().equals(editor.openFile.getActionCommand())) {
-            this.openFile(editor.fileOpener);
-        } else if (event.getActionCommand().equals(editor.newFile.getActionCommand())) {
-            this.setCurrentFile(null);
-            this.editor.display.setText("");
-
-        } else if (event.getActionCommand().equals(editor.saveButton.getActionCommand())) {
-            this.saveFileChanges();
-        } else if (event.getActionCommand().equals(editor.increase.getActionCommand())) {
-            this.setFontSize(this.fontSize + 1);
-            this.editor.display.setFont(new java.awt.Font("Monospaced", 0, this.fontSize));
-        } else if (event.getActionCommand().equals(editor.decrease.getActionCommand())) {
-            this.setFontSize(this.fontSize - 1);
-            this.editor.display.setFont(new java.awt.Font("Monospaced", 0, this.fontSize));
-        } //execute button was pressed
-        else if (event.getActionCommand().equals(editor.execute.getActionCommand())){
-            if ((this.currentFile == null) && (this.editor.display.getText().length() > 0)) {
+            } else if (event.getActionCommand().equals(editor.saveButton.getActionCommand())) {
                 this.saveFileChanges();
+            } else if (event.getActionCommand().equals(editor.increase.getActionCommand())) {
+                this.setFontSize(this.fontSize + 1);
+                this.editor.display.setFont(new java.awt.Font("Monospaced", 0, this.fontSize));
+            } else if (event.getActionCommand().equals(editor.decrease.getActionCommand())) {
+                this.setFontSize(this.fontSize - 1);
+                this.editor.display.setFont(new java.awt.Font("Monospaced", 0, this.fontSize));
+            } //execute button was pressed
+            else if (event.getActionCommand().equals(editor.execute.getActionCommand())) {
+                if ((this.currentFile == null) && (this.editor.display.getText().length() > 0)) {
+                    this.saveFileChanges();
+                } else {
+                    if (this.editor.display.getText().length() > 0) {
+                        this.editor.errorsArea.setText("");
+                        this.editor.executionArea.setText("");
+                        this.executeState = false;
+                        this.execute(this.editor.errorsArea);
+                    }
+                }
             } else {
-                if (this.editor.display.getText().length() > 0) {
-                    this.editor.errorsArea.setText("");
-                    this.editor.executionArea.setText("");
-                    this.executeState=false;
-                    this.execute(this.editor.errorsArea);
+                if (this.executeState == true) {
+                    this.showTree(this.model.getTree(), this.model.getParser());
+                } else {
+                    JOptionPane.showMessageDialog(editor.getRootPane(), "You have not run any program or an error ocurred", "System Alert", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
-        else{
-            if (this.executeState==true){
-                this.showTree(this.model.getTree(),this.model.getParser());
-            }
-            else{
-                JOptionPane.showMessageDialog(editor.getRootPane(), "You have not run any program or an error ocurred", "System Alert", JOptionPane.ERROR_MESSAGE);
-            }
+        catch (Exception e){
+            System.out.println("ERROR: " + e);
         }
     }
 

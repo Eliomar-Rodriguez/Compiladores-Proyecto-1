@@ -45,7 +45,7 @@ public class TextEditorModel {
         this.tokens= new CommonTokenStream(this.scanner);
         this.parser= new MonkeyParser(tokens);
         this.setListeners();
-        /*
+
         List<Token> lista = (List<Token>) this.scanner.getAllTokens(); //la funcion getAllTokens casi no se usa, esto pone a correr al scanner
 
         for (Token t : lista)
@@ -55,7 +55,7 @@ public class TextEditorModel {
         this.scanner.reset(); //vuelve a poner al scanner al inicio del archivo de scanner.tokens
         // para leer nuevamente cuando el parse necesite
         //de los tokens
-         */
+
          this.tree= this.parser.program();
     }
 }

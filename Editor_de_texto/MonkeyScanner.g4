@@ -53,19 +53,23 @@ Tipos Primitivos
 ********************************/
 ID: LETTER (LETTER |DIGIT)*;
 INTEGER: DIGIT DIGIT*;
-STRING: '"' ( ~["\r\n] | '""' )* '"';
+STRING: '"' (~["\r\n])* '"';
 
-/*********************************
-Fragment
-**********************************/
-fragment LETTER : 'a'..'z' | 'A'..'Z'|'_' ;
-fragment DIGIT : '0'..'9';
-fragment SYMBOLS : '!' |'¡' | '#'..'/' | ':'..'@' | '['..'`' | '{'..'~';
 
 /*********************************
 Comentarios
 **********************************/
 
-COMMENT: '/*' .*? '*/' -> skip;//channel(HIDDEN);
-LINECOMMENT: '//' (~'\n')* '\n' -> skip;
+COMMENT: '/*' .*? '*/'->skip;
+
+LINECOMMENT: '//' (~'\n')* '\n'->skip;
+
+/*********************************
+Fragment
+**********************************/
+fragment STRING_CHAR : LETTER|DIGIT| SYMBOLS|EOF;
+fragment LETTER : 'a'..'z' | 'A'..'Z'|'_' ;
+fragment DIGIT : '0'..'9';
+fragment SYMBOLS : '!' |'¡' | '#'|'/' | '@' | '`' |'%'|'¿'|'?'|'$'|'\\'|'-'|'\'';
+
 WS: [ \t\n\r]+ -> skip;

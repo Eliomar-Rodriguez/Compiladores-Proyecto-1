@@ -203,6 +203,7 @@ public class TextEditorController extends WindowAdapter implements ActionListene
     }
 
     public void showTree(ParseTree tree, Parser parser){
+
         JFrame treeGUI = (JFrame) org.antlr.v4.gui.Trees.inspect(tree,parser);
         treeGUI.setVisible(true);
     }
@@ -250,25 +251,19 @@ public class TextEditorController extends WindowAdapter implements ActionListene
         int columnnum = 1;
 
         try {
-            // First we find the position of the caret. This is the number of where the caret is in relation to the start of the JTextArea
-            // in the upper left corner. We use this position to find offset values (eg what line we are on for the given position as well as
-            // what position that line starts on.
+
             int caretpos = editArea.getCaretPosition();
 
             linenum = editArea.getLineOfOffset(caretpos);
 
-            // We subtract the offset of where our line starts from the overall caret position.
-            // So lets say that we are on line 5 and that line starts at caret position 100, if our caret position is currently 106
-            // we know that we must be on column 6 of line 5.
+
             columnnum = caretpos - editArea.getLineStartOffset(linenum);
 
-            // We have to add one here because line numbers start at 0 for getLineOfOffset and we want it to start at 1 for display.
             linenum += 1;
         } catch (Exception ex) {
             System.out.println("An error doesn't allow to finish the update process");
         }
 
-        // Once we know the position of the line and the column, pass it to a helper function for updating the status bar.
         updateCaretPositions(linenum, columnnum, editor.line, editor.column);
     }
 

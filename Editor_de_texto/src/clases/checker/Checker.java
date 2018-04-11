@@ -1,4 +1,4 @@
-package clases.ckecker;
+package clases.checker;
 
 import generated.MonkeyParser;
 import generated.MonkeyParserBaseVisitor;
@@ -6,6 +6,9 @@ import generated.MonkeyParserBaseVisitor;
 import java.util.ArrayList;
 
 public class Checker extends MonkeyParserBaseVisitor {
+
+    private FunctionsTable functionsTable;
+
 
     /**
      * tipo neutro se va a representar con un 0
@@ -15,6 +18,7 @@ public class Checker extends MonkeyParserBaseVisitor {
 
     public Checker(){
         this.errorsList= new ArrayList<String>();
+        this.functionsTable= new FunctionsTable();
     }
 
     @Override
@@ -370,8 +374,8 @@ public class Checker extends MonkeyParserBaseVisitor {
     @Override
     public Object visitIfExpr_Mky(MonkeyParser.IfExpr_MkyContext ctx) {
         visit(ctx.expression());
-        visit(ctx.blockStatement(0));
-        visit(ctx.blockStatement(1));
+        for(int i = 0; i < ctx.blockStatement().size(); i++)
+            visit(ctx.blockStatement(i));
         return null;
     }
 

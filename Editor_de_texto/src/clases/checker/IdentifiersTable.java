@@ -1,4 +1,4 @@
-package checker;
+package clases.checker;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
@@ -6,27 +6,27 @@ import org.antlr.v4.runtime.Token;
 import java.util.LinkedList;
 
 public class IdentifiersTable{
-    private LinkedList<IdentifierElement> IDs_table;
-    private int actLevel;
+    private static LinkedList<IdentifierElement> IDs_table;
+    private static int actLevel;
 
     public IdentifiersTable(){
         this.actLevel = -1;
         this.IDs_table = new LinkedList<IdentifierElement>();
     }
 
-    public IdentifierElement insertar(Token tkn, int type, ParserRuleContext declaracion)
+    public static IdentifierElement insert(Token tkn, int type, ParserRuleContext declaracion)
     {
         IdentifierElement element = new IdentifierElement(declaracion,actLevel,tkn,type);
         int j = 0;
-        while (j < this.IDs_table.size() && this.IDs_table.get(j).getLevel() == actLevel) {
-            if (this.IDs_table.get(j).getToken().getText().equals(tkn.getText())) {
+        while (j < IDs_table.size() && IDs_table.get(j).getLevel() == actLevel) {
+            if (IDs_table.get(j).getToken().getText().equals(tkn.getText())) {
                 System.out.println("El identificador \"" + tkn.getText() + "\" ya ha sido declarado!!!");
                 return null;
             }
             j++;
         }
-        this.IDs_table.push(element); //deben ser una tabla estilo pila
-        return this.IDs_table.get(0);
+        IDs_table.push(element); //deben ser una tabla estilo pila
+        return IDs_table.get(0);
     }
 
     public void OpenScope(){
@@ -54,6 +54,8 @@ public class IdentifiersTable{
                 break;
             }
         return temporal;
+
+
     }
 
     public void imprimir() {

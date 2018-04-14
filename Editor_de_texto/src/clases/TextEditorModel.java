@@ -1,5 +1,6 @@
 package clases;
 
+import clases.checker.Checker;
 import generated.MonkeyParser;
 import generated.MonkeyScanner;
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -14,14 +15,18 @@ import java.util.concurrent.ExecutionException;
 
 public class TextEditorModel {
 
+    private Checker checker;
     private MonkeyParser parser;
     private MonkeyScanner scanner;
     private CommonTokenStream tokens = null; //lista de tokens
     private myAntlrErrorHandle handleError;
     private ParseTree tree;
 
+
     public TextEditorModel(){
+
         this.handleError =new myAntlrErrorHandle();
+        this.checker= new Checker();
     }
 
     public void setListeners(){
@@ -29,6 +34,7 @@ public class TextEditorModel {
         this.scanner.addErrorListener(this.handleError);
         this.parser.removeErrorListeners();
         this.parser.addErrorListener(this.handleError);
+
     }
 
     public ParseTree getTree(){
@@ -56,6 +62,10 @@ public class TextEditorModel {
         // para leer nuevamente cuando el parse necesite
         //de los tokens
 
+        //parse program
          this.tree= this.parser.program();
+
+         //semantic checker
+         this.checker.visit(this.tree);
     }
 }

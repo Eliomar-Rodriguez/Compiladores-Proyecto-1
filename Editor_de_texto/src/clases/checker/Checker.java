@@ -4,14 +4,20 @@ import generated.MonkeyParser;
 import generated.MonkeyParserBaseVisitor;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class Checker extends MonkeyParserBaseVisitor {
 
     private FunctionsTable functionsTable;
+    private IdentifiersTable identifierTable;
+    private int globalCounterReturn=0;
+    private int globalCounterParams=0;
+    private boolean returnInFunction; //para controlar si la sentencia return se encuentra dentro de una función
 
 
     /**
-     * tipo neutro se va a representar con un 0
+     * tipo neutro se va a representar con un 0, -1 representa que no existe tipo para el identificador
+     * variable tipo arreglo= 4 , variable tipo diccionario = 5, variable normal -1
      */
 
     private ArrayList<String> errorsList;
@@ -19,6 +25,68 @@ public class Checker extends MonkeyParserBaseVisitor {
     public Checker(){
         this.errorsList= new ArrayList<String>();
         this.functionsTable= new FunctionsTable();
+        this.returnInFunction= false;
+    }
+
+    //Funciones para validar otros aspectos no relacionados con estructura sino con compatibilidad
+
+    public String getTypeName(int code){
+
+        if (code==0){
+            return "Neutral";
+        }
+        else if(code==1){
+            return "Integer";
+
+        }
+
+        else if(code==2){
+            return "String";
+        }
+        else if(code==3){
+            return "Boolean";
+        }
+        else if(code==4){
+            return "Array Literal";
+        }
+        else{ // code 5
+            return "Hash literal";
+        }
+    }
+
+    public boolean checkTypesCompatibility(int type1,int type2){
+        if (type1==type2){
+            return true;
+        }
+        if (type1==0 || type2==0){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isValidOperator(String operator,int type){
+        //tipo neutro
+        boolean res=false;
+        if (type==0){
+            res= true;
+        }
+        //tipo entero
+        else if(type==1){
+            res=true;
+        }
+        //permitir suma de strings
+        else if (type==2 && operator.equals("+")){
+            res=true;
+        }
+
+        else {
+            //tipo boolean, string
+            if ((type == 2 || type == 3 ) && operator.equals("==")) {
+                res = true;
+            }
+        }
+        return res;
+
     }
 
     @Override
@@ -57,8 +125,14 @@ public class Checker extends MonkeyParserBaseVisitor {
 
     @Override
     public Object visitReturnSt_Mky(MonkeyParser.ReturnSt_MkyContext ctx) {
-        visit(ctx.expression());
-        return null;
+        if (this.returnInFunction==false){
+            this.errorsList.add("Error a return statement has to de inside a function. At line: " +
+                    ctx.getStart().getLine()+" columna: "+ctx.getStart().getCharPositionInLine());
+            return -1;
+        }
+
+        int type= (Integer) visit(ctx.expression());
+        return type;
     }
 
     @Override
@@ -69,97 +143,225 @@ public class Checker extends MonkeyParserBaseVisitor {
 
     @Override
     public Object visitExpr_Mky(MonkeyParser.Expr_MkyContext ctx) {
-        visit(ctx.additionExpression());
-        visit(ctx.comparison());
-        return null;
+        int type1=-1;
+        int type2=-1;
+        int resType=-1;
+        type1= (Integer) visit(ctx.additionExpression());
+        type2= (Integer) visit(ctx.comparison());
+        if (this.checkTypesCompatibility(type1,type2)!=true){
+            this.errorsList.add("Error: Incompatible types. At line:"+ ctx.getStart().getLine()+
+            " column: "+ ctx.getStart().getCharPositionInLine());
+            resType=-1;
+        }
+        else{
+            resType= type1;
+        }
+        return resType;
     }
 
     @Override
     public Object visitCompMenor_Mky(MonkeyParser.CompMenor_MkyContext ctx) {
+        int size= ctx.additionExpression().size();
+        int resType=0;
+        int type;
+
         for(MonkeyParser.AdditionExpressionContext elem: ctx.additionExpression()){
-            visit(elem);
+            type= (Integer) visit(elem);
+            if (this.isValidOperator("<",type)!=true){
+                this.errorsList.add("Error: type: "+ this.getTypeName(type)+" is not compatible with the operator <. At line: " +
+                        elem.getStart().getLine()+" column: "+elem.getStart().getCharPositionInLine());
+                resType=-1;
+            }
+            else{
+                resType=type;
+            }
+
         }
-        return null;
+        return resType;
     }
 
     @Override
     public Object visitCompMayor_Mky(MonkeyParser.CompMayor_MkyContext ctx) {
 
+        int size= ctx.additionExpression().size();
+        int resType=0;
+        int type;
+
         for(MonkeyParser.AdditionExpressionContext elem: ctx.additionExpression()){
-            visit(elem);
+            type= (Integer) visit(elem);
+            if (this.isValidOperator(">",type)!=true){
+                this.errorsList.add("Error: type: "+ this.getTypeName(type)+" is not compatible with the operator >. At line: " +
+                        elem.getStart().getLine()+" column: "+elem.getStart().getCharPositionInLine());
+                resType=-1;
+            }
+            else{
+                resType=type;
+            }
+
         }
-        return null;
+
+        return resType;
+
     }
 
     @Override
     public Object visitCompMenorIg_Mky(MonkeyParser.CompMenorIg_MkyContext ctx) {
+        int size= ctx.additionExpression().size();
+        int resType=0;
+        int type;
 
         for(MonkeyParser.AdditionExpressionContext elem: ctx.additionExpression()){
-            visit(elem);
+            type= (Integer) visit(elem);
+            if (this.isValidOperator("<=",type)!=true){
+                this.errorsList.add("Error: type: "+ this.getTypeName(type)+" is not compatible with the operator <=. At line: " +
+                        elem.getStart().getLine()+" column: "+elem.getStart().getCharPositionInLine());
+                resType=-1;
+            }
+            else{
+                resType=type;
+            }
+
         }
-        return null;
+        return resType;
+
     }
 
     @Override
     public Object visitCompMayorIg_Mky(MonkeyParser.CompMayorIg_MkyContext ctx) {
+        int size= ctx.additionExpression().size();
+        int resType=0;
+        int type;
+
         for(MonkeyParser.AdditionExpressionContext elem: ctx.additionExpression()){
-            visit(elem);
+            type= (Integer) visit(elem);
+            if (this.isValidOperator(">=",type)!=true){
+                this.errorsList.add("Error: type: "+ this.getTypeName(type)+" is not compatible with the operator >=. At line: " +
+                        elem.getStart().getLine()+" column: "+elem.getStart().getCharPositionInLine());
+                resType=-1;
+            }
+            else{
+                resType=type;
+            }
+
         }
-        return null;
+        return resType;
     }
 
     @Override
     public Object visitCompIgComp_Mky(MonkeyParser.CompIgComp_MkyContext ctx) {
+        int size= ctx.additionExpression().size();
+        int resType=0;
+        int type;
+
         for(MonkeyParser.AdditionExpressionContext elem: ctx.additionExpression()){
-            visit(elem);
+            type= (Integer) visit(elem);
+            if (this.isValidOperator("==",type)!=true){
+                this.errorsList.add("Error: type: "+ this.getTypeName(type)+" is not compatible with the operator ==. At line: " +
+                        elem.getStart().getLine()+" column: "+elem.getStart().getCharPositionInLine());
+                resType=-1;
+            }
+            else{
+                resType=type;
+            }
+
+
         }
-        return null;
+        return resType;
     }
 
     @Override
     public Object visitAddExpr_Mky(MonkeyParser.AddExpr_MkyContext ctx) {
-        visit(ctx.multiplicationExpression());
-        visit(ctx.additionFactor());
-        return null;
+        int resType=0;
+        int type1= (Integer) visit(ctx.multiplicationExpression());
+        int type2= (Integer) visit(ctx.additionFactor());
+        if (this.checkTypesCompatibility(type1,type2)!=true){
+            this.errorsList.add("Error: Incompatible types. At line:"+ ctx.getStart().getLine()+
+                    " column: "+ ctx.getStart().getCharPositionInLine());
+            resType=-1;
+        }
+        else{
+            resType= type1;
+        }
+        return resType;
     }
 
     @Override
     public Object visitAddFactSum_Mky(MonkeyParser.AddFactSum_MkyContext ctx) {
+        int resType=0;
+        int type;
         for (MonkeyParser.MultiplicationExpressionContext elem: ctx.multiplicationExpression() ){
-            visit(elem);
+            type= (Integer) visit(elem);
+            if (this.isValidOperator("+",type)!=true) {
+                this.errorsList.add("Error: type: " + this.getTypeName(type) + " is not compatible with the operator +. At line: " +
+                        elem.getStart().getLine() + " column: " + elem.getStart().getCharPositionInLine());
+                resType = -1;
+            }
         }
-        return null;
+        return resType;
     }
 
     @Override
     public Object visitAddFactSub_Mky(MonkeyParser.AddFactSub_MkyContext ctx) {
+        int resType=0;
+        int type;
         for (MonkeyParser.MultiplicationExpressionContext elem: ctx.multiplicationExpression() ){
-            visit(elem);
+            type= (Integer) visit(elem);
+            if (this.isValidOperator("-",type)!=true){
+                this.errorsList.add("Error: type: "+ this.getTypeName(type)+" is not compatible with the operator -. At line: " +
+                        elem.getStart().getLine()+" column: "+elem.getStart().getCharPositionInLine());
+                resType=-1;
+            }
+
         }
-        return null;
+        return resType;
     }
 
     @Override
     public Object visitMultExpr_Mky(MonkeyParser.MultExpr_MkyContext ctx) {
-        visit(ctx.elementExpression());
-        visit(ctx.multiplicationFactor());
-        return null;
+        int resType=0;
+        int type1 = (Integer) visit(ctx.elementExpression());
+        int type2= (Integer) visit(ctx.multiplicationFactor());
+
+        if (this.checkTypesCompatibility(type1,type2)!=true){
+            this.errorsList.add("Error: Incompatible types. At line:"+ ctx.getStart().getLine()+
+                    " column: "+ ctx.getStart().getCharPositionInLine());
+            resType=-1;
+        }
+        else{
+            resType= type1;
+        }
+
+        return resType;
     }
 
     @Override
     public Object visitMultFactMul_Mky(MonkeyParser.MultFactMul_MkyContext ctx) {
+        int resType=0;
+        int type=-1;
         for(MonkeyParser.ElementExpressionContext elem: ctx.elementExpression()){
-            visit(elem);
+            type= (Integer) visit(elem);
+            if (this.isValidOperator("*",type)!=true){
+                this.errorsList.add("Error: type: "+ this.getTypeName(type)+" is not compatible with the operator -. At line: " +
+                        elem.getStart().getLine()+" column: "+elem.getStart().getCharPositionInLine());
+                resType=-1;
+            }
         }
-        return null;
+        return resType;
     }
 
     @Override
     public Object visitMultFactDiv_Mky(MonkeyParser.MultFactDiv_MkyContext ctx) {
+        int resType=0;
+        int type=-1;
         for(MonkeyParser.ElementExpressionContext elem: ctx.elementExpression()){
-            visit(elem);
+            type= (Integer) visit(elem);
+            if (this.isValidOperator("/",type)!=true){
+                this.errorsList.add("Error: type: "+ this.getTypeName(type)+" is not compatible with the operator -. At line: " +
+                        elem.getStart().getLine()+" column: "+elem.getStart().getCharPositionInLine());
+                resType=-1;
+            }
         }
-        return null;
+        return resType;
     }
 
     @Override
@@ -171,9 +373,18 @@ public class Checker extends MonkeyParserBaseVisitor {
 
     @Override
     public Object visitElemExprCallExpr_Mky(MonkeyParser.ElemExprCallExpr_MkyContext ctx) {
-        visit(ctx.primitiveExpression());
-        visit(ctx.callExpression());
-        return null;
+        int resType=0;
+        int type1= (Integer) visit(ctx.primitiveExpression());
+        int type2= (Integer) visit(ctx.callExpression());
+        if (this.checkTypesCompatibility(type1,type2)!=true){
+            this.errorsList.add("Error: Incompatible types. At line:"+ ctx.getStart().getLine()+
+                    " column: "+ ctx.getStart().getCharPositionInLine());
+            resType=-1;
+        }
+        else{
+            resType= type1;
+        }
+        return resType;
     }
 
     @Override
@@ -184,8 +395,14 @@ public class Checker extends MonkeyParserBaseVisitor {
 
     @Override
     public Object visitElemAccess_Mky(MonkeyParser.ElemAccess_MkyContext ctx) {
-        visit(ctx.expression());
-        return null;
+        int type= (Integer) visit(ctx.expression());
+        if (type!=0 && type!=1){  //solo se permiten neutros o enteros para indexar arreglos
+            this.errorsList.add("Error: Array or Hash literal must be indexed through an Int or neutral value " +
+                    ".At line: "+ctx.expression().getStart().getLine()+" column: "+ctx.expression().getStart().getLine());
+
+            type=-1; //error
+        }
+        return type;
     }
 
     @Override
@@ -196,29 +413,45 @@ public class Checker extends MonkeyParserBaseVisitor {
 
     @Override
     public Object visitPExprInt_Mky(MonkeyParser.PExprInt_MkyContext ctx) {
-        return 0; //tipo neutro
+        return 1; //tipo entero
 
     }
 
     @Override
-    public Object visitPExprStrMky(MonkeyParser.PExprStrMkyContext ctx) {
-        return 0;
+    public Object visitPExprStrMky(MonkeyParser.PExprStrMkyContext ctx)
+    {
+        return 2; //tipo string
     }
 
     @Override
     public Object visitPExprID_Mky(MonkeyParser.PExprID_MkyContext ctx) {
         //buscar en la tabla y retornar el tipo
-        return 0;
+        int resType= -1;
+        IdentifierElement elem = this.identifierTable.buscar(ctx.ID().getText());
+        FuncTableElement elem2= this.functionsTable.buscar(ctx.ID().getText());
+        if (elem==null && elem2==null){
+            this.errorsList.add("Error: Variable "+ ctx.ID().getText()+ "have not been declared. At line: "+
+            ctx.ID().getSymbol().getLine()+" Column: "+ ctx.ID().getSymbol().getLine());
+            return -1;
+        }
+        if (elem!= null) {
+            resType= elem.getType();
+        }
+        if (elem2!=null){
+            resType= elem2.getReturnType();
+        }
+
+        return resType;
     }
 
     @Override
     public Object visitPExprTRUE_Mky(MonkeyParser.PExprTRUE_MkyContext ctx) {
-        return 0;
+        return 3; //tipo boolean
     }
 
     @Override
     public Object visitPExprFALSE_Mky(MonkeyParser.PExprFALSE_MkyContext ctx) {
-        return 0;
+        return 3;
     }
 
     @Override
@@ -297,24 +530,51 @@ public class Checker extends MonkeyParserBaseVisitor {
 
     @Override
     public Object visitFuncLit_Mky(MonkeyParser.FuncLit_MkyContext ctx) {
+        int res=-1;
+        this.identifierTable.OpenScope();
+        this.functionsTable.openScope();
+        this.globalCounterReturn=0; // reestablecer el contador
         visit(ctx.functionParameters());
+        this.returnInFunction=true; //se permite dentro del blockstatement la sentencia return
         visit(ctx.blockStatement());
-        return null;
+        this.returnInFunction=false;  //no se permite dentro de la sentencia el estatuto return
+
+        this.identifierTable.closeScope();
+        this.functionsTable.closeScope();
+        if (this.globalCounterReturn>0){
+
+            return 0; //tipo neutro para la función
+        }
+        else{
+            res=-1; //función sin tipo
+        }
+        return res;
     }
 
     @Override
     public Object visitFuncParams_Mky(MonkeyParser.FuncParams_MkyContext ctx) {
         //habría que guardar esta id
         //ctx.ID()
+        this.globalCounterParams=0;
+        this.identifierTable.insertar(ctx.ID().getSymbol(),0,ctx);
+        this.globalCounterParams++;
         visit(ctx.moreIdentifiers());
         return null;
     }
 
     @Override
     public Object visitMoreIdentifiers_Mky(MonkeyParser.MoreIdentifiers_MkyContext ctx) {
-        for (int i = 0; i < ctx.ID().size(); i++){
-            // meter IDs en la tabla
-            // ctx.ID(i);
+        int size=ctx.ID().size();
+        IdentifierElement elem;
+        for (int i = 0; i <size; i++){
+            elem= this.identifierTable.insertar(ctx.ID().get(1).getSymbol(),0,ctx);
+            if (elem!=null){
+                this.globalCounterParams++;
+            }
+            else{
+                this.errorsList.add("Error: Two or more params have the same name. At line: "+ctx.ID(1).getSymbol().getLine()+
+                        " column: "+ ctx.ID(i).getSymbol().getCharPositionInLine());
+            }
         }
         return null;
     }

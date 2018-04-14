@@ -2,6 +2,7 @@ package clases.checker;
 
 import generated.MonkeyParser;
 import generated.MonkeyParserBaseVisitor;
+import org.antlr.runtime.Token;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -9,11 +10,18 @@ import java.util.Optional;
 public class Checker extends MonkeyParserBaseVisitor {
 
     private FunctionsTable functionsTable;
+<<<<<<< HEAD
     private IdentifiersTable identifierTable;
     private int globalCounterReturn=0;
     private int globalCounterParams=0;
     private boolean returnInFunction; //para controlar si la sentencia return se encuentra dentro de una función
 
+=======
+    private IdentifiersTable identifiersTable;
+    private int globalCounterReturn = 0;
+    private int globalCounterFunctions = 0;
+    private int globalCounterParams = 0;
+>>>>>>> c3c6dd481367a63d997eeba99f95b724af8bfa45
 
     /**
      * tipo neutro se va a representar con un 0, -1 representa que no existe tipo para el identificador
@@ -118,13 +126,30 @@ public class Checker extends MonkeyParserBaseVisitor {
 
     @Override
     public Object visitLt_asign_Mky(MonkeyParser.Lt_asign_MkyContext ctx) {
-        //ctx.ID().getText()
-        visit(ctx.expression());
+        /*
+        * Check if there is a function declaration in a variable and add it to FunctionsTable
+        * and increment the functions counter
+        * */
+        int type = (Integer) visit(ctx.expression());
+
+        if (ctx.toStringTree().contains("fn(") | ctx.toStringTree().contains("fn (")){
+            FuncTableElement function = functionsTable.insert(ctx.ID().getSymbol(),globalCounterParams,type,ctx);
+            if(function != null)
+                globalCounterFunctions++;
+            else
+                System.out.println("Error: The function " + ctx.ID().getText() + "it's already declared.");
+        }
+        else{
+            IdentifierElement ID = IdentifiersTable.insert(ctx.ID().getSymbol(),type,ctx);
+            if (ID == null)
+                System.out.println("Error: The variable " + ctx.ID().getText() + "it's already declared.");
+        }
         return null;
     }
 
     @Override
     public Object visitReturnSt_Mky(MonkeyParser.ReturnSt_MkyContext ctx) {
+<<<<<<< HEAD
         if (this.returnInFunction==false){
             this.errorsList.add("Error a return statement has to de inside a function. At line: " +
                     ctx.getStart().getLine()+" columna: "+ctx.getStart().getCharPositionInLine());
@@ -133,6 +158,11 @@ public class Checker extends MonkeyParserBaseVisitor {
 
         int type= (Integer) visit(ctx.expression());
         return type;
+=======
+        globalCounterReturn++;
+        visit(ctx.expression());
+        return null;
+>>>>>>> c3c6dd481367a63d997eeba99f95b724af8bfa45
     }
 
     @Override
@@ -182,11 +212,14 @@ public class Checker extends MonkeyParserBaseVisitor {
 
     @Override
     public Object visitCompMayor_Mky(MonkeyParser.CompMayor_MkyContext ctx) {
+<<<<<<< HEAD
 
         int size= ctx.additionExpression().size();
         int resType=0;
         int type;
 
+=======
+>>>>>>> c3c6dd481367a63d997eeba99f95b724af8bfa45
         for(MonkeyParser.AdditionExpressionContext elem: ctx.additionExpression()){
             type= (Integer) visit(elem);
             if (this.isValidOperator(">",type)!=true){
@@ -206,10 +239,13 @@ public class Checker extends MonkeyParserBaseVisitor {
 
     @Override
     public Object visitCompMenorIg_Mky(MonkeyParser.CompMenorIg_MkyContext ctx) {
+<<<<<<< HEAD
         int size= ctx.additionExpression().size();
         int resType=0;
         int type;
 
+=======
+>>>>>>> c3c6dd481367a63d997eeba99f95b724af8bfa45
         for(MonkeyParser.AdditionExpressionContext elem: ctx.additionExpression()){
             type= (Integer) visit(elem);
             if (this.isValidOperator("<=",type)!=true){

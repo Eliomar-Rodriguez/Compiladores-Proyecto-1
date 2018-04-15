@@ -11,6 +11,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.*;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
@@ -97,15 +98,35 @@ public class TextEditorController extends WindowAdapter implements ActionListene
                         " en el proceso","Alerta de sistema", JOptionPane.ERROR_MESSAGE);
     }
 
+    public void printSemanticErros(ArrayList<String> errors,JTextArea errorArea){
+        errorArea.setForeground(RED);
+        int size=errors.size();
+        for (int i = 0; i < size; i++) {
+            this.editor.errorsArea.append(errors.get(i));
+            this.editor.errorsArea.append("\n");
+        }
+        JOptionPane.showMessageDialog(editor.getRootPane(),"La compilación fue abortada debido a un que ocurrió un error" +
+                " en el proceso de verificación de semántica","Alerta de sistema", JOptionPane.ERROR_MESSAGE);
+    }
+
     public void execute(JTextArea errorArea){
         this.editor.errorsArea.setText("");
         this.editor.executionArea.setText("");
         this.executeState = false;
         try {
             this.model.AnalizeAndExecute(this.currentFile.getPath());
-            JOptionPane.showMessageDialog(this.editor.getRootPane(), "Compilación exitosa", "Done", JOptionPane.INFORMATION_MESSAGE);
-            this.executeState=true;
-            this.editor.executionArea.setText("Compilación exitosa");
+
+            //check semantic errros
+            if (this.model.getChecker().getErrorsList().size()>0){
+                this.printSemanticErros(this.model.getChecker().getErrorsList(),this.editor.errorsArea);
+
+            }
+            else{
+                this.executeState=true;
+                this.editor.executionArea.setText("Compilación exitosa");
+                JOptionPane.showMessageDialog(this.editor.getRootPane(), "Compilación exitosa", "Done", JOptionPane.INFORMATION_MESSAGE);
+            }
+
         }
         catch (IOException exception){
             this.showException(errorArea,exception);
@@ -326,7 +347,10 @@ public class TextEditorController extends WindowAdapter implements ActionListene
             }
         }
         catch (Exception e){
+
             System.out.println("ERROR: " + e);
+            System.out.println(e.getStackTrace());
+
         }
     }
 

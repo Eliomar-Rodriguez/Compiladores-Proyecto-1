@@ -8,13 +8,23 @@ public class IdentifierElement{
     private int level;
     private Token token;
     private int type;
+    private int arrayOrHashLiteral;
     private ParserRuleContext declaration;
 
-    public IdentifierElement(ParserRuleContext d, int l, Token t, int ty){
+    public IdentifierElement(ParserRuleContext d, int l, Token t, int ty,int A_oHL){
         this.declaration = d;
         this.level = l;
         this.token = t;
         this.type = ty;
+        this.arrayOrHashLiteral= A_oHL; //-1 = no es array ni hash literal, 4= array 5= literal
+    }
+
+    public int getArrayOrHashLiteral() {
+        return arrayOrHashLiteral;
+    }
+
+    public void setArrayOrHashLiteral(int arrayOrHashLiteral) {
+        this.arrayOrHashLiteral = arrayOrHashLiteral;
     }
 
     public int getLevel() {

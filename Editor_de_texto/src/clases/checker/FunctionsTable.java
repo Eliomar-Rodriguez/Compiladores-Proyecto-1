@@ -34,7 +34,6 @@ public class FunctionsTable {
         int j = 0;
         while (j < this.table.size() && this.table.get(j).getLevel() == this.currentLevel) {
             if (this.table.get(j).getToken().getText().equals(token.getText())) {
-                System.out.println("El identificador \"" + token.getText() + "\" ya ha sido declarado. Line " + token.getLine() + ":" + token.getCharPositionInLine());
                 return null;
             }
             j++;
@@ -49,6 +48,9 @@ public class FunctionsTable {
     }
 
     public void closeScope(){
+        if (this.table.size()==0){
+            return;
+        }
         FuncTableElement element = this.table.get(0);
         while (element != null && element.getLevel() == this.currentLevel){
             table.pop();
@@ -68,12 +70,29 @@ public class FunctionsTable {
     public FuncTableElement buscar(String nombre)
     {
         FuncTableElement temp=null;
-        for(FuncTableElement elem : this.table)
-            if (elem.getToken().getText().equals(nombre)) {
-                temp = elem;
-                break;
+        int j=0;
+        while (j < this.table.size() && this.table.get(j).getLevel() == this.currentLevel) {
+            if (this.table.get(j).getToken().getText().equals(nombre)){
+                temp= this.table.get(j);
             }
+        }
         return temp;
+    }
+    public void imprimir() {
+        System.out.println("****** ESTADO DE TABLA DE SÍMBOLOS PARA FUNCIONES******");
+        if (!this.table.isEmpty()) {
+            for (FuncTableElement i : this.table) {
+                String nivel = "";
+                for (int j = 0; j < i.getLevel(); j++) {
+                    nivel += "\t";
+                }
+                System.out.println(nivel + "Nombre: " + i.getToken().getText() + " - Nivel: " + i.getLevel()+ "params: " +
+                        i.getParamsNumber()+ " return type: "+i.getReturnType());
+            }
+            System.out.println("------------------------------------------");
+        }
+        else
+            System.out.println("Tabla vacía");
     }
 
 }

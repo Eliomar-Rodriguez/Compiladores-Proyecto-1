@@ -1,29 +1,13 @@
-let age = 1;
-let name = "Monke!!y";
-let result = 10 * (20 / 2); //comment example !$
-//tytyg
-/*fdfdf 
-sds
-s
-d
-sd*/
-let myArray = [1, 2, 3, 4, 5];
-let thorsten = {"nam#$e": "Thorsten", "age": 28};
-let lista={"nombre":"marco","carros":[{"marca":"toyota"},{"marca":"suzuki"}] }
-myArray[0] // => 1
-let l= {"hola":{"sd":23},"coma":{"punto":"punto grande"}};
-thorsten["name"] // => /*"Thorsten"
-let add = fn(a, b) { return a + b; };
-
 let fibonacci = fn(x) {
 if (x == 0) {
-0
-} else {
-if (x == 1) {
-1
-} else {
-fibonacci(x - 1) + fibonacci(x - 2);
-}
-}
+  let e=0;
+} 
 };
-let y =34;
+
+let fibonacc = fn(r) {
+if (r > true) {
+  let a=2;
+} 
+};
+
+return 0;

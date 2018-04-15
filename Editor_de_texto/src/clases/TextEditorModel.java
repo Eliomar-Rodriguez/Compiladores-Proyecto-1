@@ -26,7 +26,15 @@ public class TextEditorModel {
     public TextEditorModel(){
 
         this.handleError =new myAntlrErrorHandle();
-        this.checker= new Checker();
+
+    }
+
+    public Checker getChecker() {
+        return checker;
+    }
+
+    public void setChecker(Checker checker) {
+        this.checker = checker;
     }
 
     public void setListeners(){
@@ -64,7 +72,7 @@ public class TextEditorModel {
 
         //parse program
          this.tree= this.parser.program();
-
+         this.checker= new Checker();
          //semantic checker
          this.checker.visit(this.tree);
     }

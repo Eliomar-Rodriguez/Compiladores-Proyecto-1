@@ -22,9 +22,9 @@ public class IdentifiersTable{
         this.actLevel = actLevel;
     }
 
-    public IdentifierElement insertar(Token tkn, int type, ParserRuleContext declaracion)
+    public IdentifierElement insertar(Token tkn, int type,int  arrayOrHash ,ParserRuleContext declaracion)
     {
-        IdentifierElement element = new IdentifierElement(declaracion,actLevel,tkn,type);
+        IdentifierElement element = new IdentifierElement(declaracion,actLevel,tkn,type,arrayOrHash);
         int j = 0;
         while (j < this.IDs_table.size() && this.IDs_table.get(j).getLevel() == actLevel) {
             if (this.IDs_table.get(j).getToken().getText().equals(tkn.getText())) {
@@ -42,6 +42,9 @@ public class IdentifiersTable{
     }
 
     public void closeScope(){
+        if (this.IDs_table.size()==0){
+            return;
+        }
         IdentifierElement element = this.IDs_table.get(0);
         while (element != null && element.getLevel() == actLevel){
             IDs_table.pop();
@@ -67,7 +70,7 @@ public class IdentifiersTable{
     }
 
     public void imprimir() {
-        System.out.println("****** ESTADO DE TABLA DE SÍMBOLOS ******");
+        System.out.println("****** ESTADO DE TABLA DE SÍMBOLOS PARA VARIABLES NORMALES ******");
         if (!this.IDs_table.isEmpty()) {
             for (IdentifierElement i : this.IDs_table) {
                 String nivel = "";

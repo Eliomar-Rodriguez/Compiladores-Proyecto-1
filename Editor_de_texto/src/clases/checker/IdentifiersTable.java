@@ -2,7 +2,6 @@ package clases.checker;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
-
 import java.util.LinkedList;
 
 public class IdentifiersTable{
@@ -14,13 +13,21 @@ public class IdentifiersTable{
         this.IDs_table = new LinkedList<IdentifierElement>();
     }
 
-    public static IdentifierElement insert(Token tkn, int type, ParserRuleContext declaracion)
+
+    public int getActLevel() {
+        return actLevel;
+    }
+
+    public void setActLevel(int actLevel) {
+        this.actLevel = actLevel;
+    }
+
+    public IdentifierElement insertar(Token tkn, int type,int  arrayOrHash ,ParserRuleContext declaracion)
     {
-        IdentifierElement element = new IdentifierElement(declaracion,actLevel,tkn,type);
+        IdentifierElement element = new IdentifierElement(declaracion,actLevel,tkn,type,arrayOrHash);
         int j = 0;
-        while (j < IDs_table.size() && IDs_table.get(j).getLevel() == actLevel) {
-            if (IDs_table.get(j).getToken().getText().equals(tkn.getText())) {
-                System.out.println("El identificador \"" + tkn.getText() + "\" ya ha sido declarado!!!");
+        while (j < this.IDs_table.size() && this.IDs_table.get(j).getLevel() == actLevel) {
+            if (this.IDs_table.get(j).getToken().getText().equals(tkn.getText())) {
                 return null;
             }
             j++;
@@ -34,6 +41,9 @@ public class IdentifiersTable{
     }
 
     public void closeScope(){
+        if (this.IDs_table.size()==0){
+            return;
+        }
         IdentifierElement element = this.IDs_table.get(0);
         while (element != null && element.getLevel() == actLevel){
             IDs_table.pop();
@@ -59,14 +69,14 @@ public class IdentifiersTable{
     }
 
     public void imprimir() {
-        System.out.println("****** ESTADO DE TABLA DE SÍMBOLOS ******");
+        System.out.println("****** ESTADO DE TABLA DE SÍMBOLOS PARA VARIABLES NORMALES ******");
         if (!this.IDs_table.isEmpty()) {
             for (IdentifierElement i : this.IDs_table) {
                 String nivel = "";
                 for (int j = 0; j < i.getLevel(); j++) {
                     nivel += "\t";
                 }
-                System.out.println(nivel + "Nombre: " + i.getToken().getText() + " - Nivel: " + i.getLevel());
+                System.out.println(nivel + "Nombre: " + i.getToken().getText() + " - Nivel: " + i.getLevel()+ "-array or hash: "+i.getArrayOrHashLiteral());
             }
             System.out.println("------------------------------------------");
         }

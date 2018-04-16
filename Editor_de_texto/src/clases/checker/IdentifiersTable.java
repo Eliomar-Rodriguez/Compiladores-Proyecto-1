@@ -30,7 +30,6 @@ public class IdentifiersTable{
             if (this.IDs_table.get(j).getToken().getText().equals(tkn.getText())) {
                 return null;
             }
-
             j++;
         }
         IDs_table.push(element); //deben ser una tabla estilo pila
@@ -77,7 +76,7 @@ public class IdentifiersTable{
                 for (int j = 0; j < i.getLevel(); j++) {
                     nivel += "\t";
                 }
-                System.out.println(nivel + "Nombre: " + i.getToken().getText() + " - Nivel: " + i.getLevel());
+                System.out.println(nivel + "Nombre: " + i.getToken().getText() + " - Nivel: " + i.getLevel()+ "-array or hash: "+i.getArrayOrHashLiteral());
             }
             System.out.println("------------------------------------------");
         }

@@ -75,6 +75,7 @@ public class FunctionsTable {
             if (this.table.get(j).getToken().getText().equals(nombre)){
                 temp= this.table.get(j);
             }
+            j++;
         }
         return temp;
     }

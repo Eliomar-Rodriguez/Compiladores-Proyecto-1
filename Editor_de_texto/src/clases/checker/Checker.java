@@ -432,9 +432,18 @@ public class Checker extends MonkeyParserBaseVisitor {
 
     @Override
     public Object visitElemExprElemAccess_Mky(MonkeyParser.ElemExprElemAccess_MkyContext ctx) {
-        visit(ctx.primitiveExpression());
-        visit(ctx.elementAccess());
-        return null;
+        int type1= (Integer) visit(ctx.primitiveExpression());
+        int type2= (Integer) visit(ctx.elementAccess());
+
+        if (type1 !=0){
+            this.errorsList.add("Error: Can't index a value that is not an array or hash literal. At line:"+ ctx.getStart().getLine()+
+                    " column: "+ ctx.getStart().getCharPositionInLine());
+            return -1;
+        }
+        if (type2==-1){
+            return -1;
+        }
+        return 0; //tipo válido
     }
 
     //por el momento va a funcionar solo con funciones normales (no con la del arreglo)
@@ -442,6 +451,7 @@ public class Checker extends MonkeyParserBaseVisitor {
     public Object visitElemExprCallExpr_Mky(MonkeyParser.ElemExprCallExpr_MkyContext ctx) {
         this.globalCounterParams=0;
         int resType=0;
+        int type1= (Integer) visit(ctx.primitiveExpression());
 
         FuncTableElement elem = this.functionsTable.buscar(ctx.primitiveExpression().getText());
         if (elem == null) {
@@ -451,13 +461,22 @@ public class Checker extends MonkeyParserBaseVisitor {
         }
         int type2= (Integer) visit(ctx.callExpression());
 
+        if (elem.getReturnType()==-1){
+            this.errorsList.add("Error: Function "+ ctx.primitiveExpression().getText() +
+                    " doesn't return nothing, it could generate a type error .At line:"+
+                    ctx.primitiveExpression().getStart().getLine()+
+                    " column: "+ ctx.primitiveExpression().getStart().getCharPositionInLine());
+        }
+
         if (type2==-1){
-            this.errorsList.add("Error: In types of functions parameters.At line:"+ ctx.callExpression().getStart().getLine()+
+            this.errorsList.add("Error: with types or functions parameters.At line:"+ ctx.callExpression().getStart().getLine()+
                     " column: "+ ctx.callExpression().getStart().getCharPositionInLine());
             resType= -1;
         }
         else if (elem.getParamsNumber()!=this.globalCounterParams){
-            this.errorsList.add("Error: The numbers of sent params  is not the same number that the function have to receive. At line: "
+            this.errorsList.add("Error: The numbers of sent params  is not the same number that the function " +
+                    ctx.primitiveExpression().getText()+
+                    " have to receive. At line: "
                     + ctx.callExpression().getStart().getLine()+
                     " column: "+ ctx.callExpression().getStart().getCharPositionInLine());
             resType= -1;
@@ -489,8 +508,7 @@ public class Checker extends MonkeyParserBaseVisitor {
 
     @Override
     public Object visitCallExpr_Mky(MonkeyParser.CallExpr_MkyContext ctx) {
-        visit(ctx.expressionList());
-        return null;
+        return (Integer) visit(ctx.expressionList());
     }
 
     @Override
@@ -516,7 +534,11 @@ public class Checker extends MonkeyParserBaseVisitor {
             ctx.ID().getSymbol().getLine()+" Column: "+ ctx.ID().getSymbol().getLine());
             return -1;
         }
+
         if (elem!= null) {
+            if (elem.getArrayOrHashLiteral()!=-1){
+                resType=elem.getArrayOrHashLiteral();
+            }
             resType= elem.getType();
         }
         if (elem2!=null){
@@ -544,8 +566,8 @@ public class Checker extends MonkeyParserBaseVisitor {
 
     @Override
     public Object visitPExprArrayLit_Mky(MonkeyParser.PExprArrayLit_MkyContext ctx) {
-        visit(ctx.arrayLiteral());
-        return null;
+        return (Integer) visit(ctx.arrayLiteral());
+
     }
 
     @Override
@@ -557,7 +579,7 @@ public class Checker extends MonkeyParserBaseVisitor {
 
     @Override
     public Object visitPExprFuncDecl_Mky(MonkeyParser.PExprFuncDecl_MkyContext ctx) {
-        return visit(ctx.functionLiteral());
+        return (Integer) visit(ctx.functionLiteral());
 
     }
 
@@ -604,10 +626,16 @@ public class Checker extends MonkeyParserBaseVisitor {
         return super.visitArrayFuncPush_Mky(ctx);
     }
 
+
+    //array declaration
     @Override
     public Object visitArrayLit_Mky(MonkeyParser.ArrayLit_MkyContext ctx) {
-        visit(ctx.expressionList());
-        return null;
+        int res= (Integer)visit(ctx.expressionList());
+        if (res==0){
+            return 4; //type array
+        }
+        return res;
+
     }
 
     @Override
@@ -649,13 +677,14 @@ public class Checker extends MonkeyParserBaseVisitor {
         int size=ctx.ID().size();
         IdentifierElement elem;
         for (int i = 0; i <size; i++){
-            elem= this.identifierTable.insertar(ctx.ID().get(1).getSymbol(),0,-1,ctx);
+            elem= this.identifierTable.insertar(ctx.ID().get(i).getSymbol(),0,-1,ctx);
             if (elem!=null){
                 this.globalCounterParams++;
             }
             else{
-                this.errorsList.add("Error: Two or more params have the same name. At line: "+ctx.ID(1).getSymbol().getLine()+
+                this.errorsList.add("Error: Two or more params have the same name. At line: "+ctx.ID(i).getSymbol().getLine()+
                         " column: "+ ctx.ID(i).getSymbol().getCharPositionInLine());
+                return null;
             }
         }
 
@@ -685,27 +714,41 @@ public class Checker extends MonkeyParserBaseVisitor {
         return null;
     }
 
+
     @Override
     public Object visitExprList_Mky(MonkeyParser.ExprList_MkyContext ctx) {
-        visit(ctx.expression());
-        visit(ctx.moreExpressions());
-        return null;
+        int type1= (Integer) visit(ctx.expression());
+        this.globalCounterParams++;
+        int type2=0;
+        if (ctx.moreExpressions().getChildCount()>0){
+            type2=(Integer) visit(ctx.moreExpressions());
+        }
+        if (type1==-1 || type2==-1){
+            return -1;
+        }
+
+        return 0; //significa que no hubo errores
     }
 
     @Override
     public Object visitExprListEmpty_Mky(MonkeyParser.ExprListEmpty_MkyContext ctx) {
         /*
-        * poner el retorno
+        * poner el retorno, significa valor válido
         * */
-        return null;
+        return 0;
     }
 
     @Override
     public Object visitMoreExpr_Mky(MonkeyParser.MoreExpr_MkyContext ctx) {
+        int type=0; //tipo valido
         for(MonkeyParser.ExpressionContext exp : ctx.expression()){
-            visit(exp);
+            type= (Integer) visit(exp);
+            this.globalCounterParams++;
+            if (type==-1){
+                return -1;
+            }
         }
-        return null;
+        return type;
     }
 
     @Override

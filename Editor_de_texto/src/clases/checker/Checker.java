@@ -622,8 +622,9 @@ public class Checker extends MonkeyParserBaseVisitor {
         }
 
         // si no hubo problema en las expresiones que representan los parametros que las funciones aceptan
-        //push podría ser la excepción
-        if (res==0 || res==4 || res==5){
+        //push podría ser la excepción, el len también admite strings
+
+        if ((res==0 || res==4 || res==5) || (res==2  && elem.getToken().getText().equals("len"))){
             res= elem.getReturnType();
         }
         else{
@@ -757,11 +758,11 @@ public class Checker extends MonkeyParserBaseVisitor {
     public Object visitHashLit_Mky(MonkeyParser.HashLit_MkyContext ctx) {
         int type1 = (Integer) visit(ctx.hashContent()), result;
         int type2 = (Integer) visit(ctx.moreHashContent());
-        /*if(type1 == -1 | type2 == -1)
-            result = -1;
-        else
-            result = 0;*/
-        return -2;
+        if (type1==-1 || type2==-1){
+
+            return -1;
+        }
+        return 5;
     }
 
     @Override
@@ -779,8 +780,8 @@ public class Checker extends MonkeyParserBaseVisitor {
             }
         }
         else{
-            this.errorsList.add("Error: The key must to be String. At line: "+ctx.expression(1).getStart().getLine()+
-                    " column: "+ ctx.expression(1).getStart().getCharPositionInLine());
+            this.errorsList.add("Error: The key must to be String. At line: "+ctx.expression(0).getStart().getLine()+
+                    " column: "+ ctx.expression(0).getStart().getCharPositionInLine());
             return -1;
         }
     }
@@ -798,7 +799,12 @@ public class Checker extends MonkeyParserBaseVisitor {
     @Override
     public Object visitExprList_Mky(MonkeyParser.ExprList_MkyContext ctx) {
 
+
+
+        this.globalCounterParams++;
+        int temp=this.globalCounterParams; //respaldo del valor que tenían los parametros antes de visitar expresion
         int type1= (Integer) visit(ctx.expression());
+        this.globalCounterParams=temp;
 
         if (isInLet){ // si esta en un let
             if(ctx.toStringTree().contains("fn(") | ctx.toStringTree().contains("fn (")){
@@ -807,10 +813,9 @@ public class Checker extends MonkeyParserBaseVisitor {
             }
         }
 
-        this.globalCounterParams++;
-        int temp=this.globalCounterParams; //respaldo del valor que tenían los parametros antes de visitar expresion
-        type1= (Integer) visit(ctx.expression());
-        this.globalCounterParams=temp;
+
+
+
 
         int type2=0;
         if (ctx.moreExpressions().getChildCount()>0){

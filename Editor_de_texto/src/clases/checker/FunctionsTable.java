@@ -10,12 +10,15 @@ public class FunctionsTable {
     private LinkedList<FuncTableElement> table;
     private int currentLevel;
 
+
     /************** 0 representa tipo neutro **********/
 
     public FunctionsTable()
     {
+
         this.currentLevel = -1;
         this.table = new LinkedList<FuncTableElement>();
+
         this.setDefaultFunctions();
     }
 
@@ -24,12 +27,15 @@ public class FunctionsTable {
         this.table.push(new FuncTableElement(0, new CommonToken(0,"first"),1,0,null));
         this.table.push(new FuncTableElement(0, new CommonToken(0,"last"),1,0,null));
         this.table.push(new FuncTableElement(0, new CommonToken(0,"rest"),1,0,null));
-        this.table.push(new FuncTableElement(0, new CommonToken(0,"push"),1,0,null));
+        this.table.push(new FuncTableElement(0, new CommonToken(0,"push"),2,0,null));
         this.table.push(new FuncTableElement(0, new CommonToken(0,"puts"),1,0,null));
     }
 
+
+
     public FuncTableElement insert(Token token, int paramsNumber, int returnType, ParserRuleContext declaracion)
     {
+
         FuncTableElement elem = new FuncTableElement(this.currentLevel,token,paramsNumber,returnType,declaracion);
         int j = 0;
         while (j < this.table.size() && this.table.get(j).getLevel() == this.currentLevel) {

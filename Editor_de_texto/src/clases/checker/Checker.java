@@ -13,12 +13,14 @@ public class Checker extends MonkeyParserBaseVisitor {
 
     private FunctionsTable functionsTable;
     private IdentifiersTable identifierTable;
+    private FnSpecialTable fnSpecialTable;
     private int globalCounterFunctions = 0;
-    private int globalCounterReturn=0;
-    private int globalCounterParams=0;
+    private int globalCounterReturn = 0;
+    private int globalCounterParams = 0;
+    private int globalCounterIdentifiers = 0;
     private boolean returnInFunction; //para controlar si la sentencia return se encuentra dentro de una función
-
-
+    private String arrayName;
+    private boolean isInLet = false;
 
     /**
      * tipo neutro se va a representar con un 0, -1 representa que no existe tipo para el identificador
@@ -60,9 +62,7 @@ public class Checker extends MonkeyParserBaseVisitor {
         }
         else if(code==1){
             return "Integer";
-
         }
-
         else if(code==2){
             return "String";
         }
@@ -115,7 +115,6 @@ public class Checker extends MonkeyParserBaseVisitor {
             }
         }
         return res;
-
     }
 
     public boolean isArrayOrHash(int type){
@@ -125,7 +124,6 @@ public class Checker extends MonkeyParserBaseVisitor {
         else{
             return false;
         }
-
     }
 
     @Override
@@ -166,8 +164,11 @@ public class Checker extends MonkeyParserBaseVisitor {
         * Check if there is a function declaration in a variable and add it to FunctionsTable
         * and increment the functions counter
         * */
-
+        this.arrayName = ctx.ID().getText();
+        this.isInLet = true;
         int type = (Integer) visit(ctx.expression());
+        this.isInLet = false;
+
         //si tiene la cadena fn y la expresion no es un array literal, entonces es una variable normal
         if ( type !=4 && (ctx.toStringTree().contains("fn(") || ctx.toStringTree().contains("fn (")) ){
             // check if this exist in the identifiers table
@@ -177,6 +178,9 @@ public class Checker extends MonkeyParserBaseVisitor {
                         ctx.getStart().getLine() + " column: " + ctx.getStart().getCharPositionInLine());
                 return -1;
             }
+
+
+
             FuncTableElement function = functionsTable.insert(ctx.ID().getSymbol(),globalCounterParams,type,ctx);
             if(function != null) {
                 globalCounterFunctions++;
@@ -190,7 +194,7 @@ public class Checker extends MonkeyParserBaseVisitor {
         }
         else{
             //error in the expresion
-            if (type==-1){
+            if (type==-1){ // ir a fnSpecialTable a eliminar todas las funciones asociadas a la variable arrayName (global)
                 return -1;
             }
 
@@ -203,13 +207,13 @@ public class Checker extends MonkeyParserBaseVisitor {
             if (this.isArrayOrHash(type)!=true){ //check if type represent an array
                 type=-1;
             }
-
             //neutro type
             this.identifierTable.insertar(ctx.ID().getSymbol(),0,type,ctx);
 
         }
 
         return -2;
+
     }
 
     @Override
@@ -231,7 +235,6 @@ public class Checker extends MonkeyParserBaseVisitor {
     @Override
     public Object visitExprSt_Mky(MonkeyParser.ExprSt_MkyContext ctx) {
         return visit(ctx.expression());
-
     }
 
     @Override
@@ -249,8 +252,6 @@ public class Checker extends MonkeyParserBaseVisitor {
             }
             type2= (Integer) visit(ctx.comparison());
         }
-
-
         if (this.checkTypesCompatibility(type1,type2)!=true){
             this.errorsList.add("Error: type error "+this.getTypeName(type1)+" is not compatible with type "+
                     this.getTypeName(type2)+".At line: " +
@@ -261,6 +262,7 @@ public class Checker extends MonkeyParserBaseVisitor {
             resType= type1;
         }
         return resType;
+
     }
 
     public int checkRestrictions(int type1, int type2, String operator,ParserRuleContext ctx){
@@ -297,9 +299,7 @@ public class Checker extends MonkeyParserBaseVisitor {
             else{
                 return -1;
             }
-
         }
-
         return type1;
     }
 
@@ -546,7 +546,6 @@ public class Checker extends MonkeyParserBaseVisitor {
     @Override
     public Object visitPExprInt_Mky(MonkeyParser.PExprInt_MkyContext ctx) {
         return 1; //tipo entero
-
     }
 
     @Override
@@ -558,7 +557,7 @@ public class Checker extends MonkeyParserBaseVisitor {
     @Override
     public Object visitPExprID_Mky(MonkeyParser.PExprID_MkyContext ctx) {
         //buscar en la tabla y retornar el tipo
-        int resType= -1;
+        int resType = -1;
         IdentifierElement elem = this.identifierTable.buscar(ctx.ID().getText());
         FuncTableElement elem2= this.functionsTable.buscar(ctx.ID().getText());
         if (elem==null && elem2==null){
@@ -592,15 +591,15 @@ public class Checker extends MonkeyParserBaseVisitor {
 
     @Override
     public Object visitPExprCallExpr_Mky(MonkeyParser.PExprCallExpr_MkyContext ctx) {
+
         //si se llama a la función ddentro del arreglo aqui cae; o entra
-         return visit(ctx.expression());
+        return (Integer) visit(ctx.expression());
 
     }
 
     @Override
     public Object visitPExprArrayLit_Mky(MonkeyParser.PExprArrayLit_MkyContext ctx) {
         return (Integer) visit(ctx.arrayLiteral());
-
     }
 
     /**********************************
@@ -652,8 +651,7 @@ public class Checker extends MonkeyParserBaseVisitor {
 
     @Override
     public Object visitPExprHashLit_Mky(MonkeyParser.PExprHashLit_MkyContext ctx) {
-        visit(ctx.hashLiteral());
-        return null;
+        return visit(ctx.hashLiteral());
     }
 
     @Override
@@ -695,12 +693,13 @@ public class Checker extends MonkeyParserBaseVisitor {
     //array declaration
     @Override
     public Object visitArrayLit_Mky(MonkeyParser.ArrayLit_MkyContext ctx) {
+
         int res= (Integer)visit(ctx.expressionList());
         if (res!=-1){
             return 4; //type array
         }
-        return res;
 
+        return res;
     }
 
     @Override
@@ -717,11 +716,10 @@ public class Checker extends MonkeyParserBaseVisitor {
         this.identifierTable.closeScope();
         this.functionsTable.closeScope();
         if (this.globalCounterReturn>0){
-
-            return 0; //tipo neutro para la función
+            res = 0; //tipo neutro para la función
         }
         else{
-            res=-1; //función sin tipo
+            res = -1; //función sin tipo
         }
         return res;
     }
@@ -752,40 +750,66 @@ public class Checker extends MonkeyParserBaseVisitor {
                 return null;
             }
         }
-
         return null;
     }
 
     @Override
     public Object visitHashLit_Mky(MonkeyParser.HashLit_MkyContext ctx) {
-        visit(ctx.hashContent());
-        visit(ctx.moreHashContent());
-        return null;
+        int type1 = (Integer) visit(ctx.hashContent()), result;
+        int type2 = (Integer) visit(ctx.moreHashContent());
+        /*if(type1 == -1 | type2 == -1)
+            result = -1;
+        else
+            result = 0;*/
+        return -2;
     }
 
     @Override
     public Object visitHashCont_Mky(MonkeyParser.HashCont_MkyContext ctx) {
-        for(MonkeyParser.ExpressionContext exp : ctx.expression()){
-            visit(exp);
+        int type1 = (Integer) visit(ctx.expression(0)), type2 = -1;
+        if(type1 == 2){
+            type2 = (Integer) visit(ctx.expression(1));
+            if (type2 != -1){
+                return 0;
+            }
+            else{
+                this.errorsList.add("Error: Error type in the expression. At line: "+ctx.expression(1).getStart().getLine()+
+                        " column: "+ ctx.expression(1).getStart().getCharPositionInLine());
+                return -1;
+            }
         }
-        return null;
+        else{
+            this.errorsList.add("Error: The key must to be String. At line: "+ctx.expression(1).getStart().getLine()+
+                    " column: "+ ctx.expression(1).getStart().getCharPositionInLine());
+            return -1;
+        }
     }
 
     @Override
     public Object visitMoreHashCont_Mky(MonkeyParser.MoreHashCont_MkyContext ctx) {
+        int type = -1;
         for (MonkeyParser.HashContentContext hashC : ctx.hashContent()){
-            visit(hashC);
+            type = (Integer) visit(hashC);
         }
-        return null;
+        return type;
     }
 
 
     @Override
     public Object visitExprList_Mky(MonkeyParser.ExprList_MkyContext ctx) {
 
+        int type1= (Integer) visit(ctx.expression());
+
+        if (isInLet){ // si esta en un let
+            if(ctx.toStringTree().contains("fn(") | ctx.toStringTree().contains("fn (")){
+                this.fnSpecialTable.insert(globalCounterParams,arrayName,0);
+                this.globalCounterParams = 0;
+            }
+        }
+
         this.globalCounterParams++;
         int temp=this.globalCounterParams; //respaldo del valor que tenían los parametros antes de visitar expresion
-        int type1= (Integer) visit(ctx.expression());
+        type1= (Integer) visit(ctx.expression());
         this.globalCounterParams=temp;
 
         int type2=0;
@@ -798,6 +822,7 @@ public class Checker extends MonkeyParserBaseVisitor {
         }
 
         return type1; // si el valor es menos uno significa que no hubo errores
+
     }
 
     @Override
@@ -810,33 +835,59 @@ public class Checker extends MonkeyParserBaseVisitor {
 
     @Override
     public Object visitMoreExpr_Mky(MonkeyParser.MoreExpr_MkyContext ctx) {
+
         int type=0; //tipo valido
         int temp=0;
-        for(MonkeyParser.ExpressionContext exp : ctx.expression()){
+
+
+        for(int i = 0; i < ctx.expression().size(); i++){
             this.globalCounterParams++;
             temp=this.globalCounterParams; //respaldo del valor que tenían los parametros antes de visitar expresion
-            type= (Integer) visit(exp);
-            this.globalCounterParams=temp; //reestablecimiento del valor previo de global counter params
-            if (type==-1){
+
+            type = (Integer) visit(ctx.expression(i));
+
+            if (type == -1){
                 return -1;
             }
+
+            if (isInLet){ // si esta en un let
+                if(ctx.toStringTree().contains("fn(") | ctx.toStringTree().contains("fn (")){
+                    this.fnSpecialTable.insert(globalCounterParams,arrayName,i+1);
+                    this.globalCounterParams = 0;
+                }
+            }
+            this.globalCounterParams=temp; //reestablecimiento del valor previo de global counter params
+
         }
         return type;
     }
 
     @Override
     public Object visitPrintExpr_Mky(MonkeyParser.PrintExpr_MkyContext ctx) {
-        visit(ctx.expression());
+
+        int type = (Integer) visit(ctx.expression());
+        if(type < 0)
+            this.errorsList.add("Error: Print error: "+ctx.expression().getStart().getLine()+
+                    " column: "+ ctx.expression().getStart().getCharPositionInLine());
+
         return -2;
     }
 
     @Override
     public Object visitIfExpr_Mky(MonkeyParser.IfExpr_MkyContext ctx) {
         visit(ctx.expression());
-
         //podría requerirse abrir un nivel aquí
         for(int i = 0; i < ctx.blockStatement().size(); i++)
             visit(ctx.blockStatement(i));
+
+        for(int i = 0; i < ctx.blockStatement().size(); i++){
+            this.identifierTable.OpenScope();
+            this.functionsTable.openScope();
+            visit(ctx.blockStatement(i));
+            this.identifierTable.closeScope();
+            this.functionsTable.closeScope();
+        }
+
         return -2;
     }
 
@@ -845,6 +896,6 @@ public class Checker extends MonkeyParserBaseVisitor {
         for(MonkeyParser.StatementContext stm : ctx.statement()){
             visit(stm);
         }
-        return null;
+        return -2;
     }
 }

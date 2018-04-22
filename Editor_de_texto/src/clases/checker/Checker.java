@@ -34,6 +34,7 @@ public class Checker extends MonkeyParserBaseVisitor {
         this.errorsList= new ArrayList<String>();
         this.functionsTable= new FunctionsTable();
         this.identifierTable= new IdentifiersTable();
+
         this.returnInFunction= false;
     }
 
@@ -804,18 +805,15 @@ public class Checker extends MonkeyParserBaseVisitor {
         this.globalCounterParams++;
         int temp=this.globalCounterParams; //respaldo del valor que tenían los parametros antes de visitar expresion
         int type1= (Integer) visit(ctx.expression());
-        this.globalCounterParams=temp;
+
 
         if (isInLet){ // si esta en un let
-            if(ctx.toStringTree().contains("fn(") | ctx.toStringTree().contains("fn (")){
+            if(ctx.expression().toStringTree().contains("fn(") | ctx.expression().toStringTree().contains("fn (")){
                 this.fnSpecialTable.insert(globalCounterParams,arrayName,0);
                 this.globalCounterParams = 0;
             }
         }
-
-
-
-
+        this.globalCounterParams=temp;
 
         int type2=0;
         if (ctx.moreExpressions().getChildCount()>0){
@@ -856,7 +854,7 @@ public class Checker extends MonkeyParserBaseVisitor {
             }
 
             if (isInLet){ // si esta en un let
-                if(ctx.toStringTree().contains("fn(") | ctx.toStringTree().contains("fn (")){
+                if(ctx.expression(i).toStringTree().contains("fn(") | ctx.expression(i).toStringTree().contains("fn (")){
                     this.fnSpecialTable.insert(globalCounterParams,arrayName,i+1);
                     this.globalCounterParams = 0;
                 }

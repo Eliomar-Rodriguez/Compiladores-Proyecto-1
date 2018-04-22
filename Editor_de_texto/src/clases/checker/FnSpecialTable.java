@@ -27,4 +27,16 @@ public class FnSpecialTable {
         }
         return element;
     }
+
+    public void imprimir() {
+        System.out.println("****** ESTADO DE TABLA DE SÍMBOLOS PARA FUNCIONES ESPECIALES ******");
+        if (!this.FnSpecialTable.isEmpty()) {
+            for (FnSpecialElement i : this.FnSpecialTable) {
+                System.out.println("Array Name: " + i.getArrayName() + " - Array position: " + i.getIndex()+ "- Parameters number: "+i.getParamsNumber());
+            }
+            System.out.println("------------------------------------------");
+        }
+        else
+            System.out.println("Tabla vacía");
+    }
 }

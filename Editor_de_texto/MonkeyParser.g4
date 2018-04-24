@@ -26,7 +26,7 @@ multiplicationFactor	: (MUL elementExpression)*                      #multFactMu
 elementExpression 	: primitiveExpression elementAccess                 #elemExprElemAccess_Mky
                     | primitiveExpression callExpression                #elemExprCallExpr_Mky
                     | primitiveExpression                               #elemExprPExpr_Mky;
-elementAccess       	: CIZQ expression CDER                          #elemAccess_Mky;
+elementAccess     : CIZQ expression CDER ( | PIZQ expressionList PDER)  #elemAccess_Mky;
 callExpression	: PIZQ expressionList PDER                              #callExpr_Mky;
 primitiveExpression	:     INTEGER                                       #pExprInt_Mky
                         | STRING                                        #pExprStrMky

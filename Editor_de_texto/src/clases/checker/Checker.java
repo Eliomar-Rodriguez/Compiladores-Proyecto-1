@@ -528,7 +528,12 @@ public class Checker extends MonkeyParserBaseVisitor {
 
     @Override
     public Object visitElemAccess_Mky(MonkeyParser.ElemAccess_MkyContext ctx) {
+        System.out.println("Entro lml");
         int type= (Integer) visit(ctx.expression());
+        if(ctx.expressionList() == null)
+            System.out.println("Fuck!");
+        else
+            System.out.println("Hijos: " + ctx.expressionList().getChildCount());
         if (type!=0 && type!=1){  //solo se permiten neutros o enteros para indexar arreglos
             this.errorsList.add("Error: Array or Hash literal must be indexed through an Int or neutral value " +
                     ".At line: "+ctx.expression().getStart().getLine()+" column: "+ctx.expression().getStart().getLine());

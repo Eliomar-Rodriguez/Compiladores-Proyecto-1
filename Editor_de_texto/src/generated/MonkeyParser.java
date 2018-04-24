@@ -1427,6 +1427,11 @@ public class MonkeyParser extends Parser {
 			return getRuleContext(ExpressionContext.class,0);
 		}
 		public TerminalNode CDER() { return getToken(MonkeyParser.CDER, 0); }
+		public TerminalNode PIZQ() { return getToken(MonkeyParser.PIZQ, 0); }
+		public ExpressionListContext expressionList() {
+			return getRuleContext(ExpressionListContext.class,0);
+		}
+		public TerminalNode PDER() { return getToken(MonkeyParser.PDER, 0); }
 		public ElemAccess_MkyContext(ElementAccessContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -1456,6 +1461,24 @@ public class MonkeyParser extends Parser {
 			expression();
 			setState(175);
 			match(CDER);
+			setState(181);
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,18,_ctx) ) {
+			case 1:
+				{
+				}
+				break;
+			case 2:
+				{
+				setState(177);
+				match(PIZQ);
+				setState(178);
+				expressionList();
+				setState(179);
+				match(PDER);
+				}
+				break;
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -1509,11 +1532,11 @@ public class MonkeyParser extends Parser {
 			_localctx = new CallExpr_MkyContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(177);
+			setState(183);
 			match(PIZQ);
-			setState(178);
+			setState(184);
 			expressionList();
-			setState(179);
+			setState(185);
 			match(PDER);
 			}
 		}
@@ -1769,14 +1792,14 @@ public class MonkeyParser extends Parser {
 		PrimitiveExpressionContext _localctx = new PrimitiveExpressionContext(_ctx, getState());
 		enterRule(_localctx, 28, RULE_primitiveExpression);
 		try {
-			setState(200);
+			setState(206);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case INTEGER:
 				_localctx = new PExprInt_MkyContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(181);
+				setState(187);
 				match(INTEGER);
 				}
 				break;
@@ -1784,7 +1807,7 @@ public class MonkeyParser extends Parser {
 				_localctx = new PExprStrMkyContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(182);
+				setState(188);
 				match(STRING);
 				}
 				break;
@@ -1792,7 +1815,7 @@ public class MonkeyParser extends Parser {
 				_localctx = new PExprID_MkyContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(183);
+				setState(189);
 				match(ID);
 				}
 				break;
@@ -1800,7 +1823,7 @@ public class MonkeyParser extends Parser {
 				_localctx = new PExprTRUE_MkyContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(184);
+				setState(190);
 				match(TRUE);
 				}
 				break;
@@ -1808,7 +1831,7 @@ public class MonkeyParser extends Parser {
 				_localctx = new PExprFALSE_MkyContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(185);
+				setState(191);
 				match(FALSE);
 				}
 				break;
@@ -1816,11 +1839,11 @@ public class MonkeyParser extends Parser {
 				_localctx = new PExprCallExpr_MkyContext(_localctx);
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(186);
+				setState(192);
 				match(PIZQ);
-				setState(187);
+				setState(193);
 				expression();
-				setState(188);
+				setState(194);
 				match(PDER);
 				}
 				break;
@@ -1828,7 +1851,7 @@ public class MonkeyParser extends Parser {
 				_localctx = new PExprArrayLit_MkyContext(_localctx);
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(190);
+				setState(196);
 				arrayLiteral();
 				}
 				break;
@@ -1840,13 +1863,13 @@ public class MonkeyParser extends Parser {
 				_localctx = new PExprArrayFunc_MkyContext(_localctx);
 				enterOuterAlt(_localctx, 8);
 				{
-				setState(191);
+				setState(197);
 				arrayFunctions();
-				setState(192);
+				setState(198);
 				match(PIZQ);
-				setState(193);
+				setState(199);
 				expressionList();
-				setState(194);
+				setState(200);
 				match(PDER);
 				}
 				break;
@@ -1854,7 +1877,7 @@ public class MonkeyParser extends Parser {
 				_localctx = new PExprFuncDecl_MkyContext(_localctx);
 				enterOuterAlt(_localctx, 9);
 				{
-				setState(196);
+				setState(202);
 				functionLiteral();
 				}
 				break;
@@ -1862,7 +1885,7 @@ public class MonkeyParser extends Parser {
 				_localctx = new PExprHashLit_MkyContext(_localctx);
 				enterOuterAlt(_localctx, 10);
 				{
-				setState(197);
+				setState(203);
 				hashLiteral();
 				}
 				break;
@@ -1870,7 +1893,7 @@ public class MonkeyParser extends Parser {
 				_localctx = new PExprPrint_MkyContext(_localctx);
 				enterOuterAlt(_localctx, 11);
 				{
-				setState(198);
+				setState(204);
 				printExpression();
 				}
 				break;
@@ -1878,7 +1901,7 @@ public class MonkeyParser extends Parser {
 				_localctx = new PExprIfExpr_MkyContext(_localctx);
 				enterOuterAlt(_localctx, 12);
 				{
-				setState(199);
+				setState(205);
 				ifExpression();
 				}
 				break;
@@ -1998,14 +2021,14 @@ public class MonkeyParser extends Parser {
 		ArrayFunctionsContext _localctx = new ArrayFunctionsContext(_ctx, getState());
 		enterRule(_localctx, 30, RULE_arrayFunctions);
 		try {
-			setState(207);
+			setState(213);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case LEN:
 				_localctx = new ArrayFuncLen_MkyContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(202);
+				setState(208);
 				match(LEN);
 				}
 				break;
@@ -2013,7 +2036,7 @@ public class MonkeyParser extends Parser {
 				_localctx = new ArrayFuncFirst_MkyContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(203);
+				setState(209);
 				match(FIRST);
 				}
 				break;
@@ -2021,7 +2044,7 @@ public class MonkeyParser extends Parser {
 				_localctx = new ArrayFuncLast_MkyContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(204);
+				setState(210);
 				match(LAST);
 				}
 				break;
@@ -2029,7 +2052,7 @@ public class MonkeyParser extends Parser {
 				_localctx = new ArrayFuncRest_MkyContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(205);
+				setState(211);
 				match(REST);
 				}
 				break;
@@ -2037,7 +2060,7 @@ public class MonkeyParser extends Parser {
 				_localctx = new ArrayFuncPush_MkyContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(206);
+				setState(212);
 				match(PUSH);
 				}
 				break;
@@ -2096,11 +2119,11 @@ public class MonkeyParser extends Parser {
 			_localctx = new ArrayLit_MkyContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(209);
+			setState(215);
 			match(CIZQ);
-			setState(210);
+			setState(216);
 			expressionList();
-			setState(211);
+			setState(217);
 			match(CDER);
 			}
 		}
@@ -2159,15 +2182,15 @@ public class MonkeyParser extends Parser {
 			_localctx = new FuncLit_MkyContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(213);
+			setState(219);
 			match(FN);
-			setState(214);
+			setState(220);
 			match(PIZQ);
-			setState(215);
+			setState(221);
 			functionParameters();
-			setState(216);
+			setState(222);
 			match(PDER);
-			setState(217);
+			setState(223);
 			blockStatement();
 			}
 		}
@@ -2221,9 +2244,9 @@ public class MonkeyParser extends Parser {
 			_localctx = new FuncParams_MkyContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(219);
+			setState(225);
 			match(ID);
-			setState(220);
+			setState(226);
 			moreIdentifiers();
 			}
 		}
@@ -2282,19 +2305,19 @@ public class MonkeyParser extends Parser {
 			_localctx = new MoreIdentifiers_MkyContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(226);
+			setState(232);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMA) {
 				{
 				{
-				setState(222);
+				setState(228);
 				match(COMA);
-				setState(223);
+				setState(229);
 				match(ID);
 				}
 				}
-				setState(228);
+				setState(234);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -2354,13 +2377,13 @@ public class MonkeyParser extends Parser {
 			_localctx = new HashLit_MkyContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(229);
+			setState(235);
 			match(LIZQ);
-			setState(230);
+			setState(236);
 			hashContent();
-			setState(231);
+			setState(237);
 			moreHashContent();
-			setState(232);
+			setState(238);
 			match(LDER);
 			}
 		}
@@ -2417,11 +2440,11 @@ public class MonkeyParser extends Parser {
 			_localctx = new HashCont_MkyContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(234);
+			setState(240);
 			expression();
-			setState(235);
+			setState(241);
 			match(DOSPUN);
-			setState(236);
+			setState(242);
 			expression();
 			}
 		}
@@ -2482,19 +2505,19 @@ public class MonkeyParser extends Parser {
 			_localctx = new MoreHashCont_MkyContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(242);
+			setState(248);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMA) {
 				{
 				{
-				setState(238);
+				setState(244);
 				match(COMA);
-				setState(239);
+				setState(245);
 				hashContent();
 				}
 				}
-				setState(244);
+				setState(250);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -2565,7 +2588,7 @@ public class MonkeyParser extends Parser {
 		ExpressionListContext _localctx = new ExpressionListContext(_ctx, getState());
 		enterRule(_localctx, 46, RULE_expressionList);
 		try {
-			setState(249);
+			setState(255);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case CIZQ:
@@ -2587,9 +2610,9 @@ public class MonkeyParser extends Parser {
 				_localctx = new ExprList_MkyContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(245);
+				setState(251);
 				expression();
-				setState(246);
+				setState(252);
 				moreExpressions();
 				}
 				break;
@@ -2661,19 +2684,19 @@ public class MonkeyParser extends Parser {
 			_localctx = new MoreExpr_MkyContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(255);
+			setState(261);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMA) {
 				{
 				{
-				setState(251);
+				setState(257);
 				match(COMA);
-				setState(252);
+				setState(258);
 				expression();
 				}
 				}
-				setState(257);
+				setState(263);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -2731,13 +2754,13 @@ public class MonkeyParser extends Parser {
 			_localctx = new PrintExpr_MkyContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(258);
+			setState(264);
 			match(PUTS);
-			setState(259);
+			setState(265);
 			match(PIZQ);
-			setState(260);
+			setState(266);
 			expression();
-			setState(261);
+			setState(267);
 			match(PDER);
 			}
 		}
@@ -2798,20 +2821,20 @@ public class MonkeyParser extends Parser {
 			_localctx = new IfExpr_MkyContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(263);
-			match(IF);
-			setState(264);
-			expression();
-			setState(265);
-			blockStatement();
 			setState(269);
+			match(IF);
+			setState(270);
+			expression();
+			setState(271);
+			blockStatement();
+			setState(275);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case ELSE:
 				{
-				setState(266);
+				setState(272);
 				match(ELSE);
-				setState(267);
+				setState(273);
 				blockStatement();
 				}
 				break;
@@ -2912,23 +2935,23 @@ public class MonkeyParser extends Parser {
 			_localctx = new BlockSt_MkyContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(271);
+			setState(277);
 			match(LIZQ);
-			setState(275);
+			setState(281);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << CIZQ) | (1L << PIZQ) | (1L << LIZQ) | (1L << LET) | (1L << RETURN) | (1L << LEN) | (1L << FIRST) | (1L << LAST) | (1L << REST) | (1L << PUSH) | (1L << FN) | (1L << PUTS) | (1L << IF) | (1L << TRUE) | (1L << FALSE) | (1L << ID) | (1L << INTEGER) | (1L << STRING))) != 0)) {
 				{
 				{
-				setState(272);
+				setState(278);
 				statement();
 				}
 				}
-				setState(277);
+				setState(283);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(278);
+			setState(284);
 			match(LDER);
 			}
 		}
@@ -2944,7 +2967,7 @@ public class MonkeyParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3(\u011b\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3(\u0121\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
@@ -2957,87 +2980,90 @@ public class MonkeyParser extends Parser {
 		"\n\n\f\n\16\n\u0090\13\n\5\n\u0092\n\n\3\13\3\13\3\13\3\f\3\f\7\f\u0099"+
 		"\n\f\f\f\16\f\u009c\13\f\3\f\3\f\7\f\u00a0\n\f\f\f\16\f\u00a3\13\f\5\f"+
 		"\u00a5\n\f\3\r\3\r\3\r\3\r\3\r\3\r\3\r\5\r\u00ae\n\r\3\16\3\16\3\16\3"+
-		"\16\3\17\3\17\3\17\3\17\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3"+
-		"\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\5\20\u00cb\n\20\3\21"+
-		"\3\21\3\21\3\21\3\21\5\21\u00d2\n\21\3\22\3\22\3\22\3\22\3\23\3\23\3\23"+
-		"\3\23\3\23\3\23\3\24\3\24\3\24\3\25\3\25\7\25\u00e3\n\25\f\25\16\25\u00e6"+
-		"\13\25\3\26\3\26\3\26\3\26\3\26\3\27\3\27\3\27\3\27\3\30\3\30\7\30\u00f3"+
-		"\n\30\f\30\16\30\u00f6\13\30\3\31\3\31\3\31\3\31\5\31\u00fc\n\31\3\32"+
-		"\3\32\7\32\u0100\n\32\f\32\16\32\u0103\13\32\3\33\3\33\3\33\3\33\3\33"+
-		"\3\34\3\34\3\34\3\34\3\34\3\34\5\34\u0110\n\34\3\35\3\35\7\35\u0114\n"+
-		"\35\f\35\16\35\u0117\13\35\3\35\3\35\3\35\2\2\36\2\4\6\b\n\f\16\20\22"+
-		"\24\26\30\32\34\36 \"$&(*,.\60\62\64\668\2\2\2\u012a\2=\3\2\2\2\4E\3\2"+
-		"\2\2\6G\3\2\2\2\bN\3\2\2\2\nS\3\2\2\2\fX\3\2\2\2\16~\3\2\2\2\20\u0080"+
-		"\3\2\2\2\22\u0091\3\2\2\2\24\u0093\3\2\2\2\26\u00a4\3\2\2\2\30\u00ad\3"+
-		"\2\2\2\32\u00af\3\2\2\2\34\u00b3\3\2\2\2\36\u00ca\3\2\2\2 \u00d1\3\2\2"+
-		"\2\"\u00d3\3\2\2\2$\u00d7\3\2\2\2&\u00dd\3\2\2\2(\u00e4\3\2\2\2*\u00e7"+
-		"\3\2\2\2,\u00ec\3\2\2\2.\u00f4\3\2\2\2\60\u00fb\3\2\2\2\62\u0101\3\2\2"+
-		"\2\64\u0104\3\2\2\2\66\u0109\3\2\2\28\u0111\3\2\2\2:<\5\4\3\2;:\3\2\2"+
-		"\2<?\3\2\2\2=;\3\2\2\2=>\3\2\2\2>\3\3\2\2\2?=\3\2\2\2@A\7\26\2\2AF\5\6"+
-		"\4\2BC\7\27\2\2CF\5\b\5\2DF\5\n\6\2E@\3\2\2\2EB\3\2\2\2ED\3\2\2\2F\5\3"+
-		"\2\2\2GH\7#\2\2HI\7\20\2\2IL\5\f\7\2JM\7\3\2\2KM\3\2\2\2LJ\3\2\2\2LK\3"+
-		"\2\2\2M\7\3\2\2\2NQ\5\f\7\2OR\7\3\2\2PR\3\2\2\2QO\3\2\2\2QP\3\2\2\2R\t"+
-		"\3\2\2\2SV\5\f\7\2TW\7\3\2\2UW\3\2\2\2VT\3\2\2\2VU\3\2\2\2W\13\3\2\2\2"+
-		"XY\5\20\t\2YZ\5\16\b\2Z\r\3\2\2\2[\\\7\f\2\2\\^\5\20\t\2][\3\2\2\2^a\3"+
-		"\2\2\2_]\3\2\2\2_`\3\2\2\2`\177\3\2\2\2a_\3\2\2\2bc\7\r\2\2ce\5\20\t\2"+
-		"db\3\2\2\2eh\3\2\2\2fd\3\2\2\2fg\3\2\2\2g\177\3\2\2\2hf\3\2\2\2ij\7\16"+
-		"\2\2jl\5\20\t\2ki\3\2\2\2lo\3\2\2\2mk\3\2\2\2mn\3\2\2\2n\177\3\2\2\2o"+
-		"m\3\2\2\2pq\7\17\2\2qs\5\20\t\2rp\3\2\2\2sv\3\2\2\2tr\3\2\2\2tu\3\2\2"+
-		"\2u\177\3\2\2\2vt\3\2\2\2wx\7\21\2\2xz\5\20\t\2yw\3\2\2\2z}\3\2\2\2{y"+
-		"\3\2\2\2{|\3\2\2\2|\177\3\2\2\2}{\3\2\2\2~_\3\2\2\2~f\3\2\2\2~m\3\2\2"+
-		"\2~t\3\2\2\2~{\3\2\2\2\177\17\3\2\2\2\u0080\u0081\5\24\13\2\u0081\u0082"+
-		"\5\22\n\2\u0082\21\3\2\2\2\u0083\u0084\7\22\2\2\u0084\u0086\5\24\13\2"+
-		"\u0085\u0083\3\2\2\2\u0086\u0089\3\2\2\2\u0087\u0085\3\2\2\2\u0087\u0088"+
-		"\3\2\2\2\u0088\u0092\3\2\2\2\u0089\u0087\3\2\2\2\u008a\u008b\7\23\2\2"+
-		"\u008b\u008d\5\24\13\2\u008c\u008a\3\2\2\2\u008d\u0090\3\2\2\2\u008e\u008c"+
-		"\3\2\2\2\u008e\u008f\3\2\2\2\u008f\u0092\3\2\2\2\u0090\u008e\3\2\2\2\u0091"+
-		"\u0087\3\2\2\2\u0091\u008e\3\2\2\2\u0092\23\3\2\2\2\u0093\u0094\5\30\r"+
-		"\2\u0094\u0095\5\26\f\2\u0095\25\3\2\2\2\u0096\u0097\7\24\2\2\u0097\u0099"+
-		"\5\30\r\2\u0098\u0096\3\2\2\2\u0099\u009c\3\2\2\2\u009a\u0098\3\2\2\2"+
-		"\u009a\u009b\3\2\2\2\u009b\u00a5\3\2\2\2\u009c\u009a\3\2\2\2\u009d\u009e"+
-		"\7\25\2\2\u009e\u00a0\5\30\r\2\u009f\u009d\3\2\2\2\u00a0\u00a3\3\2\2\2"+
-		"\u00a1\u009f\3\2\2\2\u00a1\u00a2\3\2\2\2\u00a2\u00a5\3\2\2\2\u00a3\u00a1"+
-		"\3\2\2\2\u00a4\u009a\3\2\2\2\u00a4\u00a1\3\2\2\2\u00a5\27\3\2\2\2\u00a6"+
-		"\u00a7\5\36\20\2\u00a7\u00a8\5\32\16\2\u00a8\u00ae\3\2\2\2\u00a9\u00aa"+
-		"\5\36\20\2\u00aa\u00ab\5\34\17\2\u00ab\u00ae\3\2\2\2\u00ac\u00ae\5\36"+
-		"\20\2\u00ad\u00a6\3\2\2\2\u00ad\u00a9\3\2\2\2\u00ad\u00ac\3\2\2\2\u00ae"+
-		"\31\3\2\2\2\u00af\u00b0\7\5\2\2\u00b0\u00b1\5\f\7\2\u00b1\u00b2\7\6\2"+
-		"\2\u00b2\33\3\2\2\2\u00b3\u00b4\7\7\2\2\u00b4\u00b5\5\60\31\2\u00b5\u00b6"+
-		"\7\b\2\2\u00b6\35\3\2\2\2\u00b7\u00cb\7$\2\2\u00b8\u00cb\7%\2\2\u00b9"+
-		"\u00cb\7#\2\2\u00ba\u00cb\7!\2\2\u00bb\u00cb\7\"\2\2\u00bc\u00bd\7\7\2"+
-		"\2\u00bd\u00be\5\f\7\2\u00be\u00bf\7\b\2\2\u00bf\u00cb\3\2\2\2\u00c0\u00cb"+
-		"\5\"\22\2\u00c1\u00c2\5 \21\2\u00c2\u00c3\7\7\2\2\u00c3\u00c4\5\60\31"+
-		"\2\u00c4\u00c5\7\b\2\2\u00c5\u00cb\3\2\2\2\u00c6\u00cb\5$\23\2\u00c7\u00cb"+
-		"\5*\26\2\u00c8\u00cb\5\64\33\2\u00c9\u00cb\5\66\34\2\u00ca\u00b7\3\2\2"+
-		"\2\u00ca\u00b8\3\2\2\2\u00ca\u00b9\3\2\2\2\u00ca\u00ba\3\2\2\2\u00ca\u00bb"+
-		"\3\2\2\2\u00ca\u00bc\3\2\2\2\u00ca\u00c0\3\2\2\2\u00ca\u00c1\3\2\2\2\u00ca"+
-		"\u00c6\3\2\2\2\u00ca\u00c7\3\2\2\2\u00ca\u00c8\3\2\2\2\u00ca\u00c9\3\2"+
-		"\2\2\u00cb\37\3\2\2\2\u00cc\u00d2\7\30\2\2\u00cd\u00d2\7\31\2\2\u00ce"+
-		"\u00d2\7\32\2\2\u00cf\u00d2\7\33\2\2\u00d0\u00d2\7\34\2\2\u00d1\u00cc"+
-		"\3\2\2\2\u00d1\u00cd\3\2\2\2\u00d1\u00ce\3\2\2\2\u00d1\u00cf\3\2\2\2\u00d1"+
-		"\u00d0\3\2\2\2\u00d2!\3\2\2\2\u00d3\u00d4\7\5\2\2\u00d4\u00d5\5\60\31"+
-		"\2\u00d5\u00d6\7\6\2\2\u00d6#\3\2\2\2\u00d7\u00d8\7\35\2\2\u00d8\u00d9"+
-		"\7\7\2\2\u00d9\u00da\5&\24\2\u00da\u00db\7\b\2\2\u00db\u00dc\58\35\2\u00dc"+
-		"%\3\2\2\2\u00dd\u00de\7#\2\2\u00de\u00df\5(\25\2\u00df\'\3\2\2\2\u00e0"+
-		"\u00e1\7\4\2\2\u00e1\u00e3\7#\2\2\u00e2\u00e0\3\2\2\2\u00e3\u00e6\3\2"+
-		"\2\2\u00e4\u00e2\3\2\2\2\u00e4\u00e5\3\2\2\2\u00e5)\3\2\2\2\u00e6\u00e4"+
-		"\3\2\2\2\u00e7\u00e8\7\t\2\2\u00e8\u00e9\5,\27\2\u00e9\u00ea\5.\30\2\u00ea"+
-		"\u00eb\7\n\2\2\u00eb+\3\2\2\2\u00ec\u00ed\5\f\7\2\u00ed\u00ee\7\13\2\2"+
-		"\u00ee\u00ef\5\f\7\2\u00ef-\3\2\2\2\u00f0\u00f1\7\4\2\2\u00f1\u00f3\5"+
-		",\27\2\u00f2\u00f0\3\2\2\2\u00f3\u00f6\3\2\2\2\u00f4\u00f2\3\2\2\2\u00f4"+
-		"\u00f5\3\2\2\2\u00f5/\3\2\2\2\u00f6\u00f4\3\2\2\2\u00f7\u00f8\5\f\7\2"+
-		"\u00f8\u00f9\5\62\32\2\u00f9\u00fc\3\2\2\2\u00fa\u00fc\3\2\2\2\u00fb\u00f7"+
-		"\3\2\2\2\u00fb\u00fa\3\2\2\2\u00fc\61\3\2\2\2\u00fd\u00fe\7\4\2\2\u00fe"+
-		"\u0100\5\f\7\2\u00ff\u00fd\3\2\2\2\u0100\u0103\3\2\2\2\u0101\u00ff\3\2"+
-		"\2\2\u0101\u0102\3\2\2\2\u0102\63\3\2\2\2\u0103\u0101\3\2\2\2\u0104\u0105"+
-		"\7\36\2\2\u0105\u0106\7\7\2\2\u0106\u0107\5\f\7\2\u0107\u0108\7\b\2\2"+
-		"\u0108\65\3\2\2\2\u0109\u010a\7\37\2\2\u010a\u010b\5\f\7\2\u010b\u010f"+
-		"\58\35\2\u010c\u010d\7 \2\2\u010d\u0110\58\35\2\u010e\u0110\3\2\2\2\u010f"+
-		"\u010c\3\2\2\2\u010f\u010e\3\2\2\2\u0110\67\3\2\2\2\u0111\u0115\7\t\2"+
-		"\2\u0112\u0114\5\4\3\2\u0113\u0112\3\2\2\2\u0114\u0117\3\2\2\2\u0115\u0113"+
-		"\3\2\2\2\u0115\u0116\3\2\2\2\u0116\u0118\3\2\2\2\u0117\u0115\3\2\2\2\u0118"+
-		"\u0119\7\n\2\2\u01199\3\2\2\2\34=ELQV_fmt{~\u0087\u008e\u0091\u009a\u00a1"+
-		"\u00a4\u00ad\u00ca\u00d1\u00e4\u00f4\u00fb\u0101\u010f\u0115";
+		"\16\3\16\3\16\3\16\3\16\5\16\u00b8\n\16\3\17\3\17\3\17\3\17\3\20\3\20"+
+		"\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20"+
+		"\3\20\3\20\3\20\5\20\u00d1\n\20\3\21\3\21\3\21\3\21\3\21\5\21\u00d8\n"+
+		"\21\3\22\3\22\3\22\3\22\3\23\3\23\3\23\3\23\3\23\3\23\3\24\3\24\3\24\3"+
+		"\25\3\25\7\25\u00e9\n\25\f\25\16\25\u00ec\13\25\3\26\3\26\3\26\3\26\3"+
+		"\26\3\27\3\27\3\27\3\27\3\30\3\30\7\30\u00f9\n\30\f\30\16\30\u00fc\13"+
+		"\30\3\31\3\31\3\31\3\31\5\31\u0102\n\31\3\32\3\32\7\32\u0106\n\32\f\32"+
+		"\16\32\u0109\13\32\3\33\3\33\3\33\3\33\3\33\3\34\3\34\3\34\3\34\3\34\3"+
+		"\34\5\34\u0116\n\34\3\35\3\35\7\35\u011a\n\35\f\35\16\35\u011d\13\35\3"+
+		"\35\3\35\3\35\2\2\36\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\60"+
+		"\62\64\668\2\2\2\u0131\2=\3\2\2\2\4E\3\2\2\2\6G\3\2\2\2\bN\3\2\2\2\nS"+
+		"\3\2\2\2\fX\3\2\2\2\16~\3\2\2\2\20\u0080\3\2\2\2\22\u0091\3\2\2\2\24\u0093"+
+		"\3\2\2\2\26\u00a4\3\2\2\2\30\u00ad\3\2\2\2\32\u00af\3\2\2\2\34\u00b9\3"+
+		"\2\2\2\36\u00d0\3\2\2\2 \u00d7\3\2\2\2\"\u00d9\3\2\2\2$\u00dd\3\2\2\2"+
+		"&\u00e3\3\2\2\2(\u00ea\3\2\2\2*\u00ed\3\2\2\2,\u00f2\3\2\2\2.\u00fa\3"+
+		"\2\2\2\60\u0101\3\2\2\2\62\u0107\3\2\2\2\64\u010a\3\2\2\2\66\u010f\3\2"+
+		"\2\28\u0117\3\2\2\2:<\5\4\3\2;:\3\2\2\2<?\3\2\2\2=;\3\2\2\2=>\3\2\2\2"+
+		">\3\3\2\2\2?=\3\2\2\2@A\7\26\2\2AF\5\6\4\2BC\7\27\2\2CF\5\b\5\2DF\5\n"+
+		"\6\2E@\3\2\2\2EB\3\2\2\2ED\3\2\2\2F\5\3\2\2\2GH\7#\2\2HI\7\20\2\2IL\5"+
+		"\f\7\2JM\7\3\2\2KM\3\2\2\2LJ\3\2\2\2LK\3\2\2\2M\7\3\2\2\2NQ\5\f\7\2OR"+
+		"\7\3\2\2PR\3\2\2\2QO\3\2\2\2QP\3\2\2\2R\t\3\2\2\2SV\5\f\7\2TW\7\3\2\2"+
+		"UW\3\2\2\2VT\3\2\2\2VU\3\2\2\2W\13\3\2\2\2XY\5\20\t\2YZ\5\16\b\2Z\r\3"+
+		"\2\2\2[\\\7\f\2\2\\^\5\20\t\2][\3\2\2\2^a\3\2\2\2_]\3\2\2\2_`\3\2\2\2"+
+		"`\177\3\2\2\2a_\3\2\2\2bc\7\r\2\2ce\5\20\t\2db\3\2\2\2eh\3\2\2\2fd\3\2"+
+		"\2\2fg\3\2\2\2g\177\3\2\2\2hf\3\2\2\2ij\7\16\2\2jl\5\20\t\2ki\3\2\2\2"+
+		"lo\3\2\2\2mk\3\2\2\2mn\3\2\2\2n\177\3\2\2\2om\3\2\2\2pq\7\17\2\2qs\5\20"+
+		"\t\2rp\3\2\2\2sv\3\2\2\2tr\3\2\2\2tu\3\2\2\2u\177\3\2\2\2vt\3\2\2\2wx"+
+		"\7\21\2\2xz\5\20\t\2yw\3\2\2\2z}\3\2\2\2{y\3\2\2\2{|\3\2\2\2|\177\3\2"+
+		"\2\2}{\3\2\2\2~_\3\2\2\2~f\3\2\2\2~m\3\2\2\2~t\3\2\2\2~{\3\2\2\2\177\17"+
+		"\3\2\2\2\u0080\u0081\5\24\13\2\u0081\u0082\5\22\n\2\u0082\21\3\2\2\2\u0083"+
+		"\u0084\7\22\2\2\u0084\u0086\5\24\13\2\u0085\u0083\3\2\2\2\u0086\u0089"+
+		"\3\2\2\2\u0087\u0085\3\2\2\2\u0087\u0088\3\2\2\2\u0088\u0092\3\2\2\2\u0089"+
+		"\u0087\3\2\2\2\u008a\u008b\7\23\2\2\u008b\u008d\5\24\13\2\u008c\u008a"+
+		"\3\2\2\2\u008d\u0090\3\2\2\2\u008e\u008c\3\2\2\2\u008e\u008f\3\2\2\2\u008f"+
+		"\u0092\3\2\2\2\u0090\u008e\3\2\2\2\u0091\u0087\3\2\2\2\u0091\u008e\3\2"+
+		"\2\2\u0092\23\3\2\2\2\u0093\u0094\5\30\r\2\u0094\u0095\5\26\f\2\u0095"+
+		"\25\3\2\2\2\u0096\u0097\7\24\2\2\u0097\u0099\5\30\r\2\u0098\u0096\3\2"+
+		"\2\2\u0099\u009c\3\2\2\2\u009a\u0098\3\2\2\2\u009a\u009b\3\2\2\2\u009b"+
+		"\u00a5\3\2\2\2\u009c\u009a\3\2\2\2\u009d\u009e\7\25\2\2\u009e\u00a0\5"+
+		"\30\r\2\u009f\u009d\3\2\2\2\u00a0\u00a3\3\2\2\2\u00a1\u009f\3\2\2\2\u00a1"+
+		"\u00a2\3\2\2\2\u00a2\u00a5\3\2\2\2\u00a3\u00a1\3\2\2\2\u00a4\u009a\3\2"+
+		"\2\2\u00a4\u00a1\3\2\2\2\u00a5\27\3\2\2\2\u00a6\u00a7\5\36\20\2\u00a7"+
+		"\u00a8\5\32\16\2\u00a8\u00ae\3\2\2\2\u00a9\u00aa\5\36\20\2\u00aa\u00ab"+
+		"\5\34\17\2\u00ab\u00ae\3\2\2\2\u00ac\u00ae\5\36\20\2\u00ad\u00a6\3\2\2"+
+		"\2\u00ad\u00a9\3\2\2\2\u00ad\u00ac\3\2\2\2\u00ae\31\3\2\2\2\u00af\u00b0"+
+		"\7\5\2\2\u00b0\u00b1\5\f\7\2\u00b1\u00b7\7\6\2\2\u00b2\u00b8\3\2\2\2\u00b3"+
+		"\u00b4\7\7\2\2\u00b4\u00b5\5\60\31\2\u00b5\u00b6\7\b\2\2\u00b6\u00b8\3"+
+		"\2\2\2\u00b7\u00b2\3\2\2\2\u00b7\u00b3\3\2\2\2\u00b8\33\3\2\2\2\u00b9"+
+		"\u00ba\7\7\2\2\u00ba\u00bb\5\60\31\2\u00bb\u00bc\7\b\2\2\u00bc\35\3\2"+
+		"\2\2\u00bd\u00d1\7$\2\2\u00be\u00d1\7%\2\2\u00bf\u00d1\7#\2\2\u00c0\u00d1"+
+		"\7!\2\2\u00c1\u00d1\7\"\2\2\u00c2\u00c3\7\7\2\2\u00c3\u00c4\5\f\7\2\u00c4"+
+		"\u00c5\7\b\2\2\u00c5\u00d1\3\2\2\2\u00c6\u00d1\5\"\22\2\u00c7\u00c8\5"+
+		" \21\2\u00c8\u00c9\7\7\2\2\u00c9\u00ca\5\60\31\2\u00ca\u00cb\7\b\2\2\u00cb"+
+		"\u00d1\3\2\2\2\u00cc\u00d1\5$\23\2\u00cd\u00d1\5*\26\2\u00ce\u00d1\5\64"+
+		"\33\2\u00cf\u00d1\5\66\34\2\u00d0\u00bd\3\2\2\2\u00d0\u00be\3\2\2\2\u00d0"+
+		"\u00bf\3\2\2\2\u00d0\u00c0\3\2\2\2\u00d0\u00c1\3\2\2\2\u00d0\u00c2\3\2"+
+		"\2\2\u00d0\u00c6\3\2\2\2\u00d0\u00c7\3\2\2\2\u00d0\u00cc\3\2\2\2\u00d0"+
+		"\u00cd\3\2\2\2\u00d0\u00ce\3\2\2\2\u00d0\u00cf\3\2\2\2\u00d1\37\3\2\2"+
+		"\2\u00d2\u00d8\7\30\2\2\u00d3\u00d8\7\31\2\2\u00d4\u00d8\7\32\2\2\u00d5"+
+		"\u00d8\7\33\2\2\u00d6\u00d8\7\34\2\2\u00d7\u00d2\3\2\2\2\u00d7\u00d3\3"+
+		"\2\2\2\u00d7\u00d4\3\2\2\2\u00d7\u00d5\3\2\2\2\u00d7\u00d6\3\2\2\2\u00d8"+
+		"!\3\2\2\2\u00d9\u00da\7\5\2\2\u00da\u00db\5\60\31\2\u00db\u00dc\7\6\2"+
+		"\2\u00dc#\3\2\2\2\u00dd\u00de\7\35\2\2\u00de\u00df\7\7\2\2\u00df\u00e0"+
+		"\5&\24\2\u00e0\u00e1\7\b\2\2\u00e1\u00e2\58\35\2\u00e2%\3\2\2\2\u00e3"+
+		"\u00e4\7#\2\2\u00e4\u00e5\5(\25\2\u00e5\'\3\2\2\2\u00e6\u00e7\7\4\2\2"+
+		"\u00e7\u00e9\7#\2\2\u00e8\u00e6\3\2\2\2\u00e9\u00ec\3\2\2\2\u00ea\u00e8"+
+		"\3\2\2\2\u00ea\u00eb\3\2\2\2\u00eb)\3\2\2\2\u00ec\u00ea\3\2\2\2\u00ed"+
+		"\u00ee\7\t\2\2\u00ee\u00ef\5,\27\2\u00ef\u00f0\5.\30\2\u00f0\u00f1\7\n"+
+		"\2\2\u00f1+\3\2\2\2\u00f2\u00f3\5\f\7\2\u00f3\u00f4\7\13\2\2\u00f4\u00f5"+
+		"\5\f\7\2\u00f5-\3\2\2\2\u00f6\u00f7\7\4\2\2\u00f7\u00f9\5,\27\2\u00f8"+
+		"\u00f6\3\2\2\2\u00f9\u00fc\3\2\2\2\u00fa\u00f8\3\2\2\2\u00fa\u00fb\3\2"+
+		"\2\2\u00fb/\3\2\2\2\u00fc\u00fa\3\2\2\2\u00fd\u00fe\5\f\7\2\u00fe\u00ff"+
+		"\5\62\32\2\u00ff\u0102\3\2\2\2\u0100\u0102\3\2\2\2\u0101\u00fd\3\2\2\2"+
+		"\u0101\u0100\3\2\2\2\u0102\61\3\2\2\2\u0103\u0104\7\4\2\2\u0104\u0106"+
+		"\5\f\7\2\u0105\u0103\3\2\2\2\u0106\u0109\3\2\2\2\u0107\u0105\3\2\2\2\u0107"+
+		"\u0108\3\2\2\2\u0108\63\3\2\2\2\u0109\u0107\3\2\2\2\u010a\u010b\7\36\2"+
+		"\2\u010b\u010c\7\7\2\2\u010c\u010d\5\f\7\2\u010d\u010e\7\b\2\2\u010e\65"+
+		"\3\2\2\2\u010f\u0110\7\37\2\2\u0110\u0111\5\f\7\2\u0111\u0115\58\35\2"+
+		"\u0112\u0113\7 \2\2\u0113\u0116\58\35\2\u0114\u0116\3\2\2\2\u0115\u0112"+
+		"\3\2\2\2\u0115\u0114\3\2\2\2\u0116\67\3\2\2\2\u0117\u011b\7\t\2\2\u0118"+
+		"\u011a\5\4\3\2\u0119\u0118\3\2\2\2\u011a\u011d\3\2\2\2\u011b\u0119\3\2"+
+		"\2\2\u011b\u011c\3\2\2\2\u011c\u011e\3\2\2\2\u011d\u011b\3\2\2\2\u011e"+
+		"\u011f\7\n\2\2\u011f9\3\2\2\2\35=ELQV_fmt{~\u0087\u008e\u0091\u009a\u00a1"+
+		"\u00a4\u00ad\u00b7\u00d0\u00d7\u00ea\u00fa\u0101\u0107\u0115\u011b";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

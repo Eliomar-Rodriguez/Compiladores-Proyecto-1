@@ -64,8 +64,8 @@ public class Checker extends MonkeyParserBaseVisitor {
     }
 
 
-    public boolean evaluateCallSpecialFunction(String array,int index,String){
-
+    public boolean evaluateCallSpecialFunction(String array,int index,int paramsNumber){
+        return false;
     }
 
     public int setSpecialIndex(String ArrayName,String text){
@@ -541,7 +541,7 @@ public class Checker extends MonkeyParserBaseVisitor {
         int type1= (Integer) visit(ctx.primitiveExpression());
 
         this.setSpecialIndex(this.specialArrayName,ctx.primitiveExpression().getStart().getText());
-        this.evaluateCallSpecialFunction(this.specialArrayName,this.specialArrayName,ctx.getStart().getText());
+       // this.evaluateCallSpecialFunction(this.specialArrayName,this.specialArrayName,ctx.getStart().getText());
         FuncTableElement elem = this.functionsTable.buscar(ctx.primitiveExpression().getText());
         if (elem == null && this.specialIndex==-2) {
             this.errorsList.add("Error: "+ ctx.primitiveExpression().getText()+" is not a function. At line:"+ ctx.primitiveExpression().getStart().getLine()+
@@ -587,31 +587,32 @@ public class Checker extends MonkeyParserBaseVisitor {
     public Object visitElemAccess_Mky(MonkeyParser.ElemAccess_MkyContext ctx) {
 
         System.out.println("Entro lml");
-        int type= (Integer) visit(ctx.expression());
-        if(ctx.expressionList() == null)
+        int type = (Integer) visit(ctx.expression());
+        if (ctx.expressionList() == null)
             System.out.println("Fuck!");
         else
             System.out.println("Hijos: " + ctx.expressionList().getChildCount());
-        if (type!=0 && type!=1){  //solo se permiten neutros o enteros para indexar arreglos
-            this.errorsList.add("Error: Array or Hash literal must be indexed through an Int or neutral value " +
-                    ".At line: "+ctx.expression().getStart().getLine()+" column: "+ctx.expression().getStart().getLine());
-
-        /**
-         * save in a var the posible index to a function call.
-         */if (type != 0 && type != 1) {  //solo se permiten neutros o enteros para indexar arreglos
+        if (type != 0 && type != 1) {  //solo se permiten neutros o enteros para indexar arreglos
             this.errorsList.add("Error: Array or Hash literal must be indexed through an Int or neutral value " +
                     ".At line: " + ctx.expression().getStart().getLine() + " column: " + ctx.expression().getStart().getLine());
 
-            type = -1; //error
-        } else
-            {
+            /**
+             * save in a var the posible index to a function call.
+             */if (type != 0 && type != 1) {  //solo se permiten neutros o enteros para indexar arreglos
+                this.errorsList.add("Error: Array or Hash literal must be indexed through an Int or neutral value " +
+                        ".At line: " + ctx.expression().getStart().getLine() + " column: " + ctx.expression().getStart().getLine());
+
+                type = -1; //error
+            } else {
                 try {
                     this.specialIndex = Integer.parseInt(ctx.expression().getStart().getText());
                 } catch (NumberFormatException e) {
-                    this.specialIndex=-1;
+                    this.specialIndex = -1;
                     return type;
-                    }
+                }
             }
+
+        }
         return type;
     }
 

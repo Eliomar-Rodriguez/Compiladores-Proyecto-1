@@ -28,6 +28,20 @@ public class FnSpecialTable {
         return element;
     }
 
+    //return if an array have a function with the same number of params
+    public boolean arrayHaveFunctions(int params, String arrayName){
+        FnSpecialElement element = null;
+        for (int i = 0; i < this.FnSpecialTable.size(); i++){
+            if (this.FnSpecialTable.get(i).getArrayName().equals(arrayName) & this.FnSpecialTable.get(i).getParamsNumber()==params){
+                return true;
+            }
+
+        }
+        return false;
+    }
+
+    //it might be neccesary to have a function that can identify if an array have functions related with the array
+
     public void imprimir() {
         System.out.println("****** ESTADO DE TABLA DE SÍMBOLOS PARA FUNCIONES ESPECIALES ******");
         if (!this.FnSpecialTable.isEmpty()) {

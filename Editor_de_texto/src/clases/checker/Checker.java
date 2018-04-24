@@ -21,6 +21,9 @@ public class Checker extends MonkeyParserBaseVisitor {
     private boolean returnInFunction; //para controlar si la sentencia return se encuentra dentro de una función
     private String arrayName;
     private boolean isInLet = false;
+    private boolean allowChangeInLet; //to control when isInLet var can change of value
+    private int specialIndex;
+    private String specialArrayName;
 
 
     /*
@@ -29,15 +32,21 @@ public class Checker extends MonkeyParserBaseVisitor {
      * -2 : algunas expresiones (como el if) retornarán -2  para validar que no se puedan usar con ciertos operadores
      */
 
+    /**
+     * if specialIndex value is equal to -1, it's indicated that the index is neutral or a operation
+     * in other case specialIndex is going to have the value;  -2 define that index is not usable
+     */
+
     private ArrayList<String> errorsList;
 
     public Checker(){
         this.errorsList= new ArrayList<String>();
         this.functionsTable= new FunctionsTable();
         this.identifierTable= new IdentifiersTable();
-
+        this.arrayName=null;
         this.fnSpecialTable = new FnSpecialTable();
-
+        this.allowChangeInLet=false;
+        this.specialIndex=-1;
         this.returnInFunction= false;
     }
 
@@ -55,7 +64,31 @@ public class Checker extends MonkeyParserBaseVisitor {
     }
 
 
+    public boolean evaluateCallSpecialFunction(String array,int index,String){
 
+    }
+
+    public int setSpecialIndex(String ArrayName,String text){
+        int res;
+
+        if (ArrayName==null){
+            return -2;
+        }
+        if (!ArrayName.equals("none")){
+            res=-2;
+        }
+        else{
+            try{
+                res= Integer.parseInt(text);
+            }
+            catch (NumberFormatException e){
+                res= -2;
+            }
+        }
+
+        return res;
+
+    }
 
 //Funciones para validar otros aspectos no relacionados con estructura sino con compatibilidad
 
@@ -168,10 +201,16 @@ public class Checker extends MonkeyParserBaseVisitor {
         * Check if there is a function declaration in a variable and add it to FunctionsTable
         * and increment the functions counter
         * */
+
+        this.specialIndex=-2;
+
         this.arrayName = ctx.ID().getText();
         this.isInLet = true;
         int type = (Integer) visit(ctx.expression());
-        this.isInLet = false;
+        if (allowChangeInLet==true){
+            this.isInLet=false;
+        }
+
         this.fnSpecialTable.imprimir();
 
         //si tiene la cadena fn y la expresion no es un array literal, entonces es una variable normal
@@ -220,7 +259,7 @@ public class Checker extends MonkeyParserBaseVisitor {
 
     @Override
     public Object visitReturnSt_Mky(MonkeyParser.ReturnSt_MkyContext ctx) {
-
+        this.specialIndex=-2;
         if (this.returnInFunction==false){
             this.errorsList.add("Error a return statement has to be inside a function. At line: " +
                     ctx.getStart().getLine()+" column: "+ctx.getStart().getCharPositionInLine());
@@ -236,6 +275,7 @@ public class Checker extends MonkeyParserBaseVisitor {
 
     @Override
     public Object visitExprSt_Mky(MonkeyParser.ExprSt_MkyContext ctx) {
+
         return visit(ctx.expression());
     }
 
@@ -467,13 +507,26 @@ public class Checker extends MonkeyParserBaseVisitor {
     @Override
     public Object visitElemExprElemAccess_Mky(MonkeyParser.ElemExprElemAccess_MkyContext ctx) {
         int type1= (Integer) visit(ctx.primitiveExpression());
-        int type2= (Integer) visit(ctx.elementAccess());
 
         if (type1 !=0){
             this.errorsList.add("Error: Can't index a value that is not an array or hash literal. At line:"+ ctx.getStart().getLine()+
                     " column: "+ ctx.getStart().getCharPositionInLine());
             return -1;
         }
+        else{
+            try{
+                this.specialArrayName= String.valueOf(ctx.primitiveExpression().getStart().getText());
+            }
+            //enter here if the convertion to string fails
+            catch (Exception e){
+                this.specialArrayName="none";
+            }
+        }
+
+
+        int type2= (Integer) visit(ctx.elementAccess());
+
+
         if (type2==-1){
             return -1;
         }
@@ -487,8 +540,10 @@ public class Checker extends MonkeyParserBaseVisitor {
         int resType=0;
         int type1= (Integer) visit(ctx.primitiveExpression());
 
+        this.setSpecialIndex(this.specialArrayName,ctx.primitiveExpression().getStart().getText());
+        this.evaluateCallSpecialFunction(this.specialArrayName,this.specialArrayName,ctx.getStart().getText());
         FuncTableElement elem = this.functionsTable.buscar(ctx.primitiveExpression().getText());
-        if (elem == null) {
+        if (elem == null && this.specialIndex==-2) {
             this.errorsList.add("Error: "+ ctx.primitiveExpression().getText()+" is not a function. At line:"+ ctx.primitiveExpression().getStart().getLine()+
                     " column: "+ ctx.primitiveExpression().getStart().getCharPositionInLine());
             return -1;
@@ -530,13 +585,24 @@ public class Checker extends MonkeyParserBaseVisitor {
 
     @Override
     public Object visitElemAccess_Mky(MonkeyParser.ElemAccess_MkyContext ctx) {
-        int type= (Integer) visit(ctx.expression());
-        if (type!=0 && type!=1){  //solo se permiten neutros o enteros para indexar arreglos
-            this.errorsList.add("Error: Array or Hash literal must be indexed through an Int or neutral value " +
-                    ".At line: "+ctx.expression().getStart().getLine()+" column: "+ctx.expression().getStart().getLine());
+        int type = (Integer) visit(ctx.expression());
 
-            type=-1; //error
-        }
+        /**
+         * save in a var the posible index to a function call.
+         */if (type != 0 && type != 1) {  //solo se permiten neutros o enteros para indexar arreglos
+            this.errorsList.add("Error: Array or Hash literal must be indexed through an Int or neutral value " +
+                    ".At line: " + ctx.expression().getStart().getLine() + " column: " + ctx.expression().getStart().getLine());
+
+            type = -1; //error
+        } else
+            {
+                try {
+                    this.specialIndex = Integer.parseInt(ctx.expression().getStart().getText());
+                } catch (NumberFormatException e) {
+                    this.specialIndex=-1;
+                    return type;
+                    }
+            }
         return type;
     }
 
@@ -568,11 +634,19 @@ public class Checker extends MonkeyParserBaseVisitor {
             return -1;
         }
 
+
+        //try to set value to the specialArrayName var, if elem is null the exception is catched
+        try{
+            this.specialArrayName= elem.getToken().getText();
+        }
+        catch (NullPointerException e){
+            this.specialArrayName="none";
+        }
+
         if (elem!= null) {
-            if (elem.getArrayOrHashLiteral()!=-1){
-                resType=elem.getArrayOrHashLiteral();
-            }
+
             resType= elem.getType();
+
         }
         if (elem2!=null){
             resType= elem2.getReturnType();
@@ -595,7 +669,31 @@ public class Checker extends MonkeyParserBaseVisitor {
     public Object visitPExprCallExpr_Mky(MonkeyParser.PExprCallExpr_MkyContext ctx) {
 
         //si se llama a la función ddentro del arreglo aqui cae; o entra
-        return (Integer) visit(ctx.expression());
+        int type= (Integer) visit(ctx.expression());
+
+        // if a function can be called
+        if ((type==0 || type==1) && this.specialIndex!=-2){
+
+            //if specialIndex value is -1, the array is access by a neutral or operation value, so is not possible
+            // to know what element of array is, so it's allowed if there is any function in the array
+            if (this.specialIndex!=-1 && !this.specialArrayName.equals("none")){
+                FnSpecialElement elem = this.fnSpecialTable.buscar(this.specialIndex,this.specialArrayName);
+                if (elem==null || elem.getParamsNumber()!=1){
+                    this.errorsList.add("Error: array "+ this.specialArrayName+" have not a function in the position "+this.specialIndex +" or" +
+                            " the function was expected more than one param"+
+                            ".At line: "+ctx.expression().getStart().getLine()+" column: "+ctx.expression().getStart().getCharPositionInLine());
+                }
+            }
+            else{
+                //here the called function always is going to have one param
+               if (this.fnSpecialTable.arrayHaveFunctions(1,this.specialArrayName)== false){
+                   this.errorsList.add("Error: array "+ this.specialArrayName+" have not a function that has one param"+
+                           ".At line: "+ctx.expression().getStart().getLine()+" column: "+ctx.expression().getStart().getCharPositionInLine());
+               }
+            }
+
+        }
+        return type;
 
     }
 
@@ -604,10 +702,7 @@ public class Checker extends MonkeyParserBaseVisitor {
         return (Integer) visit(ctx.arrayLiteral());
     }
 
-    /**********************************
-     *
-     * FALTA DEFINIR PARA LA FUNCIÓN PUSH SI RECIBE DOS PARAMETROS
-     */
+
     //retorna el valor de retorno de la función al evaluarlo
     public int manageDefaultFunctions(MonkeyParser.PExprArrayFunc_MkyContext ctx){
         int res=0;
@@ -802,15 +897,19 @@ public class Checker extends MonkeyParserBaseVisitor {
         this.globalCounterParams++;
         int temp=this.globalCounterParams; //respaldo del valor que tenían los parametros antes de visitar expresion
         int type1= (Integer) visit(ctx.expression());
+        String nameTemp= this.arrayName;
 
+        // if it's possible to call the function the index have value
+        this.specialIndex= this.setSpecialIndex(this.specialArrayName,ctx.expression().getStart().getText());
 
         if (isInLet){ // si esta en un let
             if(ctx.expression().toStringTree().contains("fn(") | ctx.expression().toStringTree().contains("fn (")){
-                this.fnSpecialTable.insert(globalCounterParams,arrayName,0);
+                this.fnSpecialTable.insert(globalCounterParams,nameTemp,0);
                 this.globalCounterParams = 0;
             }
+
         }
-        
+
         this.globalCounterParams=temp;
 
 
@@ -819,6 +918,8 @@ public class Checker extends MonkeyParserBaseVisitor {
             type2=(Integer) visit(ctx.moreExpressions());
 
         }
+        this.arrayName=null; //reset array name temp
+        this.allowChangeInLet=true;
         if (type1==-1 || type2==-1){
             return -1;
         }
@@ -840,26 +941,33 @@ public class Checker extends MonkeyParserBaseVisitor {
 
         int type=0; //tipo valido
         int temp=0;
-
+        String nameTemp= this.arrayName;
         for(int i = 0; i < ctx.expression().size(); i++){
             this.globalCounterParams++;
             temp=this.globalCounterParams; //respaldo del valor que tenían los parametros antes de visitar expresion
 
             type = (Integer) visit(ctx.expression(i));
 
-            if (type == -1){
-                return -1;
-            }
-
-            if (isInLet){ // si esta en un let
-                if(ctx.expression(i).toStringTree().contains("fn(") | ctx.expression(i).toStringTree().contains("fn (")){
-                    this.fnSpecialTable.insert(globalCounterParams,arrayName,i+1);
+            if(ctx.expression(i).toStringTree().contains("fn(") | ctx.expression(i).toStringTree().contains("fn (")){
+                if (this.isInLet){
+                    this.fnSpecialTable.insert(globalCounterParams,nameTemp,i+1);
                     this.globalCounterParams = 0;
                 }
+                else{
+                    this.errorsList.add("Error: . You can not declare a function in an array in it isn't in a let statement.At line: "+ctx.expression(i).getStart().getLine()+
+                            " column: "+ ctx.expression(i).getStart().getCharPositionInLine());
+                }
             }
+            else{
+                if (type == -1){
+                    return -1;
+                }
+            }
+
             this.globalCounterParams=temp; //reestablecimiento del valor previo de global counter params
 
         }
+
         this.fnSpecialTable.imprimir();
         return type;
     }

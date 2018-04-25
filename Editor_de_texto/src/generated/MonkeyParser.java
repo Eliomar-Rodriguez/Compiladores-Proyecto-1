@@ -124,6 +124,14 @@ public class MonkeyParser extends Parser {
 		}
 		public Prog_MkyContext(ProgramContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterProg_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitProg_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitProg_Mky(this);
 			else return visitor.visitChildren(this);
@@ -183,6 +191,14 @@ public class MonkeyParser extends Parser {
 		}
 		public St_let_MkyContext(StatementContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterSt_let_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitSt_let_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitSt_let_Mky(this);
 			else return visitor.visitChildren(this);
@@ -193,6 +209,14 @@ public class MonkeyParser extends Parser {
 			return getRuleContext(ExpressionStatementContext.class,0);
 		}
 		public St_expr_MkyContext(StatementContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterSt_expr_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitSt_expr_Mky(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitSt_expr_Mky(this);
@@ -205,6 +229,14 @@ public class MonkeyParser extends Parser {
 			return getRuleContext(ReturnStatementContext.class,0);
 		}
 		public St_return_MkyContext(StatementContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterSt_return_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitSt_return_Mky(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitSt_return_Mky(this);
@@ -297,6 +329,14 @@ public class MonkeyParser extends Parser {
 		public TerminalNode PyCOMA() { return getToken(MonkeyParser.PyCOMA, 0); }
 		public Lt_asign_MkyContext(LetStatementContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterLt_asign_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitLt_asign_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitLt_asign_Mky(this);
 			else return visitor.visitChildren(this);
@@ -382,6 +422,14 @@ public class MonkeyParser extends Parser {
 		public TerminalNode PyCOMA() { return getToken(MonkeyParser.PyCOMA, 0); }
 		public ReturnSt_MkyContext(ReturnStatementContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterReturnSt_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitReturnSt_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitReturnSt_Mky(this);
 			else return visitor.visitChildren(this);
@@ -462,6 +510,14 @@ public class MonkeyParser extends Parser {
 		}
 		public TerminalNode PyCOMA() { return getToken(MonkeyParser.PyCOMA, 0); }
 		public ExprSt_MkyContext(ExpressionStatementContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterExprSt_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitExprSt_Mky(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitExprSt_Mky(this);
@@ -546,6 +602,14 @@ public class MonkeyParser extends Parser {
 		}
 		public Expr_MkyContext(ExpressionContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterExpr_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitExpr_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitExpr_Mky(this);
 			else return visitor.visitChildren(this);
@@ -600,6 +664,14 @@ public class MonkeyParser extends Parser {
 		}
 		public CompMenorIg_MkyContext(ComparisonContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterCompMenorIg_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitCompMenorIg_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitCompMenorIg_Mky(this);
 			else return visitor.visitChildren(this);
@@ -617,6 +689,14 @@ public class MonkeyParser extends Parser {
 			return getRuleContext(AdditionExpressionContext.class,i);
 		}
 		public CompIgComp_MkyContext(ComparisonContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterCompIgComp_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitCompIgComp_Mky(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitCompIgComp_Mky(this);
@@ -636,6 +716,14 @@ public class MonkeyParser extends Parser {
 		}
 		public CompMenor_MkyContext(ComparisonContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterCompMenor_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitCompMenor_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitCompMenor_Mky(this);
 			else return visitor.visitChildren(this);
@@ -654,6 +742,14 @@ public class MonkeyParser extends Parser {
 		}
 		public CompMayor_MkyContext(ComparisonContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterCompMayor_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitCompMayor_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitCompMayor_Mky(this);
 			else return visitor.visitChildren(this);
@@ -671,6 +767,14 @@ public class MonkeyParser extends Parser {
 			return getRuleContext(AdditionExpressionContext.class,i);
 		}
 		public CompMayorIg_MkyContext(ComparisonContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterCompMayorIg_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitCompMayorIg_Mky(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitCompMayorIg_Mky(this);
@@ -829,6 +933,14 @@ public class MonkeyParser extends Parser {
 		}
 		public AddExpr_MkyContext(AdditionExpressionContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterAddExpr_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitAddExpr_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitAddExpr_Mky(this);
 			else return visitor.visitChildren(this);
@@ -883,6 +995,14 @@ public class MonkeyParser extends Parser {
 		}
 		public AddFactSub_MkyContext(AdditionFactorContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterAddFactSub_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitAddFactSub_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitAddFactSub_Mky(this);
 			else return visitor.visitChildren(this);
@@ -900,6 +1020,14 @@ public class MonkeyParser extends Parser {
 			return getRuleContext(MultiplicationExpressionContext.class,i);
 		}
 		public AddFactSum_MkyContext(AdditionFactorContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterAddFactSum_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitAddFactSum_Mky(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitAddFactSum_Mky(this);
@@ -992,6 +1120,14 @@ public class MonkeyParser extends Parser {
 		}
 		public MultExpr_MkyContext(MultiplicationExpressionContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterMultExpr_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitMultExpr_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitMultExpr_Mky(this);
 			else return visitor.visitChildren(this);
@@ -1046,6 +1182,14 @@ public class MonkeyParser extends Parser {
 		}
 		public MultFactMul_MkyContext(MultiplicationFactorContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterMultFactMul_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitMultFactMul_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitMultFactMul_Mky(this);
 			else return visitor.visitChildren(this);
@@ -1063,6 +1207,14 @@ public class MonkeyParser extends Parser {
 			return getRuleContext(ElementExpressionContext.class,i);
 		}
 		public MultFactDiv_MkyContext(MultiplicationFactorContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterMultFactDiv_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitMultFactDiv_Mky(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitMultFactDiv_Mky(this);
@@ -1155,6 +1307,14 @@ public class MonkeyParser extends Parser {
 		}
 		public ElemExprElemAccess_MkyContext(ElementExpressionContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterElemExprElemAccess_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitElemExprElemAccess_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitElemExprElemAccess_Mky(this);
 			else return visitor.visitChildren(this);
@@ -1169,6 +1329,14 @@ public class MonkeyParser extends Parser {
 		}
 		public ElemExprCallExpr_MkyContext(ElementExpressionContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterElemExprCallExpr_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitElemExprCallExpr_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitElemExprCallExpr_Mky(this);
 			else return visitor.visitChildren(this);
@@ -1179,6 +1347,14 @@ public class MonkeyParser extends Parser {
 			return getRuleContext(PrimitiveExpressionContext.class,0);
 		}
 		public ElemExprPExpr_MkyContext(ElementExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterElemExprPExpr_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitElemExprPExpr_Mky(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitElemExprPExpr_Mky(this);
@@ -1258,6 +1434,14 @@ public class MonkeyParser extends Parser {
 		public TerminalNode PDER() { return getToken(MonkeyParser.PDER, 0); }
 		public ElemAccess_MkyContext(ElementAccessContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterElemAccess_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitElemAccess_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitElemAccess_Mky(this);
 			else return visitor.visitChildren(this);
@@ -1327,6 +1511,14 @@ public class MonkeyParser extends Parser {
 		public TerminalNode PDER() { return getToken(MonkeyParser.PDER, 0); }
 		public CallExpr_MkyContext(CallExpressionContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterCallExpr_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitCallExpr_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitCallExpr_Mky(this);
 			else return visitor.visitChildren(this);
@@ -1376,6 +1568,14 @@ public class MonkeyParser extends Parser {
 		}
 		public PExprFuncDecl_MkyContext(PrimitiveExpressionContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterPExprFuncDecl_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitPExprFuncDecl_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitPExprFuncDecl_Mky(this);
 			else return visitor.visitChildren(this);
@@ -1385,6 +1585,14 @@ public class MonkeyParser extends Parser {
 		public TerminalNode FALSE() { return getToken(MonkeyParser.FALSE, 0); }
 		public PExprFALSE_MkyContext(PrimitiveExpressionContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterPExprFALSE_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitPExprFALSE_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitPExprFALSE_Mky(this);
 			else return visitor.visitChildren(this);
@@ -1393,6 +1601,14 @@ public class MonkeyParser extends Parser {
 	public static class PExprTRUE_MkyContext extends PrimitiveExpressionContext {
 		public TerminalNode TRUE() { return getToken(MonkeyParser.TRUE, 0); }
 		public PExprTRUE_MkyContext(PrimitiveExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterPExprTRUE_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitPExprTRUE_Mky(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitPExprTRUE_Mky(this);
@@ -1410,6 +1626,14 @@ public class MonkeyParser extends Parser {
 		public TerminalNode PDER() { return getToken(MonkeyParser.PDER, 0); }
 		public PExprArrayFunc_MkyContext(PrimitiveExpressionContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterPExprArrayFunc_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitPExprArrayFunc_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitPExprArrayFunc_Mky(this);
 			else return visitor.visitChildren(this);
@@ -1421,6 +1645,14 @@ public class MonkeyParser extends Parser {
 		}
 		public PExprIfExpr_MkyContext(PrimitiveExpressionContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterPExprIfExpr_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitPExprIfExpr_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitPExprIfExpr_Mky(this);
 			else return visitor.visitChildren(this);
@@ -1429,6 +1661,14 @@ public class MonkeyParser extends Parser {
 	public static class PExprID_MkyContext extends PrimitiveExpressionContext {
 		public TerminalNode ID() { return getToken(MonkeyParser.ID, 0); }
 		public PExprID_MkyContext(PrimitiveExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterPExprID_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitPExprID_Mky(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitPExprID_Mky(this);
@@ -1441,6 +1681,14 @@ public class MonkeyParser extends Parser {
 		}
 		public PExprPrint_MkyContext(PrimitiveExpressionContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterPExprPrint_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitPExprPrint_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitPExprPrint_Mky(this);
 			else return visitor.visitChildren(this);
@@ -1452,6 +1700,14 @@ public class MonkeyParser extends Parser {
 		}
 		public PExprArrayLit_MkyContext(PrimitiveExpressionContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterPExprArrayLit_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitPExprArrayLit_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitPExprArrayLit_Mky(this);
 			else return visitor.visitChildren(this);
@@ -1460,6 +1716,14 @@ public class MonkeyParser extends Parser {
 	public static class PExprInt_MkyContext extends PrimitiveExpressionContext {
 		public TerminalNode INTEGER() { return getToken(MonkeyParser.INTEGER, 0); }
 		public PExprInt_MkyContext(PrimitiveExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterPExprInt_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitPExprInt_Mky(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitPExprInt_Mky(this);
@@ -1472,6 +1736,14 @@ public class MonkeyParser extends Parser {
 		}
 		public PExprHashLit_MkyContext(PrimitiveExpressionContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterPExprHashLit_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitPExprHashLit_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitPExprHashLit_Mky(this);
 			else return visitor.visitChildren(this);
@@ -1480,6 +1752,14 @@ public class MonkeyParser extends Parser {
 	public static class PExprStrMkyContext extends PrimitiveExpressionContext {
 		public TerminalNode STRING() { return getToken(MonkeyParser.STRING, 0); }
 		public PExprStrMkyContext(PrimitiveExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterPExprStrMky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitPExprStrMky(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitPExprStrMky(this);
@@ -1493,6 +1773,14 @@ public class MonkeyParser extends Parser {
 		}
 		public TerminalNode PDER() { return getToken(MonkeyParser.PDER, 0); }
 		public PExprCallExpr_MkyContext(PrimitiveExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterPExprCallExpr_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitPExprCallExpr_Mky(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitPExprCallExpr_Mky(this);
@@ -1647,6 +1935,14 @@ public class MonkeyParser extends Parser {
 		public TerminalNode LAST() { return getToken(MonkeyParser.LAST, 0); }
 		public ArrayFuncLast_MkyContext(ArrayFunctionsContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterArrayFuncLast_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitArrayFuncLast_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitArrayFuncLast_Mky(this);
 			else return visitor.visitChildren(this);
@@ -1655,6 +1951,14 @@ public class MonkeyParser extends Parser {
 	public static class ArrayFuncRest_MkyContext extends ArrayFunctionsContext {
 		public TerminalNode REST() { return getToken(MonkeyParser.REST, 0); }
 		public ArrayFuncRest_MkyContext(ArrayFunctionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterArrayFuncRest_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitArrayFuncRest_Mky(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitArrayFuncRest_Mky(this);
@@ -1665,6 +1969,14 @@ public class MonkeyParser extends Parser {
 		public TerminalNode FIRST() { return getToken(MonkeyParser.FIRST, 0); }
 		public ArrayFuncFirst_MkyContext(ArrayFunctionsContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterArrayFuncFirst_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitArrayFuncFirst_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitArrayFuncFirst_Mky(this);
 			else return visitor.visitChildren(this);
@@ -1674,6 +1986,14 @@ public class MonkeyParser extends Parser {
 		public TerminalNode PUSH() { return getToken(MonkeyParser.PUSH, 0); }
 		public ArrayFuncPush_MkyContext(ArrayFunctionsContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterArrayFuncPush_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitArrayFuncPush_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitArrayFuncPush_Mky(this);
 			else return visitor.visitChildren(this);
@@ -1682,6 +2002,14 @@ public class MonkeyParser extends Parser {
 	public static class ArrayFuncLen_MkyContext extends ArrayFunctionsContext {
 		public TerminalNode LEN() { return getToken(MonkeyParser.LEN, 0); }
 		public ArrayFuncLen_MkyContext(ArrayFunctionsContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterArrayFuncLen_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitArrayFuncLen_Mky(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitArrayFuncLen_Mky(this);
@@ -1770,6 +2098,14 @@ public class MonkeyParser extends Parser {
 		public TerminalNode CDER() { return getToken(MonkeyParser.CDER, 0); }
 		public ArrayLit_MkyContext(ArrayLiteralContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterArrayLit_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitArrayLit_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitArrayLit_Mky(this);
 			else return visitor.visitChildren(this);
@@ -1825,6 +2161,14 @@ public class MonkeyParser extends Parser {
 		}
 		public FuncLit_MkyContext(FunctionLiteralContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterFuncLit_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitFuncLit_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitFuncLit_Mky(this);
 			else return visitor.visitChildren(this);
@@ -1879,6 +2223,14 @@ public class MonkeyParser extends Parser {
 		}
 		public FuncParams_MkyContext(FunctionParametersContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterFuncParams_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitFuncParams_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitFuncParams_Mky(this);
 			else return visitor.visitChildren(this);
@@ -1930,6 +2282,14 @@ public class MonkeyParser extends Parser {
 			return getToken(MonkeyParser.ID, i);
 		}
 		public MoreIdentifiers_MkyContext(MoreIdentifiersContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterMoreIdentifiers_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitMoreIdentifiers_Mky(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitMoreIdentifiers_Mky(this);
@@ -1996,6 +2356,14 @@ public class MonkeyParser extends Parser {
 		public TerminalNode LDER() { return getToken(MonkeyParser.LDER, 0); }
 		public HashLit_MkyContext(HashLiteralContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterHashLit_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitHashLit_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitHashLit_Mky(this);
 			else return visitor.visitChildren(this);
@@ -2050,6 +2418,14 @@ public class MonkeyParser extends Parser {
 		}
 		public TerminalNode DOSPUN() { return getToken(MonkeyParser.DOSPUN, 0); }
 		public HashCont_MkyContext(HashContentContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterHashCont_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitHashCont_Mky(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitHashCont_Mky(this);
@@ -2106,6 +2482,14 @@ public class MonkeyParser extends Parser {
 			return getRuleContext(HashContentContext.class,i);
 		}
 		public MoreHashCont_MkyContext(MoreHashContentContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterMoreHashCont_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitMoreHashCont_Mky(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitMoreHashCont_Mky(this);
@@ -2164,6 +2548,14 @@ public class MonkeyParser extends Parser {
 	public static class ExprListEmpty_MkyContext extends ExpressionListContext {
 		public ExprListEmpty_MkyContext(ExpressionListContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterExprListEmpty_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitExprListEmpty_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitExprListEmpty_Mky(this);
 			else return visitor.visitChildren(this);
@@ -2177,6 +2569,14 @@ public class MonkeyParser extends Parser {
 			return getRuleContext(MoreExpressionsContext.class,0);
 		}
 		public ExprList_MkyContext(ExpressionListContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterExprList_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitExprList_Mky(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitExprList_Mky(this);
@@ -2262,6 +2662,14 @@ public class MonkeyParser extends Parser {
 		}
 		public MoreExpr_MkyContext(MoreExpressionsContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterMoreExpr_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitMoreExpr_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitMoreExpr_Mky(this);
 			else return visitor.visitChildren(this);
@@ -2325,6 +2733,14 @@ public class MonkeyParser extends Parser {
 		public TerminalNode PDER() { return getToken(MonkeyParser.PDER, 0); }
 		public PrintExpr_MkyContext(PrintExpressionContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterPrintExpr_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitPrintExpr_Mky(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitPrintExpr_Mky(this);
 			else return visitor.visitChildren(this);
@@ -2383,6 +2799,14 @@ public class MonkeyParser extends Parser {
 		}
 		public TerminalNode ELSE() { return getToken(MonkeyParser.ELSE, 0); }
 		public IfExpr_MkyContext(IfExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterIfExpr_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitIfExpr_Mky(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitIfExpr_Mky(this);
@@ -2488,6 +2912,14 @@ public class MonkeyParser extends Parser {
 			return getRuleContext(StatementContext.class,i);
 		}
 		public BlockSt_MkyContext(BlockStatementContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).enterBlockSt_Mky(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MonkeyParserListener ) ((MonkeyParserListener)listener).exitBlockSt_Mky(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitBlockSt_Mky(this);

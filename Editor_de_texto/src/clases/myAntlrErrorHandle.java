@@ -1,5 +1,6 @@
 package clases;
 
+import generated.MonkeyScanner;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
@@ -17,6 +18,7 @@ public class myAntlrErrorHandle extends BaseErrorListener {
     public boolean StringError;
     public String exceptionMessage;
 
+
     public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol,
                             int line, int charPositionInLine,
                             String msg, RecognitionException e) throws RecognitionException {
@@ -26,6 +28,7 @@ public class myAntlrErrorHandle extends BaseErrorListener {
 
         String sourceName;
         char quote='"';
+
         if (recognizer.getGrammarFileName().equals(this.scannerFile)){
             sourceName="Scanner error ";
         }

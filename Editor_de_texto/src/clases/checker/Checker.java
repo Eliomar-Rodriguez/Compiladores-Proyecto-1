@@ -646,41 +646,16 @@ public class Checker extends MonkeyParserBaseVisitor {
             this.errorsList.add("Error: Array or Hash literal must be indexed through an Int or neutral value " +
                     ".At line: " + ctx.expression().getStart().getLine() + " column: " + ctx.expression().getStart().getLine());
             return -1; //error
-        }
 
-         //obtener indice y cantidad de parametros enviados a la funcion especial, considerar que una expresion como está
+        }
+        //obtener indice y cantidad de parametros enviados a la funcion especial, considerar que una expresion como está
         // 1+2; se tomara como valida si existe alguna posición en el arreglo que tenga una funcion
         //lo mismo aplica para el tipo neutro
-<<<<<<< HEAD
-        else {
-            this.specialIndex = this.setSpecialIndex(this.specialArrayName,ctx.expression().getText());
-            if (ctx.expressionList() != null){
-                //special function returns -1 if the call have a mistake
-
-                if (ctx.expressionList().getChildCount()> 0){
-                    int temp=globalCounterParams;  //por si está siendo utilizado en algún otro lugar
-                    this.globalCounterParams=0;
-                    type= (Integer) visit (ctx.expressionList());
-                    // if there are problems with the function call
-                    if (type==-1){
-                        this.errorsList.add("Error: with types or functions parameters.At line:"+ ctx.expressionList().getStart().getLine()+
-                                " column: "+ ctx.expressionList().getStart().getCharPositionInLine());
-                    }
-                    else{
-                        type=this.evaluateSpecialFunctionCall(this.specialArrayName,this.specialIndex,this.globalCounterParams ,ctx.expressionList());
-                    }
-                    this.globalCounterParams=temp; //reasignación del valor previo que poseía.
-                }
-                else{
-                    type= this.evaluateSpecialFunctionCall(this.specialArrayName,this.specialIndex,0,ctx.expressionList());
-                }
-            }
-        }
-=======
         this.specialIndex = this.setSpecialIndex(this.specialArrayName,ctx.expression().getText());
 
         return type;
     }
+
 
     @Override
     public Object visitSpecialCall_Mky(MonkeyParser.SpecialCall_MkyContext ctx) {
@@ -704,8 +679,6 @@ public class Checker extends MonkeyParserBaseVisitor {
         else{
             type= this.evaluateSpecialFunctionCall(this.specialArrayName,this.specialIndex,0,ctx.expressionList());
         }
-
->>>>>>> 1cc48528a439d15e7d3de24ab3f2cd3421c78f5f
         return type;
 
     }

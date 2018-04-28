@@ -98,7 +98,7 @@ public class TextEditorController extends WindowAdapter implements ActionListene
                         " en el proceso","Alerta de sistema", JOptionPane.ERROR_MESSAGE);
     }
 
-    public void printSemanticErros(ArrayList<String> errors,JTextArea errorArea){
+    public void printSemanticError(ArrayList<String> errors,JTextArea errorArea){
         errorArea.setForeground(RED);
         int size=errors.size();
         for (int i = 0; i < size; i++) {
@@ -110,6 +110,7 @@ public class TextEditorController extends WindowAdapter implements ActionListene
     }
 
     public void execute(JTextArea errorArea){
+        this.saveFileChanges();
         this.editor.errorsArea.setText("");
         this.editor.executionArea.setText("");
         this.executeState = false;
@@ -118,7 +119,7 @@ public class TextEditorController extends WindowAdapter implements ActionListene
 
             //check semantic errros
             if (this.model.getChecker().getErrorsList().size()>0){
-                this.printSemanticErros(this.model.getChecker().getErrorsList(),this.editor.errorsArea);
+                this.printSemanticError(this.model.getChecker().getErrorsList(),this.editor.errorsArea);
 
             }
             else{
@@ -193,7 +194,8 @@ public class TextEditorController extends WindowAdapter implements ActionListene
                 PrintWriter printWriter = new PrintWriter(currentFile);
                 printWriter.write(editor.display.getText());
                 printWriter.close();
-                JOptionPane.showMessageDialog(editor.getRootPane(), "Saved", "Done", JOptionPane.INFORMATION_MESSAGE);
+                this.editor.executionArea.setText("");
+                //JOptionPane.showMessageDialog(editor.getRootPane(), "Saved", "Done", JOptionPane.INFORMATION_MESSAGE);
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(EditorFrame.class.getName()).log(Level.SEVERE, null, ex);
             }

@@ -144,11 +144,14 @@ public class EditorFrame extends javax.swing.JFrame {
         display.setRows(5);
         editorPanel.setViewportView(display);
 
+        //executionPanel.setNextFocusableComponent(errorsArea);
+
         executionArea.setColumns(20);
         executionArea.setRows(5);
         execution.setViewportView(executionArea);
 
         executionPanel.addTab("Execute", execution);
+        execution.setViewportView(errorsArea);
 
         errorsArea.setColumns(20);
         errorsArea.setRows(5);

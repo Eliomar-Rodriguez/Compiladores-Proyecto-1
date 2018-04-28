@@ -260,7 +260,7 @@ public class Checker extends MonkeyParserBaseVisitor {
 
         this.specialIndex=-2;
 
-        this.arrayName = ctx.ID().getText();
+        this.arrayName = ctx.ID().getText().toLowerCase();
         this.isInLet = true;
         int type = (Integer) visit(ctx.expression());
         if (allowChangeInLet==true){
@@ -272,8 +272,8 @@ public class Checker extends MonkeyParserBaseVisitor {
         //si tiene la cadena fn y la expresion no es un array literal, entonces es una variable normal
         if ( type !=4 && (ctx.expression().toStringTree().contains("fn(") || ctx.expression().toStringTree().contains("fn (")) ){
             // check if this exist in the identifiers table
-            if (this.identifierTable.buscar(ctx.ID().getText())!=null){
-                this.errorsList.add("Error: The identifier " + ctx.ID().getText() + " it's already declared like a varaible" +
+            if (this.identifierTable.buscar(ctx.ID().getText().toLowerCase())!=null){
+                this.errorsList.add("Error: The identifier " + ctx.ID().getText().toLowerCase() + " it's already declared like a varaible" +
                         " and can't be change to function. At line: " +
                         ctx.getStart().getLine() + " column: " + ctx.getStart().getCharPositionInLine());
                 return -1;
@@ -631,14 +631,12 @@ public class Checker extends MonkeyParserBaseVisitor {
     @Override
     public Object visitElemAccess_Mky(MonkeyParser.ElemAccess_MkyContext ctx) {
 
-        System.out.println("Entro lml");
         int type = (Integer) visit(ctx.expression());
 
         if (type != 0 && type != 1) {  //solo se permiten neutros o enteros para indexar arreglos
             this.errorsList.add("Error: Array or Hash literal must be indexed through an Int or neutral value " +
                     ".At line: " + ctx.expression().getStart().getLine() + " column: " + ctx.expression().getStart().getLine());
             return -1; //error
-
         }
 
          //obtener indice y cantidad de parametros enviados a la funcion especial, considerar que una expresion como está
@@ -646,33 +644,28 @@ public class Checker extends MonkeyParserBaseVisitor {
         //lo mismo aplica para el tipo neutro
         else {
             this.specialIndex = this.setSpecialIndex(this.specialArrayName,ctx.expression().getText());
+            if (ctx.expressionList() != null){
+                //special function returns -1 if the call have a mistake
 
-                if (ctx.expressionList() != null){
-                    System.out.println("llamada especial con hijos= "+ ctx.expressionList().getChildCount());
-                    //special function returns -1 if the call have a mistake
-                    if (ctx.expressionList().getChildCount()> 0){
-                        int temp=globalCounterParams;  //por si está siendo utilizado en algún otro lugar
-                        this.globalCounterParams=0;
-                        type= (Integer) visit (ctx.expressionList());
-                        // if there are problems with the function call
-                        if (type==-1){
-                            this.errorsList.add("Error: with types or functions parameters.At line:"+ ctx.expressionList().getStart().getLine()+
-                                    " column: "+ ctx.expressionList().getStart().getCharPositionInLine());
-                        }
-                        else{
-                            type=this.evaluateSpecialFunctionCall(this.specialArrayName,this.specialIndex,this.globalCounterParams ,ctx.expressionList());
-                        }
-                        this.globalCounterParams=temp; //reasignación del valor previo que poseía.
+                if (ctx.expressionList().getChildCount()> 0){
+                    int temp=globalCounterParams;  //por si está siendo utilizado en algún otro lugar
+                    this.globalCounterParams=0;
+                    type= (Integer) visit (ctx.expressionList());
+                    // if there are problems with the function call
+                    if (type==-1){
+                        this.errorsList.add("Error: with types or functions parameters.At line:"+ ctx.expressionList().getStart().getLine()+
+                                " column: "+ ctx.expressionList().getStart().getCharPositionInLine());
                     }
                     else{
-                        type= this.evaluateSpecialFunctionCall(this.specialArrayName,this.specialIndex,0,ctx.expressionList());
+                        type=this.evaluateSpecialFunctionCall(this.specialArrayName,this.specialIndex,this.globalCounterParams ,ctx.expressionList());
                     }
-
+                    this.globalCounterParams=temp; //reasignación del valor previo que poseía.
                 }
-
+                else{
+                    type= this.evaluateSpecialFunctionCall(this.specialArrayName,this.specialIndex,0,ctx.expressionList());
+                }
+            }
         }
-
-
         return type;
     }
 
@@ -731,7 +724,6 @@ public class Checker extends MonkeyParserBaseVisitor {
 
         //si se llama a la función ddentro del arreglo aqui cae; o entra
         int type= (Integer) visit(ctx.expression());
-
         // if a function can be called
         if (type==-1){
             this.errorsList.add("Error: Types error in the expression "+ ctx.getStart().getText()+" .At line: "+
@@ -943,21 +935,24 @@ public class Checker extends MonkeyParserBaseVisitor {
         String nameTemp= this.arrayName;
         int type1= (Integer) visit(ctx.expression());
 
+        if(type1 == -2){
+            this.errorsList.add("Error: . You can not declare a statement in an array. At line: "+ctx.expression().getStart().getLine()+
+                    " column: "+ ctx.expression().getStart().getCharPositionInLine());
+            return -1;
+        }
+        // si contiene a una fucion y está en un let
+        if(ctx.expression().toStringTree().contains("fn(") | ctx.expression().toStringTree().contains("fn (")){
 
-            // si contiene a una fucion y está en un let
-            if(ctx.expression().toStringTree().contains("fn(") | ctx.expression().toStringTree().contains("fn (")){
-
-                if (this.isInLet){
-                    this.fnSpecialTable.insert(globalCounterParams,nameTemp,0);
-                    this.globalCounterParams = 0;
-                }
-                else{
-                    this.errorsList.add("Error: . You can not declare a function in an array if it isn't in a let statement.At line: "+ctx.expression().getStart().getLine()+
-                            " column: "+ ctx.expression().getStart().getCharPositionInLine());
-                }
-
+            if (this.isInLet){
+                this.fnSpecialTable.insert(globalCounterParams,nameTemp,0);
+                this.globalCounterParams = 0;
+            }
+            else{
+                this.errorsList.add("Error: . You can not declare a function in an array if it isn't in a let statement.At line: "+ctx.expression().getStart().getLine()+
+                        " column: "+ ctx.expression().getStart().getCharPositionInLine());
             }
 
+        }
 
         this.arrayName=nameTemp; //restart value
         this.globalCounterParams=temp;
@@ -965,7 +960,10 @@ public class Checker extends MonkeyParserBaseVisitor {
         int type2=0;
         if (ctx.moreExpressions().getChildCount()>0){
             type2=(Integer) visit(ctx.moreExpressions());
-
+        }
+        if(type2 == -2){
+            this.errorsList.add("Error: . You can not declare a statement in an array.");
+            return -1;
         }
         this.arrayName=null; //reset array name temp
         this.allowChangeInLet=true;
@@ -996,6 +994,11 @@ public class Checker extends MonkeyParserBaseVisitor {
             temp=this.globalCounterParams; //respaldo del valor que tenían los parametros antes de visitar expresion
 
             type = (Integer) visit(ctx.expression(i));
+            if(type == -2){
+                this.errorsList.add("Error: . You can not declare a statement in an array. At line: "+ctx.expression().get(i).getStart().getLine()+
+                        " column: "+ ctx.expression().get(i).getStart().getCharPositionInLine());
+                return -1;
+            }
 
             if(ctx.expression(i).toStringTree().contains("fn(") | ctx.expression(i).toStringTree().contains("fn (")){
                 if (this.isInLet){

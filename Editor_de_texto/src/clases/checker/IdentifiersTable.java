@@ -27,7 +27,7 @@ public class IdentifiersTable{
         IdentifierElement element = new IdentifierElement(declaracion,actLevel,tkn,type,arrayOrHash);
         int j = 0;
         while (j < this.IDs_table.size() && this.IDs_table.get(j).getLevel() == actLevel) {
-            if (this.IDs_table.get(j).getToken().getText().equals(tkn.getText())) {
+            if (this.IDs_table.get(j).getToken().getText().equals(tkn.getText().toLowerCase())) {
                 return null;
             }
             j++;

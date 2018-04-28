@@ -39,7 +39,7 @@ public class FunctionsTable {
         FuncTableElement elem = new FuncTableElement(this.currentLevel,token,paramsNumber,returnType,declaracion);
         int j = 0;
         while (j < this.table.size() && this.table.get(j).getLevel() == this.currentLevel) {
-            if (this.table.get(j).getToken().getText().equals(token.getText())) {
+            if (this.table.get(j).getToken().getText().equals(token.getText().toLowerCase())) {
                 return null;
             }
             j++;

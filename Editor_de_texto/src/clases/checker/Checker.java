@@ -15,7 +15,7 @@ public class Checker extends MonkeyParserBaseVisitor {
     private IdentifiersTable identifierTable;
     private FnSpecialTable fnSpecialTable;
     private int haveReturn=0;
-    private int globalCounterFunctions = 0;
+    private int finalCounterParams;
     private int globalCounterReturn = 0;
     private int globalCounterParams = 0;
     private int globalCounterIdentifiers = 0;
@@ -25,6 +25,13 @@ public class Checker extends MonkeyParserBaseVisitor {
     private boolean allowChangeInLet; //to control when isInLet var can change of value
     private int specialIndex;
     private String specialArrayName;
+
+    /*
+    when the program goes to a function declaration, this vars increase in one number,
+    if functionInsideOther's value is 1 or more it means that that there are functions inside
+    a function
+    */
+    private int functionInsideOther;
 
 
     /*
@@ -51,6 +58,8 @@ public class Checker extends MonkeyParserBaseVisitor {
         this.returnInFunction= false;
         this.specialArrayName="none";
         this.specialIndex=-2;
+        this.functionInsideOther=-1;
+        this.finalCounterParams=0;
     }
 
     public ArrayList<String> getErrorsList() {
@@ -274,15 +283,14 @@ public class Checker extends MonkeyParserBaseVisitor {
             }
             /* haveReturn is a var that have a value 0 if the function have return statement, -1 if not
             */
-            FuncTableElement function = functionsTable.insert(ctx.ID().getSymbol(),globalCounterParams,this.haveReturn,ctx);
-            if(function != null) {
-                globalCounterFunctions++;
-            }
-            else {
+            FuncTableElement function = functionsTable.insert(ctx.ID().getSymbol(),this.finalCounterParams,this.haveReturn,ctx);
+            if(function == null)
+            {
                 this.errorsList.add("Error: The function " + ctx.ID().getText() + " it's already declared. At line: " +
                         ctx.getStart().getLine() + " column: " + ctx.getStart().getCharPositionInLine());
                 return -1;
             }
+
             this.functionsTable.imprimir();
         }
         else{
@@ -852,18 +860,41 @@ public class Checker extends MonkeyParserBaseVisitor {
     public Object visitFuncLit_Mky(MonkeyParser.FuncLit_MkyContext ctx) {
         int res=-1;
         int temp= this.globalCounterReturn;
-        this.globalCounterReturn=0;
+        //update function inside other counter
+        this.functionInsideOther++;
+
         this.globalCounterReturn=0; // reestablecer el contador
 
         /****************************************************
          ELIOMAR, ARREGLE ESTO PARA QUE RETORNE -1 SI OCURRE UN ERROR, EN LOS PARÁMETROS O
          EN EL BLOCK STATEMENT
          ****************************************************/
+        this.identifierTable.OpenScope();
+        this.functionsTable.openScope();
+
         visit(ctx.functionParameters());
+        // backup the value of global counter params
+        int paramsTemp=this.globalCounterParams;
+
         this.returnInFunction=true; //se permite dentro del blockstatement la sentencia return
         visit(ctx.blockStatement());
-        this.returnInFunction=false;  //no se permite dentro de la sentencia el estatuto return
+        if (this.functionInsideOther==0){
+            this.returnInFunction=false;  //no se permite dentro de la sentencia el estatuto return
+        }
+
+        //set the final counter params with the backup value
+        this.finalCounterParams=paramsTemp;
+
+        //reset the global counter params value
+        this.globalCounterParams= paramsTemp;
+
+        //reset value of function inside other counter
+        this.functionInsideOther--;
+
         this.identifierTable.imprimir();
+        this.functionsTable.imprimir();
+        this.identifierTable.closeScope();
+        this.functionsTable.closeScope();
 
         res=0;
         if (this.globalCounterReturn>0){
@@ -1049,24 +1080,29 @@ public class Checker extends MonkeyParserBaseVisitor {
     @Override
     public Object visitIfExpr_Mky(MonkeyParser.IfExpr_MkyContext ctx) {
         visit(ctx.expression());
-        //podría requerirse abrir un nivel aquí
-        for(int i = 0; i < ctx.blockStatement().size(); i++)
+        //requerido abrir un nivel aquí
+        for(int i = 0; i < ctx.blockStatement().size(); i++) {
+            this.identifierTable.OpenScope();
+            this.functionsTable.openScope();
             visit(ctx.blockStatement(i));
+            this.identifierTable.closeScope();
+            this.functionsTable.closeScope();
+            this.identifierTable.imprimir();
+            this.functionsTable.imprimir();
 
+        }
         return -2;
     }
 
     @Override
     public Object visitBlockSt_Mky(MonkeyParser.BlockSt_MkyContext ctx) {
-        this.identifierTable.OpenScope();
-        this.functionsTable.openScope();
+
 
         for(MonkeyParser.StatementContext stm : ctx.statement()){
             visit(stm);
         }
         this.identifierTable.imprimir();
-        this.identifierTable.closeScope();
-        this.functionsTable.closeScope();
+
 
         return -2;
     }

@@ -90,7 +90,8 @@ public class TextEditorController extends WindowAdapter implements ActionListene
     }
 
     public void showException(JTextArea errorArea,Exception exception){
-
+        //change to the errros panel
+        this.editor.executionPanel.setSelectedIndex(1);
         errorArea.setForeground(RED);
         StringWriter stackTraceWriter = new StringWriter();
         exception.printStackTrace(new PrintWriter(stackTraceWriter));
@@ -101,6 +102,8 @@ public class TextEditorController extends WindowAdapter implements ActionListene
 
     public void printSemanticErros(ArrayList<String> errors,JTextArea errorArea){
         errorArea.setForeground(RED);
+        //change to the errros panel
+        this.editor.executionPanel.setSelectedIndex(1);
         int size=errors.size();
         for (int i = 0; i < size; i++) {
             this.editor.errorsArea.append(errors.get(i));
@@ -321,6 +324,8 @@ public class TextEditorController extends WindowAdapter implements ActionListene
                 this.editor.display.setFont(new java.awt.Font("Monospaced", 0, this.fontSize));
             } //execute button was pressed
             else if (event.getActionCommand().equals(editor.execute.getActionCommand())) {
+                //change to the execution panel
+                this.editor.executionPanel.setSelectedIndex(0);
                 if ((this.currentFile == null) && (this.editor.display.getText().length() > 0)) {
                     this.saveFileChanges();
                     if (this.currentFile!=null){

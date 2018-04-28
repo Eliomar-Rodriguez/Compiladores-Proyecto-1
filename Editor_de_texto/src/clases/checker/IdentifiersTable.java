@@ -27,12 +27,8 @@ public class IdentifiersTable{
         IdentifierElement element = new IdentifierElement(declaracion,actLevel,tkn,type);
         int j = 0;
         while (j < this.IDs_table.size() && this.IDs_table.get(j).getLevel() == actLevel) {
-<<<<<<< HEAD
             if (this.IDs_table.get(j).getToken().getText().equals(tkn.getText().toLowerCase())) {
-=======
-            if (this.IDs_table.get(j).getToken().getText().equals(tkn.getText())) {
                 this.IDs_table.get(j).setType(type); //change the type of the var
->>>>>>> 1cc48528a439d15e7d3de24ab3f2cd3421c78f5f
                 return null;
             }
             j++;

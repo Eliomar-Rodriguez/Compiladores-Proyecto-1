@@ -271,7 +271,7 @@ public class Checker extends MonkeyParserBaseVisitor {
         }
 
         this.fnSpecialTable.imprimir();
-
+        System.out.println(ctx.ID().getText().toLowerCase());
         //si tiene la cadena fn y la expresion no es un array literal, entonces es una variable normal
         if ( (type !=4 && type!=-1) && (ctx.expression().toStringTree().contains("fn(") || ctx.expression().toStringTree().contains("fn (")) ){
             // check if this exist in the identifiers table
@@ -299,7 +299,7 @@ public class Checker extends MonkeyParserBaseVisitor {
                 return -1;
             }
 
-            if (this.functionsTable.buscar(ctx.ID().getText())!=null){
+            if (this.functionsTable.buscar(ctx.ID().getText().toLowerCase())!=null){
                 this.errorsList.add("Error: The identifier " + ctx.ID().getText() + " it's already declared like a function and" +
                         " can't not be change to variable. At line: " +
                         ctx.getStart().getLine() + " column: " + ctx.getStart().getCharPositionInLine());

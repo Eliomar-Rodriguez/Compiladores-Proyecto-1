@@ -172,6 +172,20 @@ public interface MonkeyParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitElemAccess_Mky(MonkeyParser.ElemAccess_MkyContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code specialCall_Mky}
+	 * labeled alternative in {@link MonkeyParser#specialCall}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSpecialCall_Mky(MonkeyParser.SpecialCall_MkyContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code specialCallEmpty_Mky}
+	 * labeled alternative in {@link MonkeyParser#specialCall}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSpecialCallEmpty_Mky(MonkeyParser.SpecialCallEmpty_MkyContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code callExpr_Mky}
 	 * labeled alternative in {@link MonkeyParser#callExpression}.
 	 * @param ctx the parse tree

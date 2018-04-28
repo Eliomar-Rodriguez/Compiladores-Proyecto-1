@@ -292,6 +292,30 @@ public class MonkeyParserBaseListener implements MonkeyParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterSpecialCall_Mky(MonkeyParser.SpecialCall_MkyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSpecialCall_Mky(MonkeyParser.SpecialCall_MkyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSpecialCallEmpty_Mky(MonkeyParser.SpecialCallEmpty_MkyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSpecialCallEmpty_Mky(MonkeyParser.SpecialCallEmpty_MkyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterCallExpr_Mky(MonkeyParser.CallExpr_MkyContext ctx) { }
 	/**
 	 * {@inheritDoc}

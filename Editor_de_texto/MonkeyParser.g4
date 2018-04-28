@@ -23,10 +23,12 @@ additionFactor       	:  (SUM multiplicationExpression)*              #addFactSu
 multiplicationExpression : elementExpression multiplicationFactor       #multExpr_Mky;
 multiplicationFactor	: (MUL elementExpression)*                      #multFactMul_Mky
                          |(DIV elementExpression)*                      #multFactDiv_Mky;
-elementExpression 	: primitiveExpression elementAccess                 #elemExprElemAccess_Mky
+elementExpression 	: primitiveExpression elementAccess specialCall     #elemExprElemAccess_Mky
                     | primitiveExpression callExpression                #elemExprCallExpr_Mky
                     | primitiveExpression                               #elemExprPExpr_Mky;
-elementAccess     : CIZQ expression CDER ( | PIZQ expressionList PDER)  #elemAccess_Mky;
+elementAccess     : CIZQ expression CDER                                #elemAccess_Mky;
+specialCall: PIZQ expressionList PDER                                   #specialCall_Mky
+            |                                                           #specialCallEmpty_Mky;
 callExpression	: PIZQ expressionList PDER                              #callExpr_Mky;
 primitiveExpression	:     INTEGER                                       #pExprInt_Mky
                         | STRING                                        #pExprStrMky

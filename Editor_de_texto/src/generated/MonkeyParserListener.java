@@ -284,6 +284,30 @@ public interface MonkeyParserListener extends ParseTreeListener {
 	 */
 	void exitElemAccess_Mky(MonkeyParser.ElemAccess_MkyContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code specialCall_Mky}
+	 * labeled alternative in {@link MonkeyParser#specialCall}.
+	 * @param ctx the parse tree
+	 */
+	void enterSpecialCall_Mky(MonkeyParser.SpecialCall_MkyContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code specialCall_Mky}
+	 * labeled alternative in {@link MonkeyParser#specialCall}.
+	 * @param ctx the parse tree
+	 */
+	void exitSpecialCall_Mky(MonkeyParser.SpecialCall_MkyContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code specialCallEmpty_Mky}
+	 * labeled alternative in {@link MonkeyParser#specialCall}.
+	 * @param ctx the parse tree
+	 */
+	void enterSpecialCallEmpty_Mky(MonkeyParser.SpecialCallEmpty_MkyContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code specialCallEmpty_Mky}
+	 * labeled alternative in {@link MonkeyParser#specialCall}.
+	 * @param ctx the parse tree
+	 */
+	void exitSpecialCallEmpty_Mky(MonkeyParser.SpecialCallEmpty_MkyContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code callExpr_Mky}
 	 * labeled alternative in {@link MonkeyParser#callExpression}.
 	 * @param ctx the parse tree

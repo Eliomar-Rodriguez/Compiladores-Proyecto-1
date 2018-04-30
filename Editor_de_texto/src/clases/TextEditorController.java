@@ -124,7 +124,7 @@ public class TextEditorController extends WindowAdapter implements ActionListene
             //check semantic errros
             if (this.model.getChecker().getErrorsList().size()>0){
                 this.printSemanticError(this.model.getChecker().getErrorsList(),this.editor.errorsArea);
-
+                this.executeState=true;
             }
             else{
                 this.executeState=true;

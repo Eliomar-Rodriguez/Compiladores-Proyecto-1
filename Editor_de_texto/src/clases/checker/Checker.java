@@ -25,6 +25,7 @@ public class Checker extends MonkeyParserBaseVisitor {
     private boolean allowChangeInLet; //to control when isInLet var can change of value
     private int specialIndex;
     private String specialArrayName;
+    private String fnNameGlobal;
 
     /*
     when the program goes to a function declaration, this vars increase in one number,
@@ -259,7 +260,10 @@ public class Checker extends MonkeyParserBaseVisitor {
         * Check if there is a function declaration in a variable and add it to FunctionsTable
         * and increment the functions counter
         * */
+        /*if (ctx.expression().toStringTree().contains("fn(") || ctx.expression().toStringTree().contains("fn (")){
 
+        }*/
+        this.fnNameGlobal = ctx.ID().getText();
         this.specialIndex=-2;
 
         this.arrayName = ctx.ID().getText().toLowerCase();
@@ -870,12 +874,16 @@ public class Checker extends MonkeyParserBaseVisitor {
         this.identifierTable.OpenScope();
         this.functionsTable.openScope();
 
-        visit(ctx.functionParameters());
+        int tipo = (Integer) visit(ctx.functionParameters());
+        if (tipo == -1)
+            return -1;
         // backup the value of global counter params
         int paramsTemp=this.globalCounterParams;
 
         this.returnInFunction=true; //se permite dentro del blockstatement la sentencia return
-        visit(ctx.blockStatement());
+        int tipo2 = (Integer) visit(ctx.blockStatement());
+        if (tipo2 == -1)/*  ELIOMAR: eliminar nombre de la funcion si retorna -1 ya que se habia insertado   */
+            return  -1;
         if (this.functionInsideOther==0){
             this.returnInFunction=false;  //no se permite dentro de la sentencia el estatuto return
         }

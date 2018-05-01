@@ -31,7 +31,10 @@ public class FunctionsTable {
         this.table.push(new FuncTableElement(0, new CommonToken(0,"puts"),1,0,null));
     }
 
-
+    public void deleteElement(){
+        //pop the last element that was inserted
+        this.table.pop();
+    }
 
     public FuncTableElement insert(Token token, int paramsNumber, int returnType, ParserRuleContext declaracion)
     {
@@ -39,7 +42,7 @@ public class FunctionsTable {
         FuncTableElement elem = new FuncTableElement(this.currentLevel,token,paramsNumber,returnType,declaracion);
         int j = 0;
         while (j < this.table.size() && this.table.get(j).getLevel() == this.currentLevel) {
-            if (this.table.get(j).getToken().getText().equals(token.getText().toLowerCase())) {
+            if (this.table.get(j).getToken().getText().equals(token.getText())) {
                 return null;
             }
             j++;

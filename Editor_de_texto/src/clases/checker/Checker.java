@@ -26,7 +26,7 @@ public class Checker extends MonkeyParserBaseVisitor {
     private boolean allowChangeInLet; //to control when isInLet var can change of value
     private int specialIndex;
     private String specialArrayName;
-    private String fnNameGlobal;
+    private RecursivityObject temporalObject;
 
     /*
     /*it's going to store the name of the function, it helps with visit function Literal
@@ -73,7 +73,7 @@ public class Checker extends MonkeyParserBaseVisitor {
         this.specialIndex=-2;
         this.functionInsideOther=-1;
         this.finalCounterParams=0;
-
+        this.temporalObject = new RecursivityObject(null,-1);// -1 representa que es una funcion normal, no una funcion declarada dentro de un array
     }
 
     public ArrayList<String> getErrorsList() {
@@ -281,10 +281,12 @@ public class Checker extends MonkeyParserBaseVisitor {
         * Check if there is a function declaration in a variable and add it to FunctionsTable
         * and increment the functions counter
         * */
-        /*if (ctx.expression().toStringTree().contains("fn(") || ctx.expression().toStringTree().contains("fn (")){
+        this.temporalObject.setFnName(null);
+        this.temporalObject.setIndex(-1);
+        if (ctx.expression().toStringTree().contains("fn(") || ctx.expression().toStringTree().contains("fn (")){
+            this.temporalObject.setFnName(ctx.ID().getSymbol());
+        }
 
-        }*/
-        this.fnNameGlobal = ctx.ID().getText();
         this.specialIndex=-2;
 
         this.arrayName = ctx.ID().getText();
@@ -302,29 +304,15 @@ public class Checker extends MonkeyParserBaseVisitor {
 
         int type = (Integer) visit(ctx.expression());
 
-        if (allowChangeInLet==true){
+        if (allowChangeInLet == true){
             this.isInLet=false;
         }
 
         if (type !=4 && type!= -1 && ctx.expression().toStringTree().contains("fn(") || ctx.expression().toStringTree().contains("fn (")){
-            if (this.identifierTable.buscar(ctx.ID().getText())!=null){
-                this.errorsList.add("Error: The identifier " + ctx.ID().getText() + " it's already declared like a varaible" +
-                        " and can't be change to function. At line: " +
-                        ctx.ID().getSymbol().getLine() + " column: " + ctx.ID().getSymbol().getCharPositionInLine());
-                return -2;
-            }
-
-            FuncTableElement function = this.functionsTable.insert(ctx.ID().getSymbol(),this.finalCounterParams,this.haveReturn,ctx);
-            if(function == null)
-            {
-                this.errorsList.add("Error: The function " + ctx.ID().getText() + " it's already declared. At line: " +
-                        ctx.getStart().getLine() + " column: " + ctx.getStart().getCharPositionInLine());
-                return -2;
-            }
+            FuncTableElement elemento = this.functionsTable.buscar(ctx.ID().getText());
+            elemento.setDeclaration(ctx.expression());
         }
-
         else{
-
             //error in the expresion
             if (type==-1){ // ir a fnSpecialTable a eliminar todas las funciones asociadas a la variable arrayName (global)
                 return -2;
@@ -900,8 +888,7 @@ public class Checker extends MonkeyParserBaseVisitor {
 
     @Override
     public Object visitFuncLit_Mky(MonkeyParser.FuncLit_MkyContext ctx) {
-
-
+        RecursivityObject respaldo = new RecursivityObject(this.temporalObject.getFnName(),this.temporalObject.getIndex());
         int res=-1;
         int temp= this.globalCounterReturn;
         //update function inside other counter
@@ -909,13 +896,8 @@ public class Checker extends MonkeyParserBaseVisitor {
 
         this.globalCounterReturn=0; // reestablecer el contador
 
-        /****************************************************
-         ELIOMAR, ARREGLE ESTO PARA QUE RETORNE -1 SI OCURRE UN ERROR, EN LOS PARÁMETROS O
-         EN EL BLOCK STATEMENT
-         ****************************************************/
-
         this.identifierTable.OpenScope();
-        this.functionsTable.openScope();
+
 
 
         res= (Integer) visit(ctx.functionParameters());
@@ -923,22 +905,51 @@ public class Checker extends MonkeyParserBaseVisitor {
         int paramsTemp=this.globalCounterParams;
 
         if (res==-1){
-            return 0;
+            return res;
         }
-
-        this.returnInFunction=true; //se permite dentro del blockstatement la sentencia return
+        /*
+        * insertar ya sea a la tabla de funciones especiales o a la de funciones normales
+        * */
+        if(this.temporalObject.getIndex() == -1){
+            if (this.identifierTable.buscar(temporalObject.getFnName().getText())!=null){
+                this.errorsList.add("Error: The identifier " + temporalObject.getFnName().getText() + " it's already declared like a varaible" +
+                        " and can't be change to function. At line: " +
+                        temporalObject.getFnName().getLine() + " column: " + temporalObject.getFnName().getCharPositionInLine());
+                return -1;
+            }
+            FuncTableElement resp = this.functionsTable.insert(temporalObject.getFnName(),this.globalCounterParams,0,null);
+            if(resp == null){
+                this.errorsList.add("Error: The function " + this.temporalObject.getFnName().getText() + " it's already declared. At line: " +
+                        ctx.getStart().getLine() + " column: " + ctx.getStart().getCharPositionInLine());
+                return -1;
+            }
+        }
+        else{
+            this.fnSpecialTable.insert(this.globalCounterParams,this.temporalObject.getFnName().getText(),this.temporalObject.getIndex());
+        }
+        this.functionsTable.openScope();
+        this.returnInFunction = true; //se permite dentro del blockstatement la sentencia return
 
 
         res= (Integer) visit(ctx.blockStatement());
-        if (this.functionInsideOther==0){
-            this.returnInFunction=false;  //to control that there are not return outside a function
+        if (res == -1){
+            if(this.temporalObject.getIndex() == -1){
+                this.fnSpecialTable.deleteElement(this.temporalObject.getFnName().getText());
+            }
+            else{
+                this.functionsTable.deleteElement(this.temporalObject.getFnName().getText());
+            }
+
+        }
+        if (this.functionInsideOther == 0){
+            this.returnInFunction = false;  //to control that there are not return outside a function
         }
 
         //set the final counter params with the backup value
-        this.finalCounterParams=paramsTemp;
+        this.finalCounterParams = paramsTemp;
 
         //reset the global counter params value
-        this.globalCounterParams= paramsTemp;
+        this.globalCounterParams = paramsTemp;
 
         //reset value of function inside other counter
         this.functionInsideOther--;
@@ -948,15 +959,15 @@ public class Checker extends MonkeyParserBaseVisitor {
         this.identifierTable.closeScope();
         this.functionsTable.closeScope();
 
-        res=0;
-        if (this.globalCounterReturn >0){
-            this.haveReturn=0; //tipo neutro para la función
+
+        if (this.globalCounterReturn > 0){
+            this.haveReturn = 0; //tipo neutro para la función
         }
         else{
-            this.haveReturn =-1; //función sin tipo
+            this.haveReturn = -1; //función sin tipo
         }
 
-        this.globalCounterReturn=temp;
+        this.globalCounterReturn = temp;
         return res;
 
     }
@@ -1039,18 +1050,13 @@ public class Checker extends MonkeyParserBaseVisitor {
         this.globalCounterParams++;
         int temp=this.globalCounterParams; //respaldo del valor que tenían los parametros antes de visitar expresion
         String nameTemp= this.arrayName;
-        int type1= (Integer) visit(ctx.expression());
 
-        if(type1 == -2){
-            this.errorsList.add("Error: . You can not declare a statement in an array. At line: "+ctx.expression().getStart().getLine()+
-                    " column: "+ ctx.expression().getStart().getCharPositionInLine());
-            return -1;
-        }
         // si contiene a una fucion y está en un let
         if(ctx.expression().toStringTree().contains("fn(") | ctx.expression().toStringTree().contains("fn (")){
 
             if (this.isInLet){
-                this.fnSpecialTable.insert(globalCounterParams,nameTemp,0);
+                //this.fnSpecialTable.insert(globalCounterParams,nameTemp,0);
+                temporalObject.setIndex(0);
                 this.globalCounterParams = 0;
             }
             else{
@@ -1059,6 +1065,15 @@ public class Checker extends MonkeyParserBaseVisitor {
             }
 
         }
+
+        int type1= (Integer) visit(ctx.expression());
+
+        if(type1 == -2){
+            this.errorsList.add("Error: . You can not declare a statement in an array. At line: "+ctx.expression().getStart().getLine()+
+                    " column: "+ ctx.expression().getStart().getCharPositionInLine());
+            return -1;
+        }
+
 
         this.arrayName=nameTemp; //restart value
         this.globalCounterParams=temp;
@@ -1099,17 +1114,10 @@ public class Checker extends MonkeyParserBaseVisitor {
             this.globalCounterParams++;
             temp=this.globalCounterParams; //respaldo del valor que tenían los parametros antes de visitar expresion
 
-            type = (Integer) visit(ctx.expression(i));
-            if(type == -2){
-                this.errorsList.add("Error: . You can not declare a statement in an array. At line: "+ctx.expression().get(i).getStart().getLine()+
-                        " column: "+ ctx.expression().get(i).getStart().getCharPositionInLine());
-                return -1;
-            }
-
             if(ctx.expression(i).toStringTree().contains("fn(") | ctx.expression(i).toStringTree().contains("fn (")){
                 if (this.isInLet){
-                    this.fnSpecialTable.insert(globalCounterParams,nameTemp,i+1);
-                    this.globalCounterParams = 0;
+                    this.temporalObject.setIndex(i+1);
+                    //this.globalCounterParams = 0;
                 }
                 else{
                     this.errorsList.add("Error: . You can not declare a function in an array if it isn't in a let statement.At line: "+ctx.expression(i).getStart().getLine()+
@@ -1120,6 +1128,13 @@ public class Checker extends MonkeyParserBaseVisitor {
                 if (type == -1){
                     return -1;
                 }
+            }
+
+            type = (Integer) visit(ctx.expression(i));
+            if(type == -2){
+                this.errorsList.add("Error: . You can not declare a statement in an array. At line: "+ctx.expression().get(i).getStart().getLine()+
+                        " column: "+ ctx.expression().get(i).getStart().getCharPositionInLine());
+                return -1;
             }
 
             this.globalCounterParams=temp; //reestablecimiento del valor previo de global counter params

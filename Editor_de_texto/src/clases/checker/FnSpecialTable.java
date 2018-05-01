@@ -53,4 +53,14 @@ public class FnSpecialTable {
         else
             System.out.println("Tabla vacía");
     }
+
+    public boolean deleteElement(String name){
+        for (int i = 0; i < this.FnSpecialTable.size(); i++) {
+            if(this.FnSpecialTable.get(i).getArrayName().equals(name)){
+                this.FnSpecialTable.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -80,7 +80,7 @@ public class FunctionsTable {
     {
         FuncTableElement temp=null;
         int j=0;
-        while (j < this.table.size() && this.table.get(j).getLevel() == this.currentLevel) {
+        while (j < this.table.size() && this.table.get(j).getLevel() <= this.currentLevel) {
             if (this.table.get(j).getToken().getText().equals(nombre)){
                 temp= this.table.get(j);
             }
@@ -105,4 +105,13 @@ public class FunctionsTable {
             System.out.println("Tabla vacía");
     }
 
+    public boolean deleteElement(String name){
+        for (int i = 0; i < this.table.size(); i++) {
+            if(this.table.get(i).getToken().getText().equals(name)){
+                this.table.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -309,8 +309,9 @@ public class Checker extends MonkeyParserBaseVisitor {
         }
 
         if (type !=4 && type!= -1 && ctx.expression().toStringTree().contains("fn(") || ctx.expression().toStringTree().contains("fn (")){
-            FuncTableElement elemento = this.functionsTable.buscar(ctx.ID().getText());
-            elemento.setDeclaration(ctx.expression());
+            FuncTableElement element = this.functionsTable.buscar(ctx.ID().getText());
+            element.setDeclaration(ctx.expression());
+            element.setReturnType(this.haveReturn);
         }
         else{
             //error in the expresion
@@ -968,7 +969,7 @@ public class Checker extends MonkeyParserBaseVisitor {
         }
 
         this.globalCounterReturn = temp;
-        return res;
+        return 0;
 
     }
 

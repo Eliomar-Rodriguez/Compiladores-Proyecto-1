@@ -22,7 +22,11 @@ public class IdentifiersTable{
         this.actLevel = actLevel;
     }
 
-    public IdentifierElement insertar(Token tkn, int type,ParserRuleContext declaracion)
+    public  LinkedList<IdentifierElement> getIDs_table() {
+        return IDs_table;
+    }
+
+    public IdentifierElement insertar(Token tkn, int type, ParserRuleContext declaracion)
     {
         IdentifierElement element = new IdentifierElement(declaracion,actLevel,tkn,type);
         int j = 0;
@@ -67,6 +71,16 @@ public class IdentifiersTable{
         return temporal;
 
 
+    }
+
+    public boolean deleteElement(String name) {
+        for (int i = 0; i < this.IDs_table.size(); i++) {
+            if (this.IDs_table.get(i).getToken().getText().equals(name)) {
+                this.IDs_table.remove(i);
+                return true;
+            }
+        }
+        return false;
     }
 
     public void imprimir() {

@@ -54,6 +54,8 @@ public class TextEditorController extends WindowAdapter implements ActionListene
         model = new TextEditorModel();
         this.executeState=false;
         this.editor.executionPanel.setSelectedIndex(0);
+        this.editor.executionArea.setEditable(false); // desactivar edicion
+        this.editor.errorsArea.setEditable(false); // desactivar edicion
     }
 
 
@@ -128,7 +130,7 @@ public class TextEditorController extends WindowAdapter implements ActionListene
             }
             else{
                 this.executeState=true;
-                this.editor.executionArea.setText("Compilación exitosa");
+                this.editor.executionArea.setText("Cambios guardados\n\nCompilación exitosa");
                 //JOptionPane.showMessageDialog(this.editor.getRootPane(), "Compilación exitosa", "Done", JOptionPane.INFORMATION_MESSAGE);
             }
 

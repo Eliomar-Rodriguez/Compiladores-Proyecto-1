@@ -296,7 +296,7 @@ public class Checker extends MonkeyParserBaseVisitor {
         if (this.isReservedWord(ctx.ID().getText().toLowerCase())==true){
             this.errorsList.add("Error: Assignment is not posible because the identifier  " + ctx.ID().getText() + " it's a Monkey language reserved word. At line: " +
                     ctx.ID().getSymbol().getLine() + " column: " + ctx.ID().getSymbol().getCharPositionInLine());
-            return -2;
+            return -1;
         }
 
         this.isInLet = true;
@@ -308,7 +308,7 @@ public class Checker extends MonkeyParserBaseVisitor {
             this.isInLet=false;
         }
 
-        if (type !=4 && type!= -1 && ctx.expression().toStringTree().contains("fn(") || ctx.expression().toStringTree().contains("fn (")){
+        if (type !=4 && type!= -1 && (ctx.expression().toStringTree().contains("fn(") || ctx.expression().toStringTree().contains("fn ("))){
             FuncTableElement element = this.functionsTable.buscar(ctx.ID().getText());
             element.setDeclaration(ctx.expression());
             element.setReturnType(this.haveReturn);
@@ -316,14 +316,14 @@ public class Checker extends MonkeyParserBaseVisitor {
         else{
             //error in the expresion
             if (type==-1){ // ir a fnSpecialTable a eliminar todas las funciones asociadas a la variable arrayName (global)
-                return -2;
+                return -1;
             }
 
             if (this.functionsTable.buscar(ctx.ID().getText().toLowerCase())!=null){
                 this.errorsList.add("Error: The identifier " + ctx.ID().getText() + " it's already declared like a function and" +
                         " can't not be change to variable. At line: " +
                         ctx.getStart().getLine() + " column: " + ctx.getStart().getCharPositionInLine());
-                return -2;
+                return -1;
             }
 
 
@@ -926,15 +926,27 @@ public class Checker extends MonkeyParserBaseVisitor {
             }
         }
         else{
+
+            this.identifierTable.setActLevel(this.identifierTable.getActLevel()-1);
+
+            this.identifierTable.insertar(temporalObject.getFnName(),4,null);
+
+            this.identifierTable.setActLevel(this.identifierTable.getActLevel()+1);
+
             this.fnSpecialTable.insert(this.globalCounterParams,this.temporalObject.getFnName().getText(),this.temporalObject.getIndex());
         }
         this.functionsTable.openScope();
+
         this.returnInFunction = true; //se permite dentro del blockstatement la sentencia return
 
 
         res= (Integer) visit(ctx.blockStatement());
-        if (res == -1){
-            if(this.temporalObject.getIndex() == -1){
+
+
+        this.temporalObject=respaldo;
+        if (res == -1) {
+            if(this.temporalObject.getIndex() != -1){
+                this.identifierTable.deleteElement(this.temporalObject.getFnName().getText());
                 this.fnSpecialTable.deleteElement(this.temporalObject.getFnName().getText());
             }
             else{
@@ -942,6 +954,12 @@ public class Checker extends MonkeyParserBaseVisitor {
             }
 
         }
+        else{
+            if (this.temporalObject.getIndex() != -1){
+                this.identifierTable.deleteElement(this.temporalObject.getFnName().getText());
+            }
+        }
+
         if (this.functionInsideOther == 0){
             this.returnInFunction = false;  //to control that there are not return outside a function
         }
@@ -1051,11 +1069,11 @@ public class Checker extends MonkeyParserBaseVisitor {
         this.globalCounterParams++;
         int temp=this.globalCounterParams; //respaldo del valor que tenían los parametros antes de visitar expresion
         String nameTemp= this.arrayName;
-
+        boolean insideLet= this.isInLet;
         // si contiene a una fucion y está en un let
         if(ctx.expression().toStringTree().contains("fn(") | ctx.expression().toStringTree().contains("fn (")){
 
-            if (this.isInLet){
+            if (insideLet){
                 //this.fnSpecialTable.insert(globalCounterParams,nameTemp,0);
                 temporalObject.setIndex(0);
                 this.globalCounterParams = 0;
@@ -1081,6 +1099,7 @@ public class Checker extends MonkeyParserBaseVisitor {
 
         int type2=0;
         if (ctx.moreExpressions().getChildCount()>0){
+            this.isInLet= insideLet;
             type2=(Integer) visit(ctx.moreExpressions());
         }
         if(type2 == -2){
@@ -1088,7 +1107,9 @@ public class Checker extends MonkeyParserBaseVisitor {
             return -1;
         }
         this.arrayName=null; //reset array name temp
+
         this.allowChangeInLet=true;
+
         if (type1==-1 || type2==-1){
             return -1;
         }
@@ -1110,13 +1131,13 @@ public class Checker extends MonkeyParserBaseVisitor {
 
         int type=0; //tipo valido
         int temp=0;
-        String nameTemp= this.arrayName;
+        boolean insideLet= this.isInLet;
         for(int i = 0; i < ctx.expression().size(); i++){
             this.globalCounterParams++;
             temp=this.globalCounterParams; //respaldo del valor que tenían los parametros antes de visitar expresion
 
             if(ctx.expression(i).toStringTree().contains("fn(") | ctx.expression(i).toStringTree().contains("fn (")){
-                if (this.isInLet){
+                if (insideLet){
                     this.temporalObject.setIndex(i+1);
                     //this.globalCounterParams = 0;
                 }

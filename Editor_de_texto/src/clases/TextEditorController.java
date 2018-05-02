@@ -53,7 +53,7 @@ public class TextEditorController extends WindowAdapter implements ActionListene
         this.fontSize = 14;
         model = new TextEditorModel();
         this.executeState=false;
-
+        this.editor.executionPanel.setSelectedIndex(0);
     }
 
 
@@ -198,8 +198,7 @@ public class TextEditorController extends WindowAdapter implements ActionListene
                 PrintWriter printWriter = new PrintWriter(currentFile);
                 printWriter.write(editor.display.getText());
                 printWriter.close();
-                this.editor.executionArea.setText("");
-                //JOptionPane.showMessageDialog(editor.getRootPane(), "Saved", "Done", JOptionPane.INFORMATION_MESSAGE);
+                this.editor.executionArea.setText("Changes saved");
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(EditorFrame.class.getName()).log(Level.SEVERE, null, ex);
             }

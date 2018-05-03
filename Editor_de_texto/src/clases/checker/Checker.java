@@ -308,7 +308,8 @@ public class Checker extends MonkeyParserBaseVisitor {
             this.isInLet=false;
         }
 
-        if (type !=4 && type!= -1 && (ctx.expression().toStringTree().contains("fn(") || ctx.expression().toStringTree().contains("fn ("))){
+        //enter here if the function declaration is in a normal way (not inside array or hash literal)
+        if (type !=4 && type != 5 && type!= -1 && (ctx.expression().toStringTree().contains("fn(") || ctx.expression().toStringTree().contains("fn ("))){
             FuncTableElement element = this.functionsTable.buscar(ctx.ID().getText());
             element.setDeclaration(ctx.expression());
             element.setReturnType(this.haveReturn);

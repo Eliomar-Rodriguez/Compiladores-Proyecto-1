@@ -91,7 +91,7 @@ public class IdentifiersTable{
                 for (int j = 0; j < i.getLevel(); j++) {
                     nivel += "\t";
                 }
-                System.out.println(nivel + "Nombre: " + i.getToken().getText() + " - Nivel: " + i.getLevel()+ " -Tipo: "+
+                System.out.println(nivel + "Nombre: " + i.getToken().getText() + " - Nivel: " + i.getLevel()+ " - Tipo: "+
                       i.getType());
             }
             System.out.println("------------------------------------------");

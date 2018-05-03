@@ -59,6 +59,8 @@ public class TextEditorController extends WindowAdapter implements ActionListene
         this.editor.errorsArea.setEditable(false);
         this.editor.executionArea.setEditable(true);
         this.editor.executionPanel.setSelectedIndex(0);
+        this.editor.executionArea.setEditable(false); // desactivar edicion
+        this.editor.errorsArea.setEditable(false); // desactivar edicion
     }
 
 
@@ -133,8 +135,8 @@ public class TextEditorController extends WindowAdapter implements ActionListene
             }
             else{
                 this.executeState=true;
-                this.editor.executionArea.setText("Compilación exitosa");
-                JOptionPane.showMessageDialog(this.editor.getRootPane(), "Compilación exitosa", "Done", JOptionPane.INFORMATION_MESSAGE);
+                this.editor.executionArea.setText("Cambios guardados\n\nCompilación exitosa");
+                //JOptionPane.showMessageDialog(this.editor.getRootPane(), "Compilación exitosa", "Done", JOptionPane.INFORMATION_MESSAGE);
             }
 
         }
@@ -203,6 +205,7 @@ public class TextEditorController extends WindowAdapter implements ActionListene
                 PrintWriter printWriter = new PrintWriter(currentFile);
                 printWriter.write(editor.display.getText());
                 printWriter.close();
+
                 this.editor.executionArea.setText("Changes saved");
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(EditorFrame.class.getName()).log(Level.SEVERE, null, ex);

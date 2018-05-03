@@ -103,15 +103,15 @@ public class Checker extends MonkeyParserBaseVisitor {
      * @param array
      * @param index
      * @param paramsNumber
-     * @return  0 if the function call is succes, -1 if something fail in the function call
+     * @return  0 if the function call is success, -1 if something fail in the function call
      */
     public int evaluateSpecialFunctionCall(String array,int index,int paramsNumber,MonkeyParser.ExpressionListContext ctx){
         int res=0;
-        if (array.equals("none")){ //it's not possible to know nothing about the array, for that accept
+            if (array.equals("none")){ //it's not possible to know nothing about the array, for that accept
             res = 0;
         }
         /*
-        it's not possible to know the function  position in the array, so if there is a function with the same
+        it's not possible to know the function position in the array, so if there is a function with the same
         params number in the array accept
          */
         else if (index==-2){
@@ -141,6 +141,7 @@ public class Checker extends MonkeyParserBaseVisitor {
                 }
             }
         }
+        System.out.println(res);
 
         return res;
     }
@@ -703,7 +704,6 @@ public class Checker extends MonkeyParserBaseVisitor {
                 this.errorsList.add("Error: with types or functions parameters.At line:"+ ctx.expressionList().getStart().getLine()+
                         " column: "+ ctx.expressionList().getStart().getCharPositionInLine());
             }
-
             else{
                 type=this.evaluateSpecialFunctionCall(this.specialArrayName,this.specialIndex,this.globalCounterParams ,ctx.expressionList());
             }
@@ -713,8 +713,8 @@ public class Checker extends MonkeyParserBaseVisitor {
         else{
             type= this.evaluateSpecialFunctionCall(this.specialArrayName,this.specialIndex,0,ctx.expressionList());
         }
+        System.out.println("TYPE = " + type);
         return type;
-
     }
 
     @Override
@@ -949,9 +949,11 @@ public class Checker extends MonkeyParserBaseVisitor {
             if(this.temporalObject.getIndex() != -1){
                 this.identifierTable.deleteElement(this.temporalObject.getFnName().getText());
                 this.fnSpecialTable.deleteElement(this.temporalObject.getFnName().getText());
+
             }
             else{
                 this.functionsTable.deleteElement(this.temporalObject.getFnName().getText());
+
             }
 
         }

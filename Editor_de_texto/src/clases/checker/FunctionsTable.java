@@ -96,8 +96,8 @@ public class FunctionsTable {
                 for (int j = 0; j < i.getLevel(); j++) {
                     nivel += "\t";
                 }
-                System.out.println(nivel + "Nombre: " + i.getToken().getText() + " - Nivel: " + i.getLevel()+ "params: " +
-                        i.getParamsNumber()+ " return type: "+i.getReturnType());
+                System.out.println(nivel + "Nombre: " + i.getToken().getText() + " - Nivel: " + i.getLevel()+ " - Params: " +
+                        i.getParamsNumber()+ " - Return type: "+i.getReturnType());
             }
             System.out.println("------------------------------------------");
         }

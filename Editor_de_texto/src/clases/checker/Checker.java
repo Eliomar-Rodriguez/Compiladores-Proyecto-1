@@ -284,7 +284,7 @@ public class Checker extends MonkeyParserBaseVisitor {
         * */
         this.temporalObject.setFnName(null);
         this.temporalObject.setIndex(-1);
-        if (ctx.expression().toStringTree().contains("fn(") || ctx.expression().toStringTree().contains("fn (")){
+        if (ctx.expression().toStringTree().replace(" ","").contains("fn(")){
             this.temporalObject.setFnName(ctx.ID().getSymbol());
         }
 
@@ -591,6 +591,7 @@ public class Checker extends MonkeyParserBaseVisitor {
     public Object visitElemExprElemAccess_Mky(MonkeyParser.ElemExprElemAccess_MkyContext ctx) {
         int type1= (Integer) visit(ctx.primitiveExpression());
 
+
         if ( (type1 > 0 && type1 <4 )){ //if it's not a neutral type, or array or hash literal
             this.errorsList.add("Error: Can't index a value that is not an array or hash literal. At line:"+ ctx.getStart().getLine()+
                     " column: "+ ctx.getStart().getCharPositionInLine());
@@ -600,13 +601,25 @@ public class Checker extends MonkeyParserBaseVisitor {
             this.specialArrayName = this.setSpecialArrayName(ctx.primitiveExpression().getText());
         }
 
-        type1= (Integer) visit(ctx.elementAccess());
+        int type2= (Integer) visit(ctx.elementAccess());
 
+        //if primitive expression is an array it can't be indexed through an string index
+        if (type1 ==4 && type2 ==2){
+            this.errorsList.add("Error: It's not possible to use string index with array literal var. At line:"+ ctx.elementAccess().getStart().getLine()+
+                    " column: "+ ctx.elementAccess().getStart().getCharPositionInLine());
 
-        if (type1==-1){
+            return -1;
+
+        }
+
+        if (type2==-1){
             return -1;
         }
+
         else{  //evaluate special funcion call
+            if (type2 == 2){
+                return 0;
+            }
             type1= (Integer) visit(ctx.specialCall());
             if (type1==-1){
                 return -1;
@@ -667,8 +680,8 @@ public class Checker extends MonkeyParserBaseVisitor {
 
         int type = (Integer) visit(ctx.expression());
 
-        if (type != 0 && type != 1) {  //solo se permiten neutros o enteros para indexar arreglos
-            this.errorsList.add("Error: Array or Hash literal must be indexed through an Int or neutral value " +
+        if (type != 0 && type != 1 && type != 2) {  //solo se permiten neutros , string o enteros para indexar arreglos
+            this.errorsList.add("Error: Array or Hash literal must be indexed through an Int, String or neutral value " +
                     ".At line: " + ctx.expression().getStart().getLine() + " column: " + ctx.expression().getStart().getLine());
             return -1; //error
 
@@ -1142,7 +1155,7 @@ public class Checker extends MonkeyParserBaseVisitor {
             if(ctx.expression(i).toStringTree().contains("fn(") | ctx.expression(i).toStringTree().contains("fn (")){
                 if (insideLet){
                     this.temporalObject.setIndex(i+1);
-                    //this.globalCounterParams = 0;
+
                 }
                 else{
                     this.errorsList.add("Error: . You can not declare a function in an array if it isn't in a let statement.At line: "+ctx.expression(i).getStart().getLine()+

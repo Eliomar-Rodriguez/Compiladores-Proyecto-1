@@ -392,7 +392,7 @@ public class Checker extends MonkeyParserBaseVisitor {
 
     public int checkRestrictions(int type1, int type2, String operator,ParserRuleContext ctx){
         if (this.isValidOperator(operator,type2)!=true){
-            this.errorsList.add("Error: type "+ this.getTypeName(type1)+" is not compatible with the operator "+operator+".At line: " +
+            this.errorsList.add("Error: type "+ this.getTypeName(type2)+" is not compatible with the operator "+operator+".At line: " +
                     ctx.getStart().getLine()+" column: "+ctx.getStart().getCharPositionInLine());
             return-1;
         }
@@ -1052,8 +1052,17 @@ public class Checker extends MonkeyParserBaseVisitor {
         int type1 = (Integer) visit(ctx.expression(0)), type2 = -1;
 
         //if the key it's a string
-        if(type1 == 2){
+        if(type1 ==1 || type1==2){
+
+            //if there is a function inside hash literal
+            if (ctx.expression(1).toStringTree().replace(" ","").contains("fn("))
+            {
+                this.temporalObject.setIndex(-2); //because the program can't handler functions inside hash literal
+            }
+
             type2 = (Integer) visit(ctx.expression(1));
+
+
             if (type2 != -1){
                 return 0;
             }
@@ -1069,6 +1078,7 @@ public class Checker extends MonkeyParserBaseVisitor {
             return -1;
         }
     }
+
 
     @Override
     public Object visitMoreHashCont_Mky(MonkeyParser.MoreHashCont_MkyContext ctx) {

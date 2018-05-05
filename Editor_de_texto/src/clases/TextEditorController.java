@@ -202,6 +202,7 @@ public class TextEditorController extends WindowAdapter implements ActionListene
                 printWriter.close();
 
                 this.editor.executionArea.setText("Changes saved");
+                this.editor.executionPanel.setSelectedIndex(0);
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(EditorFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -222,12 +223,12 @@ public class TextEditorController extends WindowAdapter implements ActionListene
     }
 
     public void openFile(JFileChooser fileOpener) {
-
         int status = fileOpener.showOpenDialog(editor.getRootPane());
         if (status == JFileChooser.APPROVE_OPTION) {
             this.currentFile = fileOpener.getSelectedFile();
             //clean text area content
             this.editor.display.setText("");
+            this.editor.setTitle(this.currentFile.getName());
             this.readFile(this.currentFile);
 
         } else {

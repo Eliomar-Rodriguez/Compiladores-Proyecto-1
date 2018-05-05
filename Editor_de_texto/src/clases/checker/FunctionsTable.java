@@ -36,8 +36,7 @@ public class FunctionsTable {
         this.table.pop();
     }
 
-    public FuncTableElement insert(Token token, int paramsNumber, int returnType, ParserRuleContext declaracion)
-    {
+    public FuncTableElement insert(Token token, int paramsNumber, int returnType, ParserRuleContext declaracion) {
 
         FuncTableElement elem = new FuncTableElement(this.currentLevel,token,paramsNumber,returnType,declaracion);
         int j = 0;

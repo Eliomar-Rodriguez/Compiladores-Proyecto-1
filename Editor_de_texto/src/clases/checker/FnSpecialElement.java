@@ -3,12 +3,22 @@ package clases.checker;
 public class FnSpecialElement {
     private int paramsNumber;
     private String arrayName;
+    private int level;
     private int index;
 
-    public FnSpecialElement(int paramsNumber, String arrayName, int index) {
+    public FnSpecialElement(int paramsNumber, String arrayName, int index, int level) {
         this.paramsNumber = paramsNumber;
         this.arrayName = arrayName;
         this.index = index;
+        this.level = level;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     public int getParamsNumber() {

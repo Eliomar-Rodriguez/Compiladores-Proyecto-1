@@ -284,7 +284,7 @@ public class Checker extends MonkeyParserBaseVisitor {
         * */
         this.temporalObject.setFnName(null);
         this.temporalObject.setIndex(-1);
-        if (ctx.expression().toStringTree().contains("fn(") || ctx.expression().toStringTree().contains("fn (")){
+        if (ctx.expression().toStringTree().replace(" ","").contains("fn(")){
             this.temporalObject.setFnName(ctx.ID().getSymbol());
         }
 
@@ -309,7 +309,7 @@ public class Checker extends MonkeyParserBaseVisitor {
             this.isInLet=false;
         }
 
-        if (type !=4 && type!= -1 && (ctx.expression().toStringTree().contains("fn(") || ctx.expression().toStringTree().contains("fn ("))){
+        if (type !=4 && type!= -1 && (ctx.expression().toStringTree().replace(" ","").contains("fn("))){
             FuncTableElement element = this.functionsTable.buscar(ctx.ID().getText());
             element.setDeclaration(ctx.expression());
             element.setReturnType(this.haveReturn);
@@ -898,6 +898,7 @@ public class Checker extends MonkeyParserBaseVisitor {
         this.globalCounterReturn=0; // reestablecer el contador
 
         this.identifierTable.OpenScope();
+        this.fnSpecialTable.openScope();
 
 
 
@@ -977,6 +978,8 @@ public class Checker extends MonkeyParserBaseVisitor {
 
         this.identifierTable.imprimir();
         this.functionsTable.imprimir();
+
+        this.fnSpecialTable.closeScope();
         this.identifierTable.closeScope();
         this.functionsTable.closeScope();
 
@@ -1073,7 +1076,7 @@ public class Checker extends MonkeyParserBaseVisitor {
         String nameTemp= this.arrayName;
         boolean insideLet= this.isInLet;
         // si contiene a una fucion y está en un let
-        if(ctx.expression().toStringTree().contains("fn(") | ctx.expression().toStringTree().contains("fn (")){
+        if(ctx.expression().toStringTree().replace(" ","").contains("fn(")){
 
             if (insideLet){
                 //this.fnSpecialTable.insert(globalCounterParams,nameTemp,0);
@@ -1138,7 +1141,7 @@ public class Checker extends MonkeyParserBaseVisitor {
             this.globalCounterParams++;
             temp=this.globalCounterParams; //respaldo del valor que tenían los parametros antes de visitar expresion
 
-            if(ctx.expression(i).toStringTree().contains("fn(") | ctx.expression(i).toStringTree().contains("fn (")){
+            if(ctx.expression(i).toStringTree().replace(" ","").contains("fn(")){
                 if (insideLet){
                     this.temporalObject.setIndex(i+1);
                     //this.globalCounterParams = 0;

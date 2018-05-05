@@ -7,25 +7,55 @@ import java.util.LinkedList;
 
 public class FnSpecialTable {
     private LinkedList<FnSpecialElement> FnSpecialTable;
+    private int currentLevel;
 
     public FnSpecialTable() {
         this.FnSpecialTable = new LinkedList<FnSpecialElement>();
+        this.currentLevel = 0;
     }
 
-    public FnSpecialElement insert(int paramsNumber, String arrayName, int index)
-    {
-        FnSpecialElement elem = new FnSpecialElement(paramsNumber,arrayName,index);
+    public FnSpecialElement insert(int paramsNumber, String arrayName, int index) {
+        FnSpecialElement elem = new FnSpecialElement(paramsNumber,arrayName,index, currentLevel);
+
+        int j = 0;
+        while (j < this.FnSpecialTable.size() && this.FnSpecialTable.get(j).getLevel() == this.currentLevel) {
+            if (this.FnSpecialTable.get(j).getArrayName().equals(arrayName)) {
+                return null;
+            }
+            j++;
+        }
+
         FnSpecialTable.push(elem); //tabla estilo pila
         return this.FnSpecialTable.get(0); //retornar el elemento recién insertado
     }
 
     public FnSpecialElement buscar(int index, String arrayName){
         FnSpecialElement element = null;
+
         for (int i = 0; i < this.FnSpecialTable.size(); i++){
             if (this.FnSpecialTable.get(i).getArrayName().equals(arrayName) & this.FnSpecialTable.get(i).getIndex() == index)
                 element = this.FnSpecialTable.get(i);
         }
         return element;
+    }
+
+    public void openScope(){
+        this.currentLevel++;
+    }
+
+    public void closeScope(){
+        if (this.FnSpecialTable.size()==0){
+            return;
+        }
+        FnSpecialElement element = this.FnSpecialTable.get(0);
+        while (element != null && element.getLevel() == this.currentLevel){
+            FnSpecialTable.pop();
+            if(!this.FnSpecialTable.isEmpty())
+                element = this.FnSpecialTable.get(0);
+            else
+                element= null;
+        }
+        this.currentLevel--;
     }
 
     //return if an array have a function with the same number of params
@@ -46,7 +76,7 @@ public class FnSpecialTable {
         System.out.println("****** ESTADO DE TABLA DE SÍMBOLOS PARA FUNCIONES ESPECIALES ******");
         if (!this.FnSpecialTable.isEmpty()) {
             for (FnSpecialElement i : this.FnSpecialTable) {
-                System.out.println("Array Name: " + i.getArrayName() + " - Array position: " + i.getIndex()+ " - Parameters number: "+i.getParamsNumber());
+                System.out.println("Array Name: " + i.getArrayName() + " - Array position: " + i.getIndex()+ " - Parameters number: "+i.getParamsNumber() +" - Level: " +i.getLevel());
             }
             System.out.println("------------------------------------------");
         }

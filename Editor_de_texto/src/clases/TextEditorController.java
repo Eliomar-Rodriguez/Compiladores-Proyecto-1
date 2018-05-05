@@ -53,6 +53,11 @@ public class TextEditorController extends WindowAdapter implements ActionListene
         this.fontSize = 14;
         model = new TextEditorModel();
         this.executeState=false;
+        this.editor.executionArea.setVisible(true);
+        this.editor.executionArea.setEnabled(true);
+
+        this.editor.errorsArea.setEditable(false);
+        this.editor.executionArea.setEditable(true);
         this.editor.executionPanel.setSelectedIndex(0);
         this.editor.executionArea.setEditable(false); // desactivar edicion
         this.editor.errorsArea.setEditable(false); // desactivar edicion

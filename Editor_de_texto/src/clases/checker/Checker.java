@@ -19,7 +19,6 @@ public class Checker extends MonkeyParserBaseVisitor {
     private int finalCounterParams;
     private int globalCounterReturn = 0;
     private int globalCounterParams = 0;
-    private int globalCounterIdentifiers = 0;
     private boolean returnInFunction; //para controlar si la sentencia return se encuentra dentro de una función
     private String arrayName;
     private boolean isInLet = false;
@@ -28,17 +27,6 @@ public class Checker extends MonkeyParserBaseVisitor {
     private String specialArrayName;
     private RecursivityObject temporalObject;
 
-    /*
-    /*it's going to store the name of the function, it helps with visit function Literal
-      the vaue is none when the function literal visti is not due to a let statement
-
-    private Token functionName;
-
-    /*
-    for backup the context declaration of function
-
-    private ParserRuleContext functionRuleContext;
-    */
     /*
     when the program goes to a function declaration, this vars increase in one number,
     if functionInsideOther's value is 1 or more it means that that there are functions inside
@@ -248,11 +236,13 @@ public class Checker extends MonkeyParserBaseVisitor {
     public Object visitProg_Mky(MonkeyParser.Prog_MkyContext ctx) {
         this.functionsTable.openScope();
         this.identifierTable.OpenScope();
+        this.fnSpecialTable.openScope();
         for(MonkeyParser.StatementContext elem: ctx.statement()) {
             visit(elem);
             this.identifierTable.imprimir();
             this.functionsTable.imprimir();
         }
+        this.fnSpecialTable.closeScope();
         this.identifierTable.closeScope();
         this.functionsTable.closeScope();
         return null;
@@ -912,7 +902,7 @@ public class Checker extends MonkeyParserBaseVisitor {
         this.globalCounterReturn=0; // reestablecer el contador
 
         this.identifierTable.OpenScope();
-        this.fnSpecialTable.openScope();
+
 
 
 
@@ -948,10 +938,10 @@ public class Checker extends MonkeyParserBaseVisitor {
 
             this.identifierTable.setActLevel(this.identifierTable.getActLevel()+1);
 
-            this.fnSpecialTable.insert(this.globalCounterParams,this.temporalObject.getFnName().getText(),this.temporalObject.getIndex());
+            this.fnSpecialTable.insert(this.globalCounterParams,this.temporalObject.getFnName().getText(),this.temporalObject.getIndex(),ctx);
         }
         this.functionsTable.openScope();
-
+        this.fnSpecialTable.openScope();
         this.returnInFunction = true; //se permite dentro del blockstatement la sentencia return
 
 
@@ -1175,17 +1165,18 @@ public class Checker extends MonkeyParserBaseVisitor {
                             " column: "+ ctx.expression(i).getStart().getCharPositionInLine());
                 }
             }
-            else{
-                if (type == -1){
-                    return -1;
-                }
-            }
+
 
             type = (Integer) visit(ctx.expression(i));
             if(type == -2){
                 this.errorsList.add("Error: . You can not declare a statement in an array. At line: "+ctx.expression().get(i).getStart().getLine()+
                         " column: "+ ctx.expression().get(i).getStart().getCharPositionInLine());
                 return -1;
+            }
+            else{
+                if (type == -1){
+                    return -1;
+                }
             }
 
             this.globalCounterParams=temp; //reestablecimiento del valor previo de global counter params
@@ -1213,9 +1204,11 @@ public class Checker extends MonkeyParserBaseVisitor {
         //requerido abrir un nivel aquí
         for(int i = 0; i < ctx.blockStatement().size(); i++) {
             this.identifierTable.OpenScope();
+            this.fnSpecialTable.openScope();
             this.functionsTable.openScope();
             visit(ctx.blockStatement(i));
             this.identifierTable.closeScope();
+            this.fnSpecialTable.closeScope();
             this.functionsTable.closeScope();
             this.identifierTable.imprimir();
             this.functionsTable.imprimir();
@@ -1231,6 +1224,7 @@ public class Checker extends MonkeyParserBaseVisitor {
         for(MonkeyParser.StatementContext stm : ctx.statement()){
             visit(stm);
         }
+        this.fnSpecialTable.imprimir();
         this.identifierTable.imprimir();
 
 

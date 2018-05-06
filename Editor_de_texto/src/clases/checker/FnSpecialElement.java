@@ -1,16 +1,20 @@
 package clases.checker;
 
+import org.antlr.v4.runtime.ParserRuleContext;
+
 public class FnSpecialElement {
     private int paramsNumber;
     private String arrayName;
     private int level;
     private int index;
+    private ParserRuleContext declaration;
 
-    public FnSpecialElement(int paramsNumber, String arrayName, int index, int level) {
+    public FnSpecialElement(int paramsNumber, String arrayName, int index, int level,ParserRuleContext ctx) {
         this.paramsNumber = paramsNumber;
         this.arrayName = arrayName;
         this.index = index;
         this.level = level;
+        this.declaration=ctx;
     }
 
     public int getLevel() {

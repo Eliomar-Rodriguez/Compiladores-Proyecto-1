@@ -75,7 +75,7 @@ public class IdentifiersTable{
 
     public boolean deleteElement(String name) {
         for (int i = 0; i < this.IDs_table.size(); i++) {
-            if (this.IDs_table.get(i).getToken().getText().equals(name)) {
+            if (this.IDs_table.get(i).getToken().getText().equals(name)&& this.IDs_table.get(i).getLevel()== this.actLevel) {
                 this.IDs_table.remove(i);
                 return true;
             }

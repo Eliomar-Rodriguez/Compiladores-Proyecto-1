@@ -106,7 +106,7 @@ public class FunctionsTable {
 
     public boolean deleteElement(String name){
         for (int i = 0; i < this.table.size(); i++) {
-            if(this.table.get(i).getToken().getText().equals(name)){
+            if(this.table.get(i).getToken().getText().equals(name) && this.table.get(i).getLevel()==this.currentLevel){
                 this.table.remove(i);
                 return true;
             }

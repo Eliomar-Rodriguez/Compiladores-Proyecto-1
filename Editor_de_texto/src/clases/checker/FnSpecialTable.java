@@ -11,15 +11,15 @@ public class FnSpecialTable {
 
     public FnSpecialTable() {
         this.FnSpecialTable = new LinkedList<FnSpecialElement>();
-        this.currentLevel = 0;
+        this.currentLevel = -1;
     }
 
-    public FnSpecialElement insert(int paramsNumber, String arrayName, int index) {
-        FnSpecialElement elem = new FnSpecialElement(paramsNumber,arrayName,index, currentLevel);
+    public FnSpecialElement insert(int paramsNumber, String arrayName, int index,ParserRuleContext ctx) {
+        FnSpecialElement elem = new FnSpecialElement(paramsNumber,arrayName,index, currentLevel,ctx);
 
         int j = 0;
         while (j < this.FnSpecialTable.size() && this.FnSpecialTable.get(j).getLevel() == this.currentLevel) {
-            if (this.FnSpecialTable.get(j).getArrayName().equals(arrayName)) {
+            if (this.FnSpecialTable.get(j).getArrayName().equals(arrayName) && this.FnSpecialTable.get(j).getIndex()==index) {
                 return null;
             }
             j++;
@@ -62,7 +62,7 @@ public class FnSpecialTable {
     public boolean arrayHaveFunctions(int params, String arrayName){
 
         for (int i = 0; i < this.FnSpecialTable.size(); i++){
-            if (this.FnSpecialTable.get(i).getArrayName().equals(arrayName) & this.FnSpecialTable.get(i).getParamsNumber()==params){
+            if (this.FnSpecialTable.get(i).getArrayName().equals(arrayName) && this.FnSpecialTable.get(i).getParamsNumber()==params){
                 return true;
             }
 

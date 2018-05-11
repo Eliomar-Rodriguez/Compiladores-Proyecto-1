@@ -22,6 +22,14 @@ public class FunctionsTable {
         this.setDefaultFunctions();
     }
 
+    public int getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public void setCurrentLevel(int currentLevel) {
+        this.currentLevel = currentLevel;
+    }
+
     public void setDefaultFunctions(){
         this.table.push(new FuncTableElement(0, new CommonToken(0,"len"),1,0,null));
         this.table.push(new FuncTableElement(0, new CommonToken(0,"first"),1,0,null));

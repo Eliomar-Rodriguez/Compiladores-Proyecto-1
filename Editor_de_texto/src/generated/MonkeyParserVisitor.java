@@ -1,4 +1,4 @@
-// Generated from C:/Users/anton/Desktop/Compiladores.EliomarRodriguez-JosuaCarranza.PrimerProgra/Editor_de_texto\MonkeyParser.g4 by ANTLR 4.7
+// Generated from C:/Users/Josua/Documents/2018 I/Compiladores e Interpretes/1 Tarea programada/Editor_de_texto\MonkeyParser.g4 by ANTLR 4.7
 package generated;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 

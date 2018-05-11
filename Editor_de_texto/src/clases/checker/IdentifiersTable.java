@@ -49,13 +49,16 @@ public class IdentifiersTable{
         if (this.IDs_table.size()==0){
             return;
         }
-        IdentifierElement element = this.IDs_table.get(0);
-        while (element != null && element.getLevel() == actLevel){
-            IDs_table.pop();
-            if(!this.IDs_table.isEmpty())
-                element = this.IDs_table.get(0);
-            else
-                element= null;
+        int i=0;
+        IdentifierElement element;
+
+        while (i < this.IDs_table.size()){
+            element = this.IDs_table.get(i);
+            if (element.getLevel() == actLevel){
+                IDs_table.remove(i);
+                i=i-1;
+            }
+            i++;
         }
         this.actLevel--;
     }

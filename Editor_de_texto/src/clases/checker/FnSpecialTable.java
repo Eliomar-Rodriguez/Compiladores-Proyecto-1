@@ -14,7 +14,16 @@ public class FnSpecialTable {
         this.currentLevel = -1;
     }
 
-    public FnSpecialElement insert(int paramsNumber, String arrayName, int index,ParserRuleContext ctx) {
+
+    public int getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public void setCurrentLevel(int currentLevel) {
+        this.currentLevel = currentLevel;
+    }
+
+    public FnSpecialElement insert(int paramsNumber, String arrayName, int index, ParserRuleContext ctx) {
         FnSpecialElement elem = new FnSpecialElement(paramsNumber,arrayName,index, currentLevel,ctx);
 
         int j = 0;
@@ -86,7 +95,7 @@ public class FnSpecialTable {
 
     public boolean deleteElement(String name){
         for (int i = 0; i < this.FnSpecialTable.size(); i++) {
-            if(this.FnSpecialTable.get(i).getArrayName().equals(name)){
+            if(this.FnSpecialTable.get(i).getArrayName().equals(name) && this.FnSpecialTable.get(i).getLevel()== this.currentLevel){
                 this.FnSpecialTable.remove(i);
                 return true;
             }

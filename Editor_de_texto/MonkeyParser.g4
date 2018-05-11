@@ -62,6 +62,6 @@ printExpression      	: PUTS PIZQ expression PDER                     #printExpr
 ifExpression	: IF expression blockStatement (ELSE blockStatement | ) #ifExpr_Mky;
 blockStatement	: LIZQ statement* LDER                                  #blockSt_Mky;
 identifier
- locals [ParserRuleContext decl = null]
+locals [ParserRuleContext decl = null]
         : ID                                                            #id_Mky
         ;

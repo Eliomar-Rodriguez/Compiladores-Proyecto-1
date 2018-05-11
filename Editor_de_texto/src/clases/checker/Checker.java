@@ -300,8 +300,12 @@ public class Checker extends MonkeyParserBaseVisitor {
         if (type !=4 && type!= -1 && (ctx.expression().toStringTree().replace(" ","").contains("fn("))){
 
             FuncTableElement element = this.functionsTable.buscar(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText());
-            element.setDeclaration(ctx.expression());
-            element.setReturnType(this.haveReturn);
+            if (element!= null){
+                element.setDeclaration(ctx.expression());
+                element.setReturnType(this.haveReturn);
+            }
+
+
         }
         else{
             //error in the expresion
@@ -340,7 +344,9 @@ public class Checker extends MonkeyParserBaseVisitor {
         this.globalCounterReturn++;
 
         int type= (Integer) visit(ctx.expression());
-
+        if (type==-1){
+            return type;
+        }
         return -2;
     }
 
@@ -474,6 +480,7 @@ public class Checker extends MonkeyParserBaseVisitor {
         }
         for (int i = 1; i < size; i++) {
             type2= (Integer) visit(ctx.get(i));
+
 
             if (this.checkRestrictions(type1,type2,operator,ctx.get(i))==0){
                 type1=type2;
@@ -948,12 +955,18 @@ public class Checker extends MonkeyParserBaseVisitor {
         this.temporalObject=respaldo;
         if (res == -1) {
             if(this.temporalObject.getIndex() != -1){
+                this.identifierTable.setActLevel(this.identifierTable.getActLevel()-1);
+                this.fnSpecialTable.setCurrentLevel(this.fnSpecialTable.getCurrentLevel()-1);
                 this.identifierTable.deleteElement(this.temporalObject.getFnName().getText());
                 this.fnSpecialTable.deleteElement(this.temporalObject.getFnName().getText());
+                this.identifierTable.setActLevel(this.identifierTable.getActLevel()+1);
+                this.fnSpecialTable.setCurrentLevel(this.fnSpecialTable.getCurrentLevel()+1);
 
             }
             else{
+                this.functionsTable.setCurrentLevel(this.functionsTable.getCurrentLevel()-1);
                 this.functionsTable.deleteElement(this.temporalObject.getFnName().getText());
+                this.functionsTable.setCurrentLevel(this.functionsTable.getCurrentLevel()+1);
 
             }
 
@@ -1063,7 +1076,7 @@ public class Checker extends MonkeyParserBaseVisitor {
             }
         }
         else{
-            this.errorsList.add("Error: The key in a hash var must to be String. At line: "+ctx.expression(0).getStart().getLine()+
+            this.errorsList.add("Error: The key in a hash var must to be String or Integer. At line: "+ctx.expression(0).getStart().getLine()+
                     " column: "+ ctx.expression(0).getStart().getCharPositionInLine());
             return -1;
         }
@@ -1217,10 +1230,14 @@ public class Checker extends MonkeyParserBaseVisitor {
     @Override
     public Object visitBlockSt_Mky(MonkeyParser.BlockSt_MkyContext ctx) {
 
-
+        int type;
         for(MonkeyParser.StatementContext stm : ctx.statement()){
-            visit(stm);
+            type= (Integer) visit(stm);
+            if (type==-1){
+                return type;
+            }
         }
+
         this.fnSpecialTable.imprimir();
         this.identifierTable.imprimir();
 

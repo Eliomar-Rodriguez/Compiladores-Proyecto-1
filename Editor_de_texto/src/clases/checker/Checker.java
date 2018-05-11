@@ -129,8 +129,6 @@ public class Checker extends MonkeyParserBaseVisitor {
                 }
             }
         }
-        System.out.println(res);
-
         return res;
     }
 
@@ -275,18 +273,18 @@ public class Checker extends MonkeyParserBaseVisitor {
         this.temporalObject.setFnName(null);
         this.temporalObject.setIndex(-1);
         if (ctx.expression().toStringTree().replace(" ","").contains("fn(")){
-            this.temporalObject.setFnName(ctx.ID().getSymbol());
+            this.temporalObject.setFnName(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getSymbol());
         }
 
         this.specialIndex=-2;
 
-        this.arrayName = ctx.ID().getText();
+        this.arrayName = ((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText();
 
 
         //check if function or variable name is an special function
-        if (this.isReservedWord(ctx.ID().getText().toLowerCase())==true){
-            this.errorsList.add("Error: Assignment is not posible because the identifier  " + ctx.ID().getText() + " it's a Monkey language reserved word. At line: " +
-                    ctx.ID().getSymbol().getLine() + " column: " + ctx.ID().getSymbol().getCharPositionInLine());
+        if (this.isReservedWord(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText().toLowerCase())==true){
+            this.errorsList.add("Error: Assignment is not posible because the identifier  " + ((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText() + " it's a Monkey language reserved word. At line: " +
+                    ((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getSymbol().getLine() + " column: " + ((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getSymbol().getCharPositionInLine());
             return -1;
         }
 
@@ -301,12 +299,12 @@ public class Checker extends MonkeyParserBaseVisitor {
 
         if (type !=4 && type!= -1 && (ctx.expression().toStringTree().replace(" ","").contains("fn("))){
 
-
-            FuncTableElement element = this.functionsTable.buscar(ctx.ID().getText());
+            FuncTableElement element = this.functionsTable.buscar(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText());
             if (element!= null){
                 element.setDeclaration(ctx.expression());
                 element.setReturnType(this.haveReturn);
             }
+
 
         }
         else{
@@ -315,8 +313,8 @@ public class Checker extends MonkeyParserBaseVisitor {
                 return -1;
             }
 
-            if (this.functionsTable.buscar(ctx.ID().getText().toLowerCase())!=null){
-                this.errorsList.add("Error: The identifier " + ctx.ID().getText() + " it's already declared like a function and" +
+            if (this.functionsTable.buscar(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText().toLowerCase())!=null){
+                this.errorsList.add("Error: The identifier " + ((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText() + " it's already declared like a function and" +
                         " can't not be change to variable. At line: " +
                         ctx.getStart().getLine() + " column: " + ctx.getStart().getCharPositionInLine());
                 return -1;
@@ -324,7 +322,7 @@ public class Checker extends MonkeyParserBaseVisitor {
 
 
             //neutro type
-            this.identifierTable.insertar(ctx.ID().getSymbol(),type,ctx);
+            this.identifierTable.insertar(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getSymbol(),type,ctx);
         }
 
 
@@ -723,7 +721,6 @@ public class Checker extends MonkeyParserBaseVisitor {
         else{
             type= this.evaluateSpecialFunctionCall(this.specialArrayName,this.specialIndex,0,ctx.expressionList());
         }
-        System.out.println("TYPE = " + type);
         return type;
     }
 
@@ -752,11 +749,11 @@ public class Checker extends MonkeyParserBaseVisitor {
     public Object visitPExprID_Mky(MonkeyParser.PExprID_MkyContext ctx) {
         //buscar en la tabla y retornar el tipo
         int resType = -1;
-        IdentifierElement elem = this.identifierTable.buscar(ctx.ID().getText());
-        FuncTableElement elem2= this.functionsTable.buscar(ctx.ID().getText());
+        IdentifierElement elem = this.identifierTable.buscar(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText());
+        FuncTableElement elem2= this.functionsTable.buscar(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText());
         if (elem==null && elem2==null){
-            this.errorsList.add("Error: Variable or function "+ ctx.ID().getText()+ " have not been declared. At line: "+
-            ctx.ID().getSymbol().getLine()+" Column: "+ ctx.ID().getSymbol().getCharPositionInLine());
+            this.errorsList.add("Error: Variable or function "+ ((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText()+ " have not been declared. At line: "+
+                    ((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getSymbol().getLine()+" Column: "+ ((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getSymbol().getCharPositionInLine());
             return -1;
         }
 
@@ -1018,7 +1015,7 @@ public class Checker extends MonkeyParserBaseVisitor {
         //habría que guardar esta id
         //ctx.ID()
         this.globalCounterParams=0;
-        this.identifierTable.insertar(ctx.ID().getSymbol(),0,ctx);
+        this.identifierTable.insertar(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getSymbol(),0,ctx);
         this.globalCounterParams++;
         return visit(ctx.moreIdentifiers());
 
@@ -1026,16 +1023,16 @@ public class Checker extends MonkeyParserBaseVisitor {
 
     @Override
     public Object visitMoreIdentifiers_Mky(MonkeyParser.MoreIdentifiers_MkyContext ctx) {
-        int size=ctx.ID().size();
+        int size = ctx.identifier().size();
         IdentifierElement elem;
         for (int i = 0; i <size; i++){
-            elem= this.identifierTable.insertar(ctx.ID().get(i).getSymbol(),0,ctx);
+            elem= this.identifierTable.insertar(((MonkeyParser.Id_MkyContext)ctx.identifier(i)).ID().getSymbol(),0,ctx);
             if (elem!=null){
                 this.globalCounterParams++;
             }
             else{
-                this.errorsList.add("Error: Two or more params have the same name. At line: "+ctx.ID(i).getSymbol().getLine()+
-                        " column: "+ ctx.ID(i).getSymbol().getCharPositionInLine());
+                this.errorsList.add("Error: Two or more params have the same name. At line: "+((MonkeyParser.Id_MkyContext)ctx.identifier(i)).ID().getSymbol().getLine()+
+                        " column: "+ ((MonkeyParser.Id_MkyContext)ctx.identifier(i)).ID().getSymbol().getCharPositionInLine());
                 return -1;
             }
         }

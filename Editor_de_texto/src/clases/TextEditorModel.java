@@ -1,5 +1,6 @@
 package clases;
 
+import clases.Interpreter.Interpreter;
 import clases.checker.Checker;
 import generated.MonkeyParser;
 import generated.MonkeyScanner;
@@ -18,6 +19,7 @@ public class TextEditorModel {
     private Checker checker;
     private MonkeyParser parser;
     private MonkeyScanner scanner;
+    private Interpreter interpreter;
     private CommonTokenStream tokens = null; //lista de tokens
     private myAntlrErrorHandle handleError;
     private ParseTree tree;
@@ -31,6 +33,14 @@ public class TextEditorModel {
 
     public Checker getChecker() {
         return checker;
+    }
+
+    public Interpreter getInterpreter() {
+        return interpreter;
+    }
+
+    public void setInterpreter(Interpreter interpreter) {
+        this.interpreter = interpreter;
     }
 
     public void setChecker(Checker checker) {
@@ -72,8 +82,11 @@ public class TextEditorModel {
 
         //parse program
          this.tree= this.parser.program();
+
          this.checker= new Checker();
+         this.interpreter = new Interpreter();
          //semantic checker
          this.checker.visit(this.tree);
+         this.interpreter.visit(this.tree);
     }
 }

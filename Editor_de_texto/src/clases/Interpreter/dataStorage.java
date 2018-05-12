@@ -19,34 +19,30 @@ public class dataStorage {
     }
 
     public dataStorageItem getData(int index){
-        return this.programData.ge
-    }
-
-
-}
-
-
-    public Value getData(int index) {
-        return this.data.get(index);
-    }
-
-    public Value getData(String name) {
-        //se debe buscar en la tabla pero por nombre
-        return null;
+        return this.programData.get(index);
     }
 
     public void cleanData(){
-        while (this.data.size()!=0)
-            this.data.pop();
-        this.actualIndex=0;
+        while(this.programData.size()!=0) {
+            this.programData.pop();
+        }
+        this.currentIndex=0;
     }
+
+    public int getCurrentStorageIndex(){
+        return this.currentIndex;
+    }
+    public LinkedList<dataStorageItem> getProgramData() {
+        return this.programData;
+    }
+
 
     public String toString() {
         String message = new String("");
         message += "****** ESTADO DE DATA STORAGE ******\n";
-        if (!this.data.isEmpty()) {
-            for (Value i : this.data) {
-                message += i.name + " --> " + i.value.toString() + "\n";
+        if (!this.programData.isEmpty()) {
+            for (dataStorageItem i : this.programData) {
+                message += i.getName() + " --> " + i.getValue()+" ,"+ i.getType() +" ," + i.getIndex() +" ," + i.getLevel() + "\n";
             }
             message += "------------------------------------------";
         } else
@@ -54,11 +50,6 @@ public class dataStorage {
         return message;
     }
 
-    public int getActualStorageIndex(){
-        return this.actualIndex;
-    }
-    public LinkedList<Value> getData() {
-        return this.data;
-    }
-
 }
+
+

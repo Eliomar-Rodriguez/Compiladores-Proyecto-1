@@ -1,5 +1,6 @@
 package clases.checker;
 
+import generated.MonkeyParser;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import java.util.LinkedList;
@@ -33,6 +34,9 @@ public class IdentifiersTable{
         while (j < this.IDs_table.size() && this.IDs_table.get(j).getLevel() == actLevel) {
             if (this.IDs_table.get(j).getToken().getText().equals(tkn.getText().toLowerCase())) {
                 this.IDs_table.get(j).setType(type); //change the type of the var
+
+                //cuando una variable ya ha sido declarada pegar el puntero para cada posterios uso de la misma
+                ((MonkeyParser.Id_MkyContext) declaracion).decl= this.IDs_table.get(j).getDeclaration();
                 return null;
             }
             j++;

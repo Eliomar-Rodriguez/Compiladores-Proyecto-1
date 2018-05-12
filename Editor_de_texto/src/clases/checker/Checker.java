@@ -635,6 +635,13 @@ public class Checker extends MonkeyParserBaseVisitor {
                     " column: "+ ctx.primitiveExpression().getStart().getCharPositionInLine());
             return -1;
         }
+
+        /**
+         * pegar puntero a la declaración de función
+         */
+
+        ((MonkeyParser.Id_MkyContext)((MonkeyParser.PExprID_MkyContext)ctx.primitiveExpression()).identifier()).decl=elem.getDeclaration();
+
         int type2= (Integer) visit(ctx.callExpression());
 
         if (elem.getReturnType()==-1){
@@ -757,12 +764,19 @@ public class Checker extends MonkeyParserBaseVisitor {
             return -1;
         }
 
+        /***
+         * Pegar el puntero a la declaración de la variable
+         */
         if (elem!= null) {
-
+            ctx.identifier().decl= elem.getDeclaration();
             resType= elem.getType();
 
         }
+        /***
+         * Pegar el puntero a la declaración de la función
+         */
         if (elem2!=null){
+            ctx.identifier().decl= elem2.getDeclaration();
             resType= elem2.getReturnType();
         }
 

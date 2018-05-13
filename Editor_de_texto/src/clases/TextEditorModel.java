@@ -63,6 +63,13 @@ public class TextEditorModel {
         return this.parser;
     }
 
+
+    // for code interpretation
+    public void  codeInterpretation(ParseTree tree){
+            this.interpreter.visit(tree);
+    }
+
+
     public void AnalizeAndExecute(String filePath) throws IOException {
         ANTLRInputStream input= new ANTLRInputStream(new FileReader(filePath));
         this.scanner=new MonkeyScanner(input);
@@ -87,6 +94,6 @@ public class TextEditorModel {
          this.interpreter = new Interpreter();
          //semantic checker
          this.checker.visit(this.tree);
-         this.interpreter.visit(this.tree);
+
     }
 }

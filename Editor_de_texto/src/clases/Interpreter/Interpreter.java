@@ -151,11 +151,15 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
     @Override
     public Object visitProg_Mky(MonkeyParser.Prog_MkyContext ctx) {
+        this.DataStorage.openScope();
         for(MonkeyParser.StatementContext elem: ctx.statement()) {
             visit(elem);
 
         }
-        DataStorage.toString();
+        /*here we don't close scope because var values are necesary for the moment in that we have to execute something
+         through the command line
+        */
+        System.out.println(this.DataStorage.toString());
         return null;
     }
 
@@ -185,11 +189,11 @@ public class Interpreter extends MonkeyParserBaseVisitor{
          * */
         int type = (Integer) visit(ctx.expression());
         ProgramStackElement element = evaluationStack.pop();
-        if (element == null)
-            System.out.println("ERROR, NO EXISTE LA VARIABLE");
-        else{
-            this.DataStorage.addData(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText(),element.getValue(),this.DataStorage.getCurrentStorageIndex(),element.getType(),this.DataStorage.getCurrentLevel());
-        }
+
+        this.DataStorage.addData(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText(),
+                element.getValue(),this.DataStorage.getCurrentStorageIndex(),
+                element.getType(),ctx);
+
         System.out.println(this.DataStorage.toString());
         //int type = (Integer) visit(ctx.expression());
         //this.DataStorage.toString();
@@ -311,30 +315,71 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         return resType;
     }
 
-    public int addSumSub(List<MonkeyParser.MultiplicationExpressionContext> ctx, String operator){
-        int type1=-1;
-        int type2=-1;
+
+    private ProgramStackElement makeOperation(ProgramStackElement value1, ProgramStackElement value2,String operator){
+        ProgramStackElement res = null;
+        if (operator.equals("+")){
+            if (value1.getType()==this.STRING && value2.getType()==this.STRING){
+                return new ProgramStackElement((String.valueOf(value1.getValue()))+String.valueOf(value2.getValue()),this.STRING);
+            }
+            if (value1.getType()==this.INTEGER && value2.getType()==this.INTEGER){
+                res= new ProgramStackElement((Integer.parseInt(value1.getValue().toString()))+
+                        Integer.parseInt(value2.getValue().toString()),this.INTEGER);
+            }
+
+        }
+        else if (operator.equals("-")){
+            if (value1.getType()==this.INTEGER && value2.getType()==this.INTEGER){
+                res= new ProgramStackElement((Integer.parseInt(value1.getValue().toString())) -
+                        Integer.parseInt(value2.getValue().toString()),this.INTEGER);
+            }
+        }
+        else if (operator.equals("*")){
+            if (value1.getType()==this.INTEGER && value2.getType()==this.INTEGER){
+                res= new ProgramStackElement((Integer.parseInt(value1.getValue().toString())) *
+                        Integer.parseInt(value2.getValue().toString()),this.INTEGER);
+            }
+        }
+
+        //div operator
+        else{
+            if (value1.getType()==this.INTEGER && value2.getType()==this.INTEGER){
+                res= new ProgramStackElement((Integer.parseInt(value1.getValue().toString())) /
+                        Integer.parseInt(value2.getValue().toString()),this.INTEGER);
+            }
+        }
+        return res;
+
+    }
+
+
+    public void addSumSub(List<MonkeyParser.MultiplicationExpressionContext> ctx, String operator){
+
+        ProgramStackElement value1;
+        ProgramStackElement value2;
         int size= ctx.size();
 
         visit(ctx.get(0));
+        value2= this.evaluationStack.pop();
+        value1= this.evaluationStack.pop();
+        this.evaluationStack.push(this.makeOperation(value1,value2,operator));
 
         for (int i = 1; i < size; i++) {
             visit(ctx.get(i));
+            value2= this.evaluationStack.pop();
+            value1= this.evaluationStack.pop();
+            this.evaluationStack.push(this.makeOperation(value1,value2,operator));
         }
 
-        return type1;
 
     }
 
     @Override
     public Object visitAddFactSum_Mky(MonkeyParser.AddFactSum_MkyContext ctx) {
         if (ctx.multiplicationExpression().size()>0){
-            return this.addSumSub(ctx.multiplicationExpression(), "+");
+            this.addSumSub(ctx.multiplicationExpression(), "+");
         }
-        else{
-            return 0; //tipo neutro
-        }
-
+        return 0;
     }
 
 
@@ -342,68 +387,55 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     @Override
     public Object visitAddFactSub_Mky(MonkeyParser.AddFactSub_MkyContext ctx) {
         if (ctx.multiplicationExpression().size()>0){
-            return this.addSumSub(ctx.multiplicationExpression(), "-");
+            this.addSumSub(ctx.multiplicationExpression(), "-");
         }
-        else{
-            return 0; //tipo neutro
-        }
+
+        return 0;
     }
 
     @Override
     public Object visitMultExpr_Mky(MonkeyParser.MultExpr_MkyContext ctx) {
-        int resType=0;
-        int type1 = (Integer) visit(ctx.elementExpression());
-        int type2= (Integer) visit(ctx.multiplicationFactor());
-        if (this.checkTypesCompatibility(type1,type2)!=true){
-            resType=-1;
-        }
-        else{
-            resType= type1;
-        }
 
-        return resType;
+        visit(ctx.elementExpression());
+        visit(ctx.multiplicationFactor());
+        return 0;
     }
 
-    public int mutlFactMulDiv(List<MonkeyParser.ElementExpressionContext>ctx,String operator) {
+    public void mutlFactMulDiv(List<MonkeyParser.ElementExpressionContext>ctx,String operator) {
 
-        int type1=-1;
-        int type2=-1;
+        ProgramStackElement value1;
+        ProgramStackElement value2;
+
         int size= ctx.size();
-        type1= (Integer) visit(ctx.get(0));
+
+        visit(ctx.get(0));
+        value2=this.evaluationStack.pop();
+        value1= this.evaluationStack.pop();
+        this.evaluationStack.push(this.makeOperation(value1,value2,operator));
 
         for (int i = 1; i < size; i++) {
-            type2= (Integer) visit(ctx.get(i));
-            if (this.checkRestrictions(type1,type2,operator,ctx.get(i))==0){
-                type1=type2;
-            }
-            else{
-                return -1;
-            }
+            visit(ctx.get(i));
+            value2=this.evaluationStack.pop();
+            value1= this.evaluationStack.pop();
+            this.evaluationStack.push(this.makeOperation(value1,value2,operator));
         }
 
-        return type1;
     }
 
     @Override
     public Object visitMultFactMul_Mky(MonkeyParser.MultFactMul_MkyContext ctx) {
         if (ctx.elementExpression().size()>0){
-            return this.mutlFactMulDiv(ctx.elementExpression(),"*");
+            this.mutlFactMulDiv(ctx.elementExpression(),"*");
         }
-        else{
-            return 0;
-        }
-
+        return 0;
     }
 
     @Override
     public Object visitMultFactDiv_Mky(MonkeyParser.MultFactDiv_MkyContext ctx) {
         if (ctx.elementExpression().size()>0){
-            return this.mutlFactMulDiv(ctx.elementExpression(),"/");
+            this.mutlFactMulDiv(ctx.elementExpression(),"/");
         }
-        else{
-            return 0;
-        }
-
+        return 0;
     }
 
     @Override
@@ -463,31 +495,45 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
     @Override
     public Object visitPExprInt_Mky(MonkeyParser.PExprInt_MkyContext ctx) {
-        ProgramStackElement element = new ProgramStackElement(Integer.parseInt(ctx.INTEGER().getText()),1);
-        this.evaluationStack.push(element);
-        return 1; //tipo entero
+
+        this.evaluationStack.push( new ProgramStackElement(Integer.parseInt(ctx.getText()),this.INTEGER) );
+        return 0;
     }
 
     @Override
     public Object visitPExprStrMky(MonkeyParser.PExprStrMkyContext ctx)
     {
-        return 2; //tipo string
+        this.evaluationStack.push(new ProgramStackElement(String.valueOf(ctx.getText().replace("\"","")),this.STRING));
+        return 0;
     }
 
     @Override
     public Object visitPExprID_Mky(MonkeyParser.PExprID_MkyContext ctx) {
-        //buscar en la tabla y retornar el tipo
-        return 0;//CAMBIAR
+        /*
+        look for the identifier position in the data storage
+
+        PENDING CHECK IF WORKS WITH MANY LEVELs, HOWEVER IT SHOULD WORKS
+         */
+        int identifierIndex= ((MonkeyParser.LetStatementContext) ctx.identifier().decl).storageIndex;
+        dataStorageItem element= this.DataStorage.getData(identifierIndex);
+        if (element.getType()!= this.FUNCTION){
+            this.evaluationStack.push(new ProgramStackElement(element.getValue(),element.getType()));
+        }
+
+        return 0;
     }
 
     @Override
     public Object visitPExprTRUE_Mky(MonkeyParser.PExprTRUE_MkyContext ctx) {
-        return 3; //tipo boolean
+
+        this.evaluationStack.push(new ProgramStackElement(Boolean.parseBoolean(ctx.getText()),this.BOOLEAN));
+        return 0;
     }
 
     @Override
     public Object visitPExprFALSE_Mky(MonkeyParser.PExprFALSE_MkyContext ctx) {
-        return 3;
+        this.evaluationStack.push(new ProgramStackElement(Boolean.parseBoolean(ctx.getText()),this.BOOLEAN));
+        return 0;
     }
 
     @Override

@@ -14,10 +14,20 @@ public class dataStorage {
         this.programData= new LinkedList<dataStorageItem>();
     }
 
-    public void addData(String name, Object value,int index,int type,int level){
+    public boolean addData(String name, Object value,int index,int type,int level){
         dataStorageItem newItem= new dataStorageItem(name,value,index,type,level);
+        if(this.programData.contains(newItem)){
+            return false;
+        }
         this.programData.add(newItem);
+        return true;
+    }
 
+    public dataStorageItem getData(int index){
+        if (this.programData.size() == 0)
+            return null;
+
+        return this.programData.get(index);
     }
 
     public int getCurrentLevel() {
@@ -28,13 +38,6 @@ public class dataStorage {
         this.currentLevel = currentLevel;
     }
 
-    public dataStorageItem getData(int index){
-        if (this.programData.get(index) == null)
-            return null;
-
-        return this.programData.get(index);
-    }
-
     public void cleanData(){
         while(this.programData.size()!=0) {
             this.programData.pop();
@@ -42,9 +45,14 @@ public class dataStorage {
         this.currentIndex=0;
     }
 
-    public int getCurrentStorageIndex(){
-        return this.currentIndex;
+    public int getCurrentIndex() {
+        return currentIndex;
     }
+
+    public void setCurrentIndex(int currentIndex) {
+        this.currentIndex = currentIndex;
+    }
+
     public LinkedList<dataStorageItem> getProgramData() {
         return this.programData;
     }
@@ -61,6 +69,20 @@ public class dataStorage {
         } else
             message += "Data Storage is Empty!!";
         return message;
+    }
+
+    public void printDataStorage(){
+        System.out.println("****** ESTADO DE DATA STORAGE ******\n");
+        for (int i = 0; i < this.programData.size(); i++) {
+            dataStorageItem item = this.programData.get(i);
+            System.out.println(
+                    "Name: " + item.getName()+" - "+
+                    "Value: " + item.getValue()+" - "+
+                    "Type: " + item.getType()+" - "+
+                    "Index: " + item.getIndex()+" - "+
+                    "Level: " + item.getLevel()
+            );
+        }
     }
 
 }

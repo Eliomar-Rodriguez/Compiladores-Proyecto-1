@@ -153,9 +153,8 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     public Object visitProg_Mky(MonkeyParser.Prog_MkyContext ctx) {
         for(MonkeyParser.StatementContext elem: ctx.statement()) {
             visit(elem);
-
         }
-        DataStorage.toString();
+        this.DataStorage.printDataStorage();
         return null;
     }
 
@@ -185,16 +184,29 @@ public class Interpreter extends MonkeyParserBaseVisitor{
          * */
         int type = (Integer) visit(ctx.expression());
         ProgramStackElement element = evaluationStack.pop();
-        if (element == null)
-            System.out.println("ERROR, NO EXISTE LA VARIABLE");
-        else{
-            this.DataStorage.addData(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText(),element.getValue(),this.DataStorage.getCurrentStorageIndex(),element.getType(),this.DataStorage.getCurrentLevel());
-        }
-        System.out.println(this.DataStorage.toString());
-        //int type = (Integer) visit(ctx.expression());
-        //this.DataStorage.toString();
-        return -2;
+        dataStorageItem obj = this.DataStorage.getData(ctx.storageIndex);
 
+        if (obj != null) {// no existe la variable en dataStorage
+            //System.out.println(((MonkeyParser.Id_MkyContext) ctx.identifier()).ID().getText());
+            if(this.DataStorage.addData(((MonkeyParser.Id_MkyContext) ctx.identifier()).ID().getText(), element.getValue(), ctx.storageIndex, element.getType(), this.DataStorage.getCurrentLevel()))
+                this .DataStorage.setCurrentIndex(this.DataStorage.getCurrentIndex() + 1);
+            else{ // la insersion retorno false porque ya existe en la tabla, solo hay que modificar
+                obj.setType(element.getType());
+                obj.setValue(element.getValue());
+            }
+        }
+        else{ // la tabla esta vacia, inserta de una vez
+            this.DataStorage.addData(
+                    ((MonkeyParser.Id_MkyContext) ctx.identifier()).ID().getText(),
+                    element.getValue(),
+                    ctx.storageIndex,
+                    element.getType(),
+                    this.DataStorage.getCurrentLevel()
+            );
+            this.DataStorage.setCurrentIndex(this.DataStorage.getCurrentIndex() + 1);
+        }
+        //this.DataStorage.printDataStorage();
+        return -2;
     }
 
     @Override

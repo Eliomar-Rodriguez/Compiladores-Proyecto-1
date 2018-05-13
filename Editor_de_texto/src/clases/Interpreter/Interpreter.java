@@ -154,12 +154,12 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         this.DataStorage.openScope();
         for(MonkeyParser.StatementContext elem: ctx.statement()) {
             visit(elem);
-
         }
         /*here we don't close scope because var values are necesary for the moment in that we have to execute something
          through the command line
         */
         System.out.println(this.DataStorage.toString());
+
         return null;
     }
 
@@ -191,14 +191,14 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         ProgramStackElement element = evaluationStack.pop();
 
         this.DataStorage.addData(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText(),
-                element.getValue(),this.DataStorage.getCurrentStorageIndex(),
+                element.getValue(),this.DataStorage.getCurrentIndex(),
                 element.getType(),ctx);
 
         System.out.println(this.DataStorage.toString());
         //int type = (Integer) visit(ctx.expression());
         //this.DataStorage.toString();
-        return -2;
 
+        return -2;
     }
 
     @Override

@@ -17,6 +17,7 @@ public class dataStorage {
         this.programData= new LinkedList<dataStorageItem>();
     }
 
+
     public dataStorageItem addData(String name, Object value,int index,int type,ParserRuleContext ctx){
         dataStorageItem newItem= new dataStorageItem(name,value,index,type,this.currentLevel);
         int j=0;
@@ -44,24 +45,31 @@ public class dataStorage {
         this.currentLevel++;
     }
 
-    public void closeScope(){
-        if (this.programData.size()==0){
+    public void closeScope() {
+        if (this.programData.size() == 0) {
             return;
         }
-        int i=0;
-        int size= this.programData.size();
+        int i = 0;
+        int size = this.programData.size();
         dataStorageItem element;
-        while( i < size){
-            element= this.programData.get(i);
-            if (element.getLevel()== this.currentLevel){
+        while (i < size) {
+            element = this.programData.get(i);
+            if (element.getLevel() == this.currentLevel) {
                 this.programData.remove(i);
-                i=i-1;
+                i = i - 1;
             }
             i++;
 
         }
         this.currentLevel--;
+    }
 
+
+    public dataStorageItem getData(int index){
+        if (this.programData.size() == 0)
+            return null;
+
+        return this.programData.get(index);
     }
 
     public int getCurrentLevel() {
@@ -72,13 +80,6 @@ public class dataStorage {
         this.currentLevel = currentLevel;
     }
 
-    public dataStorageItem getData(int index){
-        if (this.programData.get(index) == null)
-            return null;
-
-        return this.programData.get(index);
-    }
-
     public void cleanData(){
         while(this.programData.size()!=0) {
             this.programData.pop();
@@ -86,9 +87,14 @@ public class dataStorage {
         this.currentIndex=0;
     }
 
-    public int getCurrentStorageIndex(){
-        return this.currentIndex;
+    public int getCurrentIndex() {
+        return currentIndex;
     }
+
+    public void setCurrentIndex(int currentIndex) {
+        this.currentIndex = currentIndex;
+    }
+
     public LinkedList<dataStorageItem> getProgramData() {
         return this.programData;
     }
@@ -105,6 +111,20 @@ public class dataStorage {
         } else
             message += "Data Storage is Empty!!";
         return message;
+    }
+
+    public void printDataStorage(){
+        System.out.println("****** ESTADO DE DATA STORAGE ******\n");
+        for (int i = 0; i < this.programData.size(); i++) {
+            dataStorageItem item = this.programData.get(i);
+            System.out.println(
+                    "Name: " + item.getName()+" - "+
+                    "Value: " + item.getValue()+" - "+
+                    "Type: " + item.getType()+" - "+
+                    "Index: " + item.getIndex()+" - "+
+                    "Level: " + item.getLevel()
+            );
+        }
     }
 
 }

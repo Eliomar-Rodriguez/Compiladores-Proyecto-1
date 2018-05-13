@@ -8,6 +8,7 @@ import generated.MonkeyParser;
 import generated.MonkeyParserBaseVisitor;
 import org.antlr.v4.runtime.ParserRuleContext;
 
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,8 +29,8 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
 
     public Interpreter(){
-        this.DataStorage= new dataStorage();
-        this.evaluationStack= new ProgramStack();
+        this.DataStorage = new dataStorage();
+        this.evaluationStack = new ProgramStack();
     }
 
     /**
@@ -150,12 +151,11 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
     @Override
     public Object visitProg_Mky(MonkeyParser.Prog_MkyContext ctx) {
-
         for(MonkeyParser.StatementContext elem: ctx.statement()) {
             visit(elem);
 
         }
-
+        DataStorage.toString();
         return null;
     }
 
@@ -183,9 +183,16 @@ public class Interpreter extends MonkeyParserBaseVisitor{
          * Check if there is a function declaration in a variable and add it to FunctionsTable
          * and increment the functions counter
          * */
-
         int type = (Integer) visit(ctx.expression());
-
+        ProgramStackElement element = evaluationStack.pop();
+        if (element == null)
+            System.out.println("ERROR, NO EXISTE LA VARIABLE");
+        else{
+            this.DataStorage.addData(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText(),element.getValue(),this.DataStorage.getCurrentStorageIndex(),element.getType(),this.DataStorage.getCurrentLevel());
+        }
+        System.out.println(this.DataStorage.toString());
+        //int type = (Integer) visit(ctx.expression());
+        //this.DataStorage.toString();
         return -2;
 
     }
@@ -295,8 +302,13 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         int resType=0;
         int type1= (Integer) visit(ctx.multiplicationExpression());
         int type2= (Integer) visit(ctx.additionFactor());
-
-        return null;
+        if (this.checkTypesCompatibility(type1,type2)!=true){
+            resType=-1;
+        }
+        else{
+            resType= type1;
+        }
+        return resType;
     }
 
     public int addSumSub(List<MonkeyParser.MultiplicationExpressionContext> ctx, String operator){
@@ -342,7 +354,12 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         int resType=0;
         int type1 = (Integer) visit(ctx.elementExpression());
         int type2= (Integer) visit(ctx.multiplicationFactor());
-
+        if (this.checkTypesCompatibility(type1,type2)!=true){
+            resType=-1;
+        }
+        else{
+            resType= type1;
+        }
 
         return resType;
     }
@@ -397,7 +414,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         visit(ctx.elementAccess());
 
         visit(ctx.specialCall());
-        return null;
+        return 0; //CAMBIAR por el que es
 
     }
 
@@ -409,7 +426,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
         visit(ctx.callExpression());
 
-        return null;
+        return 0;//CAMBIAR
     }
 
     @Override
@@ -423,7 +440,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
         visit(ctx.expression());
 
-        return null;
+        return 0;
     }
 
 
@@ -431,7 +448,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     public Object visitSpecialCall_Mky(MonkeyParser.SpecialCall_MkyContext ctx) {
         visit (ctx.expressionList());
 
-        return null;
+        return 0;//CAMBIAR
     }
 
     @Override
@@ -446,6 +463,8 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
     @Override
     public Object visitPExprInt_Mky(MonkeyParser.PExprInt_MkyContext ctx) {
+        ProgramStackElement element = new ProgramStackElement(Integer.parseInt(ctx.INTEGER().getText()),1);
+        this.evaluationStack.push(element);
         return 1; //tipo entero
     }
 
@@ -458,7 +477,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     @Override
     public Object visitPExprID_Mky(MonkeyParser.PExprID_MkyContext ctx) {
         //buscar en la tabla y retornar el tipo
-        return null;
+        return 0;//CAMBIAR
     }
 
     @Override
@@ -476,7 +495,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
         visit(ctx.expression());
 
-        return null;
+        return 0;//CAMBIAR
 
     }
 
@@ -525,27 +544,27 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     //al visitar las fuciones predefinidas retornar tipo neutro, o el elemento que representa a las funciones
     @Override
     public Object visitArrayFuncLen_Mky(MonkeyParser.ArrayFuncLen_MkyContext ctx) {
-        return null;
+        return 0;//CAMBIAR
     }
 
     @Override
     public Object visitArrayFuncFirst_Mky(MonkeyParser.ArrayFuncFirst_MkyContext ctx) {
-        return null;
+        return 0;//CAMBIAR
     }
 
     @Override
     public Object visitArrayFuncLast_Mky(MonkeyParser.ArrayFuncLast_MkyContext ctx) {
-        return null;
+        return 0;//CAMBIAR
     }
 
     @Override
     public Object visitArrayFuncRest_Mky(MonkeyParser.ArrayFuncRest_MkyContext ctx) {
-        return null;
+        return 0;//CAMBIAR
     }
 
     @Override
     public Object visitArrayFuncPush_Mky(MonkeyParser.ArrayFuncPush_MkyContext ctx) {
-        return null;
+        return 0;//CAMBIAR
     }
 
     //array declaration
@@ -554,7 +573,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
         visit(ctx.expressionList());
 
-        return null;
+        return 0;//CAMBIAR
     }
 
     @Override
@@ -564,7 +583,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
         visit(ctx.blockStatement());
 
-        return null;
+        return 0;//CAMBIAR
 
     }
 

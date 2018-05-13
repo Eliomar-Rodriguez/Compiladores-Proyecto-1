@@ -245,6 +245,7 @@ public class TextEditorController extends WindowAdapter implements ActionListene
         try {
             JFrame treeGUI = (JFrame) org.antlr.v4.gui.Trees.inspect(tree,parser);
             treeGUI.setVisible(true);
+
         }catch (Exception e){
             System.out.println("ERROR: " +e);
         }
@@ -357,6 +358,7 @@ public class TextEditorController extends WindowAdapter implements ActionListene
             } else {
                 if (this.executeState == true) {
                     this.showTree(this.model.getTree(), this.model.getParser());
+
                 } else {
                     JOptionPane.showMessageDialog(editor.getRootPane(), "You have not run any program or an error ocurred", "System Alert", JOptionPane.ERROR_MESSAGE);
                 }

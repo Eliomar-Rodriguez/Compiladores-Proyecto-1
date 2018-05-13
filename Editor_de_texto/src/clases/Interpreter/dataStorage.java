@@ -5,10 +5,12 @@ import java.util.LinkedList;
 public class dataStorage {
     private LinkedList<dataStorageItem> programData;
     private int currentIndex;
+    private int currentLevel;
 
 
     public dataStorage(){
-        this.currentIndex=0;
+        this.currentIndex = 0;
+        this.currentLevel = 0;
         this.programData= new LinkedList<dataStorageItem>();
     }
 
@@ -18,7 +20,18 @@ public class dataStorage {
 
     }
 
+    public int getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public void setCurrentLevel(int currentLevel) {
+        this.currentLevel = currentLevel;
+    }
+
     public dataStorageItem getData(int index){
+        if (this.programData.get(index) == null)
+            return null;
+
         return this.programData.get(index);
     }
 

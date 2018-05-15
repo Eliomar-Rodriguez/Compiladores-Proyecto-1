@@ -21,6 +21,12 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     private final int TYPE_ERROR=-1;
     private final int STATEMENT_TYPE= -2;
 
+    /**
+     * to control all related to expression List rule, how many params to call a function, how many elements
+     * does an array contains.
+     */
+    private int elementsCount;
+
     private final int INTEGER=1;
     private final int STRING=2;
     private final int BOOLEAN=3;
@@ -32,6 +38,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     public Interpreter(){
         this.DataStorage = new dataStorage();
         this.evaluationStack = new ProgramStack();
+        this.elementsCount=0;
     }
 
     /**
@@ -395,9 +402,9 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     @Override
     public Object visitMultExpr_Mky(MonkeyParser.MultExpr_MkyContext ctx) {
 
-        int type1 = (Integer) visit(ctx.elementExpression());
-        visit(ctx.multiplicationFactor());
-        return type1;
+        Object a = visit(ctx.elementExpression());
+        Object b = visit(ctx.multiplicationFactor());
+        return a;
     }
 
     public void mutlFactMulDiv(List<MonkeyParser.ElementExpressionContext>ctx,String operator) {
@@ -439,13 +446,52 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
     @Override
     public Object visitElemExprElemAccess_Mky(MonkeyParser.ElemExprElemAccess_MkyContext ctx) {
+
+        //visit the name of the array or hash literal to get the array value or hash value
         visit(ctx.primitiveExpression());
 
+        ProgramStackElement element= this.evaluationStack.pop();
+
+        if ( (element.getType() != this.ARRAY_LITERAL && element.getType()!= this.HASH_LITERAL )){ //if it's not a neutral type, or array or hash literal
+
+            return this.TYPE_ERROR;
+        }
 
         visit(ctx.elementAccess());
 
-        visit(ctx.specialCall());
-        return 0; //CAMBIAR por el que es
+        ProgramStackElement index = this.evaluationStack.pop();
+
+        /**
+         * If there are error types in hash literal
+         */
+        if ( index.getType() ==this.TYPE_ERROR){
+            return this.TYPE_ERROR;
+        }
+
+        //if primitive expression is an array it can't be indexed through an string index
+        if (element.getType() == this.ARRAY_LITERAL && index.getType() ==this.STRING){
+            return this.TYPE_ERROR;
+        }
+
+        /**
+         * IF WE ARE INDEXING A HASH LITERAL, the index must to be a key in string
+         */
+        if (element.getType()== this.HASH_LITERAL){
+            if(index.getType()== this.STRING){
+                //indexing hash literal in a simple way
+
+            }
+            else{
+                return this.TYPE_ERROR;
+            }
+        }
+        else{
+            // restart stack to use or not in the special call
+            this.evaluationStack.push(element);
+            this.evaluationStack.push(index);
+            visit(ctx.specialCall());
+        }
+        return null;
 
     }
 
@@ -479,6 +525,39 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
     @Override
     public Object visitSpecialCall_Mky(MonkeyParser.SpecialCall_MkyContext ctx) {
+
+        int type;
+        /**
+        if (ctx.expressionList().getChildCount()> 0){
+            int temp=globalCounterParams;  //por si está siendo utilizado en algún otro lugar
+            this.globalCounterParams=0;
+
+            // backup special array name because value could change in visit expresion list
+            String specialArray= this.specialArrayName;
+            // backup special array name because value could change in visit expresion list
+            int indexBackup= this.specialIndex;
+            type= (Integer) visit (ctx.expressionList());
+
+            this.specialArrayName=specialArray;
+            this.specialIndex=indexBackup;
+
+            // if there are problems with the function call
+            if (type==-1){
+                this.errorsList.add("Error: with types or functions parameters.At line:"+ ctx.expressionList().getStart().getLine()+
+                        " column: "+ ctx.expressionList().getStart().getCharPositionInLine());
+            }
+            else{
+                type=this.evaluateSpecialFunctionCall(this.specialArrayName,this.specialIndex,this.globalCounterParams ,ctx.expressionList());
+            }
+            this.globalCounterParams=temp; //reasignación del valor previo que poseía.
+        }
+
+        else{
+            type= this.evaluateSpecialFunctionCall(this.specialArrayName,this.specialIndex,0,ctx.expressionList());
+        }
+        return type;
+         **/
+        /***********************************/
         visit (ctx.expressionList());
 
         return 0;//CAMBIAR
@@ -486,6 +565,24 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
     @Override
     public Object visitSpecialCallEmpty_Mky(MonkeyParser.SpecialCallEmpty_MkyContext ctx) {
+
+        //here we know that is a normal array indexation without a special call
+        ProgramStackElement index= this.evaluationStack.pop();
+        ProgramStackElement element= this.evaluationStack.pop();
+        ArrayList temp= ( ArrayList ) element.getValue();
+        int ind= (Integer) index.getValue();
+
+        /**
+         * check if the index is inside the array
+         */
+        if (ind < temp.size()){
+            //obtener tipo de dato del elemento en el array, ahorita solo va a servir para números enteros
+            this.evaluationStack.push(new ProgramStackElement(temp.get(ind),this.INTEGER));
+        }
+        else{
+            return this.TYPE_ERROR;
+        }
+
         return 0; // here it always goes to return a valid value.
     }
 
@@ -614,7 +711,22 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     @Override
     public Object visitArrayLit_Mky(MonkeyParser.ArrayLit_MkyContext ctx) {
 
+        System.out.println("*****************************"+ " elementos en array"+ " ********************+++");
+
+        ArrayList newArray= new ArrayList();
+        this.elementsCount=0;
+        /* Visit array elements*/
         visit(ctx.expressionList());
+
+        int i=0;
+        while (i < this.elementsCount){
+            //always insert at the beginning to keep array original order
+            newArray.add(0, this.evaluationStack.pop().getValue());
+            i++;
+        }
+
+        // insert to the stack
+        this.evaluationStack.push(new ProgramStackElement(newArray,this.ARRAY_LITERAL));
 
         return 0;//CAMBIAR
     }
@@ -704,12 +816,20 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     @Override
     public Object visitExprList_Mky(MonkeyParser.ExprList_MkyContext ctx) {
 
-        int type1= (Integer) visit(ctx.expression());
+        this.elementsCount++;
 
+       //backup global var value
+        int resp=this.elementsCount;
+        visit(ctx.expression());
 
+        this.elementsCount=resp;
+        //
+        if (ctx.moreExpressions().getChildCount()>0){
+            visit(ctx.moreExpressions());
 
-        return type1; // si el valor no es menos uno significa que no hubo errores
+        }
 
+        return null;
     }
 
     @Override
@@ -723,17 +843,18 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     @Override
     public Object visitMoreExpr_Mky(MonkeyParser.MoreExpr_MkyContext ctx) {
 
-        int type=0; //tipo valido
-        int temp=0;
+
+        int temp;
         for(int i = 0; i < ctx.expression().size(); i++){
 
-
-            type = (Integer) visit(ctx.expression(i));
-
-
+            // backup global var value
+            temp=this.elementsCount;
+            visit(ctx.expression(i));
+            this.elementsCount=temp;
+            this.elementsCount++;
         }
 
-        return type;
+        return null;
     }
 
     @Override

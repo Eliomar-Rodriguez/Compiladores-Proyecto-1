@@ -1,5 +1,8 @@
 package clases.Interpreter;
 
+import generated.MonkeyParser;
+import org.antlr.v4.runtime.ParserRuleContext;
+
 import java.util.LinkedList;
 
 public class dataStorage {
@@ -10,17 +13,51 @@ public class dataStorage {
 
     public dataStorage(){
         this.currentIndex = 0;
-        this.currentLevel = 0;
+        this.currentLevel = -1;
         this.programData= new LinkedList<dataStorageItem>();
     }
 
-    public boolean addData(String name, Object value,int index,int type,int level){
-        dataStorageItem newItem= new dataStorageItem(name,value,index,type,level);
-        if(this.programData.contains(newItem)){
-            return false;
+
+    public dataStorageItem addData(String name, Object value,int index,int type,ParserRuleContext ctx){
+        dataStorageItem newItem= new dataStorageItem(name,value,index,type,this.currentLevel);
+        int j=0;
+        while( j <this.programData.size() && this.programData.get(j).getLevel()== this.currentLevel ){
+            //if the var is already declared change the value and the type if it's necessary
+            if (this.programData.get(j).getName().equals(name)){
+                this.programData.get(j).setValue(value);
+                this.programData.get(j).setType(type);
+                return null;
+            }
+            j++;
         }
+
+        ((MonkeyParser.LetStatementContext) ctx).storageIndex=this.currentIndex;
+
         this.programData.add(newItem);
-        return true;
+        this.currentIndex++;
+        return this.programData.get(0);
+    }
+
+    public void openScope(){
+        this.currentLevel++;
+    }
+
+    public void closeScope() {
+        if (this.programData.size() == 0) {
+            return;
+        }
+        int i = 0;
+        int size = this.programData.size();
+        dataStorageItem element;
+        while (i < size) {
+            element = this.programData.get(i);
+            if (element.getLevel() == this.currentLevel) {
+                this.programData.remove(i);
+                i = i - 1;
+            }
+            i++;
+        }
+        this.currentLevel--;
     }
 
     public dataStorageItem getData(int index){

@@ -135,6 +135,8 @@ public class TextEditorController extends WindowAdapter implements ActionListene
             }
             else{
                 this.executeState=true;
+                //go to code interpretation
+                this.model.codeInterpretation(this.model.getTree());
                 this.editor.executionArea.setText("Cambios guardados\n\nCompilación exitosa");
                 //JOptionPane.showMessageDialog(this.editor.getRootPane(), "Compilación exitosa", "Done", JOptionPane.INFORMATION_MESSAGE);
             }

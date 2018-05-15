@@ -322,7 +322,11 @@ public class Checker extends MonkeyParserBaseVisitor {
 
 
             //neutro type
-            this.identifierTable.insertar(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getSymbol(),type,ctx);
+            IdentifierElement element= this.identifierTable.insertar(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getSymbol(),type,ctx);
+            if (element!= null){
+                //set the pointer to the declaration
+                ctx.identifier().decl= element.getDeclaration();
+            }
         }
 
 
@@ -471,6 +475,7 @@ public class Checker extends MonkeyParserBaseVisitor {
         int type1=-1;
         int type2=-1;
         int size= ctx.size();
+
 
         type1= (Integer) visit(ctx.get(0));
         if (this.isValidOperator(operator,type1)==false){

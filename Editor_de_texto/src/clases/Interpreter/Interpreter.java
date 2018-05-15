@@ -10,6 +10,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 import javax.xml.crypto.Data;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 public class Interpreter extends MonkeyParserBaseVisitor{
@@ -150,17 +151,21 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
     @Override
     public Object visitProg_Mky(MonkeyParser.Prog_MkyContext ctx) {
+        this.DataStorage.openScope();
         for(MonkeyParser.StatementContext elem: ctx.statement()) {
             visit(elem);
         }
-        this.DataStorage.printDataStorage();
+        /*here we don't close scope because var values are necesary for the moment in that we have to execute something
+         through the command line
+        */
+        System.out.println(this.DataStorage.toString());
+
         return null;
     }
 
     @Override
     public Object visitSt_let_Mky(MonkeyParser.St_let_MkyContext ctx) {
         return visit(ctx.letStatement());
-
     }
 
     @Override
@@ -183,28 +188,15 @@ public class Interpreter extends MonkeyParserBaseVisitor{
          * */
         int type = (Integer) visit(ctx.expression());
         ProgramStackElement element = evaluationStack.pop();
-        dataStorageItem obj = this.DataStorage.getData(ctx.storageIndex);
 
-        if (obj != null) {// no existe la variable en dataStorage
-            //System.out.println(((MonkeyParser.Id_MkyContext) ctx.identifier()).ID().getText());
-            if(this.DataStorage.addData(((MonkeyParser.Id_MkyContext) ctx.identifier()).ID().getText(), element.getValue(), ctx.storageIndex, element.getType(), this.DataStorage.getCurrentLevel()))
-                this .DataStorage.setCurrentIndex(this.DataStorage.getCurrentIndex() + 1);
-            else{ // la insersion retorno false porque ya existe en la tabla, solo hay que modificar
-                obj.setType(element.getType());
-                obj.setValue(element.getValue());
-            }
-        }
-        else{ // la tabla esta vacia, inserta de una vez
-            this.DataStorage.addData(
-                    ((MonkeyParser.Id_MkyContext) ctx.identifier()).ID().getText(),
-                    element.getValue(),
-                    ctx.storageIndex,
-                    element.getType(),
-                    this.DataStorage.getCurrentLevel()
-            );
-            this.DataStorage.setCurrentIndex(this.DataStorage.getCurrentIndex() + 1);
-        }
-        //this.DataStorage.printDataStorage();
+        this.DataStorage.addData(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText(),
+                element.getValue(),this.DataStorage.getCurrentIndex(),
+                element.getType(),ctx);
+
+        this.DataStorage.printDataStorage();
+        //int type = (Integer) visit(ctx.expression());
+        //this.DataStorage.toString();
+
         return -2;
     }
 
@@ -322,30 +314,71 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         return resType;
     }
 
-    public int addSumSub(List<MonkeyParser.MultiplicationExpressionContext> ctx, String operator){
-        int type1=-1;
-        int type2=-1;
+
+    private ProgramStackElement makeOperation(ProgramStackElement value1, ProgramStackElement value2,String operator){
+        ProgramStackElement res = null;
+        if (operator.equals("+")){
+            if (value1.getType()==this.STRING && value2.getType()==this.STRING){
+                return new ProgramStackElement((String.valueOf(value1.getValue()))+String.valueOf(value2.getValue()),this.STRING);
+            }
+            if (value1.getType()==this.INTEGER && value2.getType()==this.INTEGER){
+                res= new ProgramStackElement((Integer.parseInt(value1.getValue().toString()))+
+                        Integer.parseInt(value2.getValue().toString()),this.INTEGER);
+            }
+
+        }
+        else if (operator.equals("-")){
+            if (value1.getType()==this.INTEGER && value2.getType()==this.INTEGER){
+                res= new ProgramStackElement((Integer.parseInt(value1.getValue().toString())) -
+                        Integer.parseInt(value2.getValue().toString()),this.INTEGER);
+            }
+        }
+        else if (operator.equals("*")){
+            if (value1.getType()==this.INTEGER && value2.getType()==this.INTEGER){
+                res= new ProgramStackElement((Integer.parseInt(value1.getValue().toString())) *
+                        Integer.parseInt(value2.getValue().toString()),this.INTEGER);
+            }
+        }
+
+        //div operator
+        else{
+            if (value1.getType()==this.INTEGER && value2.getType()==this.INTEGER){
+                res= new ProgramStackElement((Integer.parseInt(value1.getValue().toString())) /
+                        Integer.parseInt(value2.getValue().toString()),this.INTEGER);
+            }
+        }
+        return res;
+
+    }
+
+
+    public void addSumSub(List<MonkeyParser.MultiplicationExpressionContext> ctx, String operator){
+
+        ProgramStackElement value1;
+        ProgramStackElement value2;
         int size= ctx.size();
 
         visit(ctx.get(0));
+        value2= this.evaluationStack.pop();
+        value1= this.evaluationStack.pop();
+        this.evaluationStack.push(this.makeOperation(value1,value2,operator));
 
         for (int i = 1; i < size; i++) {
             visit(ctx.get(i));
+            value2= this.evaluationStack.pop();
+            value1= this.evaluationStack.pop();
+            this.evaluationStack.push(this.makeOperation(value1,value2,operator));
         }
 
-        return type1;
 
     }
 
     @Override
     public Object visitAddFactSum_Mky(MonkeyParser.AddFactSum_MkyContext ctx) {
         if (ctx.multiplicationExpression().size()>0){
-            return this.addSumSub(ctx.multiplicationExpression(), "+");
+            this.addSumSub(ctx.multiplicationExpression(), "+");
         }
-        else{
-            return 0; //tipo neutro
-        }
-
+        return 0;
     }
 
 
@@ -353,68 +386,55 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     @Override
     public Object visitAddFactSub_Mky(MonkeyParser.AddFactSub_MkyContext ctx) {
         if (ctx.multiplicationExpression().size()>0){
-            return this.addSumSub(ctx.multiplicationExpression(), "-");
+            this.addSumSub(ctx.multiplicationExpression(), "-");
         }
-        else{
-            return 0; //tipo neutro
-        }
+
+        return 0;
     }
 
     @Override
     public Object visitMultExpr_Mky(MonkeyParser.MultExpr_MkyContext ctx) {
-        int resType=0;
-        int type1 = (Integer) visit(ctx.elementExpression());
-        int type2= (Integer) visit(ctx.multiplicationFactor());
-        if (this.checkTypesCompatibility(type1,type2)!=true){
-            resType=-1;
-        }
-        else{
-            resType= type1;
-        }
 
-        return resType;
+        int type1 = (Integer) visit(ctx.elementExpression());
+        visit(ctx.multiplicationFactor());
+        return type1;
     }
 
-    public int mutlFactMulDiv(List<MonkeyParser.ElementExpressionContext>ctx,String operator) {
+    public void mutlFactMulDiv(List<MonkeyParser.ElementExpressionContext>ctx,String operator) {
 
-        int type1=-1;
-        int type2=-1;
+        ProgramStackElement value1;
+        ProgramStackElement value2;
+
         int size= ctx.size();
-        type1= (Integer) visit(ctx.get(0));
+
+        visit(ctx.get(0));
+        value2=this.evaluationStack.pop();
+        value1= this.evaluationStack.pop();
+        this.evaluationStack.push(this.makeOperation(value1,value2,operator));
 
         for (int i = 1; i < size; i++) {
-            type2= (Integer) visit(ctx.get(i));
-            if (this.checkRestrictions(type1,type2,operator,ctx.get(i))==0){
-                type1=type2;
-            }
-            else{
-                return -1;
-            }
+            visit(ctx.get(i));
+            value2=this.evaluationStack.pop();
+            value1= this.evaluationStack.pop();
+            this.evaluationStack.push(this.makeOperation(value1,value2,operator));
         }
 
-        return type1;
     }
 
     @Override
     public Object visitMultFactMul_Mky(MonkeyParser.MultFactMul_MkyContext ctx) {
         if (ctx.elementExpression().size()>0){
-            return this.mutlFactMulDiv(ctx.elementExpression(),"*");
+            this.mutlFactMulDiv(ctx.elementExpression(),"*");
         }
-        else{
-            return 0;
-        }
-
+        return 0;
     }
 
     @Override
     public Object visitMultFactDiv_Mky(MonkeyParser.MultFactDiv_MkyContext ctx) {
         if (ctx.elementExpression().size()>0){
-            return this.mutlFactMulDiv(ctx.elementExpression(),"/");
+            this.mutlFactMulDiv(ctx.elementExpression(),"/");
         }
-        else{
-            return 0;
-        }
-
+        return 0;
     }
 
     @Override
@@ -449,8 +469,10 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     @Override
     public Object visitElemAccess_Mky(MonkeyParser.ElemAccess_MkyContext ctx) {
 
-        visit(ctx.expression());
-
+        int type = (Integer) visit(ctx.expression());
+        if (type == this.STRING){
+            
+        }
         return 0;
     }
 
@@ -474,40 +496,50 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
     @Override
     public Object visitPExprInt_Mky(MonkeyParser.PExprInt_MkyContext ctx) {
-        ProgramStackElement element = new ProgramStackElement(Integer.parseInt(ctx.INTEGER().getText()),1);
-        this.evaluationStack.push(element);
-        return 1; //tipo entero
+
+        this.evaluationStack.push( new ProgramStackElement(Integer.parseInt(ctx.getText()),this.INTEGER) );
+        return this.INTEGER;
     }
 
     @Override
     public Object visitPExprStrMky(MonkeyParser.PExprStrMkyContext ctx)
     {
-        return 2; //tipo string
+        this.evaluationStack.push(new ProgramStackElement(String.valueOf(ctx.getText().replace("\"","")),this.STRING));
+        return this.STRING;
     }
 
     @Override
     public Object visitPExprID_Mky(MonkeyParser.PExprID_MkyContext ctx) {
-        //buscar en la tabla y retornar el tipo
-        return 0;//CAMBIAR
+        /*
+        look for the identifier position in the data storage
+
+        PENDING CHECK IF WORKS WITH MANY LEVELs, HOWEVER IT SHOULD WORKS
+         */
+        int identifierIndex= ((MonkeyParser.LetStatementContext) ctx.identifier().decl).storageIndex;
+        dataStorageItem element= this.DataStorage.getData(identifierIndex);
+        if (element.getType()!= this.FUNCTION){
+            this.evaluationStack.push(new ProgramStackElement(element.getValue(),element.getType()));
+        }
+
+        return element.getType();
     }
 
     @Override
     public Object visitPExprTRUE_Mky(MonkeyParser.PExprTRUE_MkyContext ctx) {
-        return 3; //tipo boolean
+
+        this.evaluationStack.push(new ProgramStackElement(Boolean.parseBoolean(ctx.getText()),this.BOOLEAN));
+        return this.BOOLEAN;
     }
 
     @Override
     public Object visitPExprFALSE_Mky(MonkeyParser.PExprFALSE_MkyContext ctx) {
-        return 3;
+        this.evaluationStack.push(new ProgramStackElement(Boolean.parseBoolean(ctx.getText()),this.BOOLEAN));
+        return this.BOOLEAN;
     }
 
     @Override
     public Object visitPExprCallExpr_Mky(MonkeyParser.PExprCallExpr_MkyContext ctx) {
-
-        visit(ctx.expression());
-
-        return 0;//CAMBIAR
-
+        return (Integer)visit(ctx.expression());
     }
 
     @Override
@@ -619,24 +651,35 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
     @Override
     public Object visitHashLit_Mky(MonkeyParser.HashLit_MkyContext ctx) {
+        Hashtable<Object, Object> hashElement = new Hashtable<Object, Object>();
+        Object key = null, value = null;
+
         int type1 = (Integer) visit(ctx.hashContent()), result;
         int type2 = (Integer) visit(ctx.moreHashContent());
-        if (type1==-1 || type2==-1){
 
-            return -1;
+        if (type1 == this.TYPE_ERROR || type2 == this.TYPE_ERROR)
+            return this.TYPE_ERROR;
+
+        for (int i = 0; i < (ctx.moreHashContent().getChildCount()/2 + 1); i++) {
+            value = evaluationStack.pop().getValue();
+            key = evaluationStack.pop().getValue();
+            hashElement.put(key,value);
         }
-        return 5;
+
+        ProgramStackElement element = new ProgramStackElement(hashElement,this.HASH_LITERAL);
+        evaluationStack.push(element);
+
+        return this.HASH_LITERAL;
     }
 
     @Override
     public Object visitHashCont_Mky(MonkeyParser.HashCont_MkyContext ctx) {
         int type1 = (Integer) visit(ctx.expression(0)), type2 = -1;
 
-        //if the key it's a string
-        if(type1 ==1 || type1==2){
+        //if the key it's an integer or string
+        if(type1 == this.INTEGER || type1 == this.STRING){
 
             type2 = (Integer) visit(ctx.expression(1));
-
 
             if (type2 != -1){
                 return 0;

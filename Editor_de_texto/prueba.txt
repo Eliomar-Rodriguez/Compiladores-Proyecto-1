@@ -1,0 +1,11 @@
+ let a =0;
+
+ let a=2+4;
+
+ let x= "hola"+ " como estas";
+
+ let f= true;
+
+ let f=2;
+
+ let r=a + 18+ a /4;

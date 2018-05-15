@@ -32,11 +32,9 @@ public class IdentifiersTable{
         IdentifierElement element = new IdentifierElement(declaracion,actLevel,tkn,type);
         int j = 0;
         while (j < this.IDs_table.size() && this.IDs_table.get(j).getLevel() == actLevel) {
-            if (this.IDs_table.get(j).getToken().getText().equals(tkn.getText().toLowerCase())) {
+            if (this.IDs_table.get(j).getToken().getText().equals(tkn.getText())) {
                 this.IDs_table.get(j).setType(type); //change the type of the var
 
-                //cuando una variable ya ha sido declarada pegar el puntero para cada posterios uso de la misma
-                ((MonkeyParser.Id_MkyContext) declaracion).decl= this.IDs_table.get(j).getDeclaration();
                 return null;
             }
             j++;

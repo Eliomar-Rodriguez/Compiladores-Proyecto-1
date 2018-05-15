@@ -138,7 +138,6 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         else if (type==2 && operator.equals("+")){
             res=true;
         }
-
         else {
             //tipo boolean, string
             if ((type == 2 || type == 3 ) && operator.equals("==")) {

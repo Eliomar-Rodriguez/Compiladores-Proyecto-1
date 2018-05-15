@@ -25,4 +25,8 @@ public class ProgramStackElement {
     public void setType(int type) {
         this.type = type;
     }
+
+    public String toString(){
+        return this.value+ " "+ this.type;
+    }
 }

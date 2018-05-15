@@ -8,4 +8,8 @@
 
  let f=2;
 
- let r=a + 18+ a /4;
+ let r=a + 18+ a /2;
+
+let x= [false,0,0,0,1,"hola",true, [2,3,5,6]]
+
+let c= 1+ x[4];

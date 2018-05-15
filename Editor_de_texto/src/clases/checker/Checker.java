@@ -301,6 +301,7 @@ public class Checker extends MonkeyParserBaseVisitor {
 
             FuncTableElement element = this.functionsTable.buscar(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText());
             if (element!= null){
+                //store pointer to the function declaration
                 element.setDeclaration(ctx.expression());
                 element.setReturnType(this.haveReturn);
             }
@@ -642,9 +643,8 @@ public class Checker extends MonkeyParserBaseVisitor {
         }
 
         /**
-         * pegar puntero a la declaración de función
+         * set pointer to the function declaration
          */
-
         ((MonkeyParser.Id_MkyContext)((MonkeyParser.PExprID_MkyContext)ctx.primitiveExpression()).identifier()).decl=elem.getDeclaration();
 
         int type2= (Integer) visit(ctx.callExpression());

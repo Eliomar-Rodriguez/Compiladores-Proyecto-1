@@ -8,6 +8,7 @@ import generated.MonkeyParser;
 import generated.MonkeyParserBaseVisitor;
 import org.antlr.v4.runtime.ParserRuleContext;
 
+import javax.jws.Oneway;
 import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -43,6 +44,32 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
     /**
      *
+     * @param value: value, important to know the value type
+     * @return
+     */
+    public int getTypeOfElement(Object value){
+        if (value instanceof Integer){
+            return this.INTEGER;
+        }
+        else if (value instanceof String){
+            return this.STRING;
+        }
+        else if (value instanceof Boolean){
+            return this.BOOLEAN;
+        }
+        else if (value instanceof ArrayList){
+            return this.ARRAY_LITERAL;
+        }
+        else if (value instanceof Hashtable){
+            return this.HASH_LITERAL;
+        }
+        else{
+            return this.FUNCTION;
+        }
+    }
+
+    /**
+     *
      * @param name: name of the function to check if it's a default function
      * @return
      */
@@ -57,7 +84,6 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         }
         return false;
     }
-
 
     public int setSpecialIndex(String ArrayName,String text){
         int res;
@@ -76,9 +102,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
                 res= -2;
             }
         }
-
         return res;
-
     }
 
     public String setSpecialArrayName(String possibleName){
@@ -193,7 +217,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
          * Check if there is a function declaration in a variable and add it to FunctionsTable
          * and increment the functions counter
          * */
-        int type = (Integer) visit(ctx.expression());
+        visit(ctx.expression());
         ProgramStackElement element = evaluationStack.pop();
 
         this.DataStorage.addData(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText(),
@@ -209,40 +233,26 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
     @Override
     public Object visitReturnSt_Mky(MonkeyParser.ReturnSt_MkyContext ctx) {
+        visit(ctx.expression());
 
-
-        int type= (Integer) visit(ctx.expression());
-        if (type==-1){
-            return type;
-        }
-        return -2;
+        return null;
     }
 
     @Override
     public Object visitExprSt_Mky(MonkeyParser.ExprSt_MkyContext ctx) {
+        visit(ctx.expression());
 
-        return visit(ctx.expression());
+        return null;
     }
 
     @Override
     public Object visitExpr_Mky(MonkeyParser.Expr_MkyContext ctx) {
-        int type1=-1;
-        int type2=-1;
-        int resType=-1;
-        type1= (Integer) visit(ctx.additionExpression());
+        visit(ctx.additionExpression());
 
-        type2=0;
-        if (ctx.comparison().getChildCount()>0){
-            type2= (Integer) visit(ctx.comparison());
-        }
-        if (this.checkTypesCompatibility(type1,type2)!=true){
+        if (ctx.comparison().getChildCount()>0)
+            visit(ctx.comparison());
 
-            resType=-1;
-        }
-        else{
-            resType= type1;
-        }
-        return resType;
+        return null;
 
     }
 
@@ -258,24 +268,16 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         return 0; //success operation
     }
 
-    public int operatorComparisonMethod(List<MonkeyParser.AdditionExpressionContext> ctx, String operator){
-        int type1=-1;
-        int type2=-1;
+    public Object operatorComparisonMethod(List<MonkeyParser.AdditionExpressionContext> ctx, String operator){
+
         int size= ctx.size();
 
-        type1= (Integer) visit(ctx.get(0));
+        visit(ctx.get(0));
 
         for (int i = 1; i < size; i++) {
-            type2= (Integer) visit(ctx.get(i));
-
-            if (this.checkRestrictions(type1,type2,operator,ctx.get(i))==0){
-                type1=type2;
-            }
-            else{
-                return -1;
-            }
+            visit(ctx.get(i));
         }
-        return type1;
+        return null;
     }
 
     @Override
@@ -309,16 +311,10 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
     @Override
     public Object visitAddExpr_Mky(MonkeyParser.AddExpr_MkyContext ctx) {
-        int resType=0;
-        int type1= (Integer) visit(ctx.multiplicationExpression());
-        int type2= (Integer) visit(ctx.additionFactor());
-        if (this.checkTypesCompatibility(type1,type2)!=true){
-            resType=-1;
-        }
-        else{
-            resType= type1;
-        }
-        return resType;
+        visit(ctx.multiplicationExpression());
+        visit(ctx.additionFactor());
+
+        return null;
     }
 
 
@@ -385,10 +381,8 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         if (ctx.multiplicationExpression().size()>0){
             this.addSumSub(ctx.multiplicationExpression(), "+");
         }
-        return 0;
+        return null;
     }
-
-
 
     @Override
     public Object visitAddFactSub_Mky(MonkeyParser.AddFactSub_MkyContext ctx) {
@@ -396,15 +390,15 @@ public class Interpreter extends MonkeyParserBaseVisitor{
             this.addSumSub(ctx.multiplicationExpression(), "-");
         }
 
-        return 0;
+        return null;
     }
 
     @Override
     public Object visitMultExpr_Mky(MonkeyParser.MultExpr_MkyContext ctx) {
 
-        Object a = visit(ctx.elementExpression());
-        Object b = visit(ctx.multiplicationFactor());
-        return a;
+        visit(ctx.elementExpression());
+        visit(ctx.multiplicationFactor());
+        return null;
     }
 
     public void mutlFactMulDiv(List<MonkeyParser.ElementExpressionContext>ctx,String operator) {
@@ -425,7 +419,6 @@ public class Interpreter extends MonkeyParserBaseVisitor{
             value1= this.evaluationStack.pop();
             this.evaluationStack.push(this.makeOperation(value1,value2,operator));
         }
-
     }
 
     @Override
@@ -433,7 +426,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         if (ctx.elementExpression().size()>0){
             this.mutlFactMulDiv(ctx.elementExpression(),"*");
         }
-        return 0;
+        return null;
     }
 
     @Override
@@ -441,7 +434,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         if (ctx.elementExpression().size()>0){
             this.mutlFactMulDiv(ctx.elementExpression(),"/");
         }
-        return 0;
+        return null;
     }
 
     @Override
@@ -477,9 +470,17 @@ public class Interpreter extends MonkeyParserBaseVisitor{
          * IF WE ARE INDEXING A HASH LITERAL, the index must to be a key in string
          */
         if (element.getType()== this.HASH_LITERAL){
-            if(index.getType()== this.STRING){
+            if(index.getType()== this.STRING | index.getType() == this.INTEGER){
                 //indexing hash literal in a simple way
+                System.out.println(((Hashtable) element.getValue()).get(index.getValue()));
 
+                ProgramStackElement elemento = new ProgramStackElement(((Hashtable) element.getValue()).get(index.getValue()),this.getTypeOfElement(element.getValue()));
+
+                System.out.println("Variable: "+ctx.primitiveExpression().getText()+
+                        " - Key: "+index.getValue() +
+                        " - Valor: " +elemento.getValue());
+
+                this.evaluationStack.push(elemento);
             }
             else{
                 return this.TYPE_ERROR;
@@ -503,30 +504,26 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
         visit(ctx.callExpression());
 
-        return 0;//CAMBIAR
+        return null;//CAMBIAR
     }
 
     @Override
     public Object visitElemExprPExpr_Mky(MonkeyParser.ElemExprPExpr_MkyContext ctx) {
-        int type= (Integer) visit(ctx.primitiveExpression());
-        return type;
+        visit(ctx.primitiveExpression());
+        return null;
     }
 
     @Override
     public Object visitElemAccess_Mky(MonkeyParser.ElemAccess_MkyContext ctx) {
+        visit(ctx.expression());
 
-        int type = (Integer) visit(ctx.expression());
-        if (type == this.STRING){
-            
-        }
-        return 0;
+        return null;
     }
 
 
     @Override
     public Object visitSpecialCall_Mky(MonkeyParser.SpecialCall_MkyContext ctx) {
 
-        int type;
         /**
         if (ctx.expressionList().getChildCount()> 0){
             int temp=globalCounterParams;  //por si está siendo utilizado en algún otro lugar
@@ -560,7 +557,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         /***********************************/
         visit (ctx.expressionList());
 
-        return 0;//CAMBIAR
+        return null;
     }
 
     @Override
@@ -583,26 +580,27 @@ public class Interpreter extends MonkeyParserBaseVisitor{
             return this.TYPE_ERROR;
         }
 
-        return 0; // here it always goes to return a valid value.
+        return null; // here it always goes to return a valid value.
     }
 
     @Override
     public Object visitCallExpr_Mky(MonkeyParser.CallExpr_MkyContext ctx) {
-        return (Integer) visit(ctx.expressionList());
+        visit(ctx.expressionList());
+        return null;
     }
 
     @Override
     public Object visitPExprInt_Mky(MonkeyParser.PExprInt_MkyContext ctx) {
 
         this.evaluationStack.push( new ProgramStackElement(Integer.parseInt(ctx.getText()),this.INTEGER) );
-        return this.INTEGER;
+        return null;
     }
 
     @Override
     public Object visitPExprStrMky(MonkeyParser.PExprStrMkyContext ctx)
     {
         this.evaluationStack.push(new ProgramStackElement(String.valueOf(ctx.getText().replace("\"","")),this.STRING));
-        return this.STRING;
+        return null;
     }
 
     @Override
@@ -618,39 +616,41 @@ public class Interpreter extends MonkeyParserBaseVisitor{
             this.evaluationStack.push(new ProgramStackElement(element.getValue(),element.getType()));
         }
 
-        return element.getType();
+        return null;
     }
 
     @Override
     public Object visitPExprTRUE_Mky(MonkeyParser.PExprTRUE_MkyContext ctx) {
 
         this.evaluationStack.push(new ProgramStackElement(Boolean.parseBoolean(ctx.getText()),this.BOOLEAN));
-        return this.BOOLEAN;
+        return null;
     }
 
     @Override
     public Object visitPExprFALSE_Mky(MonkeyParser.PExprFALSE_MkyContext ctx) {
         this.evaluationStack.push(new ProgramStackElement(Boolean.parseBoolean(ctx.getText()),this.BOOLEAN));
-        return this.BOOLEAN;
+        return null;
     }
 
     @Override
     public Object visitPExprCallExpr_Mky(MonkeyParser.PExprCallExpr_MkyContext ctx) {
-        return (Integer)visit(ctx.expression());
+        visit(ctx.expression());
+        return null;
     }
 
     @Override
     public Object visitPExprArrayLit_Mky(MonkeyParser.PExprArrayLit_MkyContext ctx) {
-        return (Integer) visit(ctx.arrayLiteral());
+        visit(ctx.arrayLiteral());
+        return null;
     }
 
 
     //retorna el valor de retorno de la función al evaluarlo
-    public int manageDefaultFunctions(MonkeyParser.PExprArrayFunc_MkyContext ctx){
+    public Object manageDefaultFunctions(MonkeyParser.PExprArrayFunc_MkyContext ctx){
 
         visit(ctx.expressionList());
 
-        return 0;
+        return null;
     }
 
     @Override
@@ -662,7 +662,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
     @Override
     public Object visitPExprFuncDecl_Mky(MonkeyParser.PExprFuncDecl_MkyContext ctx) {
-        return (Integer) visit(ctx.functionLiteral());
+        return visit(ctx.functionLiteral());
 
     }
 
@@ -684,27 +684,27 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     //al visitar las fuciones predefinidas retornar tipo neutro, o el elemento que representa a las funciones
     @Override
     public Object visitArrayFuncLen_Mky(MonkeyParser.ArrayFuncLen_MkyContext ctx) {
-        return 0;//CAMBIAR
+        return null;//CAMBIAR
     }
 
     @Override
     public Object visitArrayFuncFirst_Mky(MonkeyParser.ArrayFuncFirst_MkyContext ctx) {
-        return 0;//CAMBIAR
+        return null;//CAMBIAR
     }
 
     @Override
     public Object visitArrayFuncLast_Mky(MonkeyParser.ArrayFuncLast_MkyContext ctx) {
-        return 0;//CAMBIAR
+        return null;//CAMBIAR
     }
 
     @Override
     public Object visitArrayFuncRest_Mky(MonkeyParser.ArrayFuncRest_MkyContext ctx) {
-        return 0;//CAMBIAR
+        return null;//CAMBIAR
     }
 
     @Override
     public Object visitArrayFuncPush_Mky(MonkeyParser.ArrayFuncPush_MkyContext ctx) {
-        return 0;//CAMBIAR
+        return null;//CAMBIAR
     }
 
     //array declaration
@@ -728,7 +728,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         // insert to the stack
         this.evaluationStack.push(new ProgramStackElement(newArray,this.ARRAY_LITERAL));
 
-        return 0;//CAMBIAR
+        return null;//CAMBIAR
     }
 
     @Override
@@ -738,7 +738,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
         visit(ctx.blockStatement());
 
-        return 0;//CAMBIAR
+        return null;//CAMBIAR
 
     }
 
@@ -754,11 +754,11 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     @Override
     public Object visitMoreIdentifiers_Mky(MonkeyParser.MoreIdentifiers_MkyContext ctx) {
         int size = ctx.identifier().size();
-
+        IdentifierElement elem;
         for (int i = 0; i <size; i++){
 
         }
-        return 0;
+        return null;
     }
 
     @Override
@@ -766,11 +766,8 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         Hashtable<Object, Object> hashElement = new Hashtable<Object, Object>();
         Object key = null, value = null;
 
-        int type1 = (Integer) visit(ctx.hashContent()), result;
-        int type2 = (Integer) visit(ctx.moreHashContent());
-
-        if (type1 == this.TYPE_ERROR || type2 == this.TYPE_ERROR)
-            return this.TYPE_ERROR;
+        visit(ctx.hashContent());
+        visit(ctx.moreHashContent());
 
         for (int i = 0; i < (ctx.moreHashContent().getChildCount()/2 + 1); i++) {
             value = evaluationStack.pop().getValue();
@@ -781,35 +778,31 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         ProgramStackElement element = new ProgramStackElement(hashElement,this.HASH_LITERAL);
         evaluationStack.push(element);
 
-        return this.HASH_LITERAL;
+        return null;
     }
 
     @Override
     public Object visitHashCont_Mky(MonkeyParser.HashCont_MkyContext ctx) {
-        int type1 = (Integer) visit(ctx.expression(0)), type2 = -1;
-
+        visit(ctx.expression(0));
+        ProgramStackElement el = this.evaluationStack.pop();
         //if the key it's an integer or string
-        if(type1 == this.INTEGER || type1 == this.STRING){
-
-            type2 = (Integer) visit(ctx.expression(1));
-
-            if (type2 != -1){
-                return 0;
-            }
-
+        if(el.getType() == this.INTEGER || el.getType() == this.STRING){
+            this.evaluationStack.push(el);
+            visit(ctx.expression(1));
         }
-        return type1;
-
+        else{
+            System.out.println("Error");
+        }
+        return null;
     }
 
 
     @Override
     public Object visitMoreHashCont_Mky(MonkeyParser.MoreHashCont_MkyContext ctx) {
-        int type = 0; // is a valid type by default
         for (MonkeyParser.HashContentContext hashC : ctx.hashContent()){
-            type = (Integer) visit(hashC);
+            visit(hashC);
         }
-        return type;
+        return null;
     }
 
 
@@ -837,7 +830,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         /*
          * poner el retorno, significa valor válido
          * */
-        return 0;
+        return null;
     }
 
     @Override
@@ -860,13 +853,13 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     @Override
     public Object visitPrintExpr_Mky(MonkeyParser.PrintExpr_MkyContext ctx) {
 
-        int type = (Integer) visit(ctx.expression());
-        if(type < 0) {
+        Object type = visit(ctx.expression());
+        if(type.equals(-1) | type.equals(-2)) {
             /*this.errorsList.add("Error: Print error: "+ctx.expression().getStart().getLine()+
                     " column: "+ ctx.expression().getStart().getCharPositionInLine());
             */
         }
-        return -2;
+        return null;
     }
 
     @Override
@@ -887,21 +880,15 @@ public class Interpreter extends MonkeyParserBaseVisitor{
             this.functionsTable.imprimir(); */
 
         }
-        return -2;
+        return null;
     }
 
     @Override
     public Object visitBlockSt_Mky(MonkeyParser.BlockSt_MkyContext ctx) {
 
-        int type;
-        for(MonkeyParser.StatementContext stm : ctx.statement()){
-            type= (Integer) visit(stm);
-            if (type==-1){
-                return type;
-            }
-        }
+        for(MonkeyParser.StatementContext stm : ctx.statement())
+            visit(stm);
 
-
-        return -2;
+        return null;
     }
 }

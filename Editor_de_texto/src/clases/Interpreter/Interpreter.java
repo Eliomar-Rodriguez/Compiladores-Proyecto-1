@@ -10,6 +10,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 import javax.xml.crypto.Data;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 public class Interpreter extends MonkeyParserBaseVisitor{
@@ -118,6 +119,69 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         }
     }
 
+
+    /**
+     *
+     * @param value: value, important to know the value type
+     * @return
+     */
+    public int getTypeOfElement(Object value){
+        if (value instanceof Integer){
+            return this.INTEGER;
+        }
+        else if (value instanceof String){
+            return this.STRING;
+        }
+        else if (value instanceof Boolean){
+            return this.BOOLEAN;
+        }
+        else if (value instanceof ArrayList){
+            return this.ARRAY_LITERAL;
+        }
+        else if (value instanceof Hashtable){
+            return this.HASH_LITERAL;
+        }
+        else{
+            return this.FUNCTION;
+        }
+    }
+
+    /**
+     *
+     * @param value1  primer operando de la comparación;
+     * @param value2  segundo operando de la comparación;
+     * @param operator operador que aplica sobre los dos operandos
+     */
+    public void evaluateComparison(ProgramStackElement value1, ProgramStackElement value2, String operator){
+        if (operator.equals("<")){
+            this.evaluationStack.push(new ProgramStackElement((Integer)  value1.getValue() < (Integer) value2.getValue(),this.BOOLEAN));
+        }
+        else if (operator.equals(">")){
+            this.evaluationStack.push(new ProgramStackElement((Integer)  value1.getValue() > (Integer) value2.getValue(),this.BOOLEAN));
+        }
+        else if (operator.equals("<=")){
+            this.evaluationStack.push(new ProgramStackElement((Integer)  value1.getValue() <= (Integer) value2.getValue(),this.BOOLEAN));
+        }
+        else if (operator.equals(">=")){
+            this.evaluationStack.push(new ProgramStackElement((Integer)  value1.getValue() >= (Integer) value2.getValue(),this.BOOLEAN));
+        }
+        else{
+            //not matter which or the two values you use, because they have the same type
+            //integer type
+            if (value1.getValue() instanceof Integer){
+                this.evaluationStack.push(new ProgramStackElement((Integer)  value1.getValue() == (Integer) value2.getValue(),this.BOOLEAN));
+            }
+            //boolean type
+            else  if (value1.getValue() instanceof Boolean){
+                this.evaluationStack.push(new ProgramStackElement((Boolean)  value1.getValue() == (Boolean) value2.getValue(),this.BOOLEAN));
+            }
+            //string type
+            else{
+                this.evaluationStack.push(new ProgramStackElement(String.valueOf(value1.getValue()).equals(value2.getValue()),this.BOOLEAN));
+            }
+        }
+    }
+
     public boolean checkTypesCompatibility(int type1,int type2){
         if (type1==-1||type2==-1){
             return false;
@@ -212,10 +276,8 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     public Object visitReturnSt_Mky(MonkeyParser.ReturnSt_MkyContext ctx) {
 
 
-        int type= (Integer) visit(ctx.expression());
-        if (type==-1){
-            return type;
-        }
+        visit(ctx.expression());
+
         return -2;
     }
 
@@ -230,11 +292,11 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         int type1=-1;
         int type2=-1;
         int resType=-1;
-        type1= (Integer) visit(ctx.additionExpression());
+        visit(ctx.additionExpression());
 
         type2=0;
         if (ctx.comparison().getChildCount()>0){
-            type2= (Integer) visit(ctx.comparison());
+            visit(ctx.comparison());
         }
         if (this.checkTypesCompatibility(type1,type2)!=true){
 
@@ -247,65 +309,91 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
     }
 
-    public int checkRestrictions(int type1, int type2, String operator,ParserRuleContext ctx){
-        if (this.isValidOperator(operator,type2)!=true){
+    public boolean checkRestrictionsForComparison(ProgramStackElement value1, ProgramStackElement value2, String operator){
 
-            return-1;
-        }
-        if (this.checkTypesCompatibility(type1,type2)==false){
+        boolean res=true;
+        if (operator.equals("==")){
+            if ((value1.getType()!= this.ARRAY_LITERAL && value1.getType()!= this.HASH_LITERAL && value1.getType() != this.FUNCTION)
+                    && (value2.getType()!= this.ARRAY_LITERAL && value2.getType()!= this.HASH_LITERAL && value2.getType() != this.FUNCTION))
+                {
+                    //types error for the comparisons,
+                    if (value1.getType()!=value2.getType()){
+                        res= false;
+                    }
 
-            return -1;
+                }
+            else{
+                //types incompatible for the operator.
+                res=false;
+            }
         }
-        return 0; //success operation
+        else{
+            // FOR <,>,<=,>= Operators, the two values have to be Integer
+            if (value1.getType() != this.INTEGER || value2.getType()!=this.INTEGER){
+                res= false;
+            }
+
+        }
+        return res; //success operation
     }
 
     public int operatorComparisonMethod(List<MonkeyParser.AdditionExpressionContext> ctx, String operator){
-        int type1=-1;
-        int type2=-1;
+
+        ProgramStackElement value1;
+        ProgramStackElement value2;
+
         int size= ctx.size();
 
-        type1= (Integer) visit(ctx.get(0));
+        for (int i = 0 ; i < size; i++) {
 
-        for (int i = 1; i < size; i++) {
-            type2= (Integer) visit(ctx.get(i));
-
-            if (this.checkRestrictions(type1,type2,operator,ctx.get(i))==0){
-                type1=type2;
+            visit(ctx.get(i));
+            //  get values to the comparison
+            value2= this.evaluationStack.pop();
+            value1= this.evaluationStack.pop();
+            if (this.checkRestrictionsForComparison(value1,value2,operator)==true){
+                this.evaluateComparison(value1,value2,operator);
             }
+            // could generate and exception to stop the program
             else{
                 return -1;
             }
         }
-        return type1;
+
+        return 0;
     }
 
     @Override
     public Object visitCompMenor_Mky(MonkeyParser.CompMenor_MkyContext ctx) {
 
-        return this.operatorComparisonMethod(ctx.additionExpression(),"<");
+        this.operatorComparisonMethod(ctx.additionExpression(),"<");
+        return null;
+
     }
 
     @Override
     public Object visitCompMayor_Mky(MonkeyParser.CompMayor_MkyContext ctx) {
-
-        return this.operatorComparisonMethod(ctx.additionExpression(),">");
+        this.operatorComparisonMethod(ctx.additionExpression(),">");
+        return null;
     }
 
     @Override
     public Object visitCompMenorIg_Mky(MonkeyParser.CompMenorIg_MkyContext ctx) {
 
-        return this.operatorComparisonMethod(ctx.additionExpression(),"<=");
+        this.operatorComparisonMethod(ctx.additionExpression(),"<=");
+        return null;
 
     }
 
     @Override
     public Object visitCompMayorIg_Mky(MonkeyParser.CompMayorIg_MkyContext ctx) {
-        return this.operatorComparisonMethod(ctx.additionExpression(),">=");
+        this.operatorComparisonMethod(ctx.additionExpression(),">=");
+        return null;
     }
 
     @Override
     public Object visitCompIgComp_Mky(MonkeyParser.CompIgComp_MkyContext ctx) {
-        return this.operatorComparisonMethod(ctx.additionExpression(),"==");
+        this.operatorComparisonMethod(ctx.additionExpression(),"==");
+        return null;
     }
 
     @Override
@@ -509,8 +597,8 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
     @Override
     public Object visitElemExprPExpr_Mky(MonkeyParser.ElemExprPExpr_MkyContext ctx) {
-        int type= (Integer) visit(ctx.primitiveExpression());
-        return type;
+        visit(ctx.primitiveExpression());
+        return null;
     }
 
     @Override
@@ -562,6 +650,8 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         return 0;//CAMBIAR
     }
 
+
+
     @Override
     public Object visitSpecialCallEmpty_Mky(MonkeyParser.SpecialCallEmpty_MkyContext ctx) {
 
@@ -576,8 +666,9 @@ public class Interpreter extends MonkeyParserBaseVisitor{
          */
         if (ind < temp.size()){
             //obtener tipo de dato del elemento en el array, ahorita solo va a servir para números enteros
-            this.evaluationStack.push(new ProgramStackElement(temp.get(ind),this.INTEGER));
+            this.evaluationStack.push(new ProgramStackElement(temp.get(ind),this.getTypeOfElement(temp.get(ind))));
         }
+        /* INDEX OUT OF BOUNDS throw exception to avoid null pointer exception in program*/
         else{
             return this.TYPE_ERROR;
         }
@@ -713,8 +804,6 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     //array declaration
     @Override
     public Object visitArrayLit_Mky(MonkeyParser.ArrayLit_MkyContext ctx) {
-
-        System.out.println("*****************************"+ " elementos en array"+ " ********************+++");
 
         ArrayList newArray= new ArrayList();
         this.elementsCount=0;
@@ -864,22 +953,33 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     @Override
     public Object visitIfExpr_Mky(MonkeyParser.IfExpr_MkyContext ctx) {
         visit(ctx.expression());
-        //requerido abrir un nivel aquí
-        for(int i = 0; i < ctx.blockStatement().size(); i++) {
-           /*
-            this.identifierTable.OpenScope();
-            this.fnSpecialTable.openScope();
-            this.functionsTable.openScope(); */
-            visit(ctx.blockStatement(i));
-            /*
-            this.identifierTable.closeScope();
-            this.fnSpecialTable.closeScope();
-            this.functionsTable.closeScope();
-            this.identifierTable.imprimir();
-            this.functionsTable.imprimir(); */
 
+        ProgramStackElement element = this.evaluationStack.pop();
+
+        //execute the if block statement
+        if ( Boolean.parseBoolean(element.getValue().toString()) ==true ){
+            System.out.println("************---------- **************************");
+            System.out.println("inside if statement");
+            System.out.println("************---------- **************************");
+            this.DataStorage.openScope();
+            visit(ctx.blockStatement(0));
+            this.DataStorage.closeScope();
         }
-        return -2;
+
+        // else block statement
+        else{
+            // check if there is an else statement
+            if (ctx.blockStatement().size()> 1){
+                System.out.println("************---------- **************************");
+                System.out.println(" inside else statement");
+                System.out.println("************---------- **************************");
+                this.DataStorage.openScope();
+                visit(ctx.blockStatement(1));
+                this.DataStorage.closeScope();
+            }
+        }
+
+        return null;
     }
 
     @Override

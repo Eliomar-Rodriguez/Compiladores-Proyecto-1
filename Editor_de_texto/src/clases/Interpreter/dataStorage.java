@@ -50,9 +50,10 @@ public class dataStorage {
             return;
         }
         int i = 0;
-        int size = this.programData.size();
         dataStorageItem element;
-        while (i < size) {
+
+        while (i < this.programData.size())
+        {
             element = this.programData.get(i);
             if (element.getLevel() == this.currentLevel) {
                 this.programData.remove(i);

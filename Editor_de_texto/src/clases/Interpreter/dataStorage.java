@@ -36,10 +36,7 @@ public class dataStorage {
         this.programData.add(newItem);
         this.currentIndex++;
         return this.programData.get(0);
-
     }
-
-
 
     public void openScope(){
         this.currentLevel++;
@@ -60,11 +57,9 @@ public class dataStorage {
                 i = i - 1;
             }
             i++;
-
         }
         this.currentLevel--;
     }
-
 
     public dataStorageItem getData(int index){
         if (this.programData.size() == 0)

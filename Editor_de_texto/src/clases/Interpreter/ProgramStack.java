@@ -16,4 +16,7 @@ public class ProgramStack {
     public void push(ProgramStackElement el){
         this.Stack.push(el);
     }
+    public int size(){
+        return this.Stack.size();
+    }
 }

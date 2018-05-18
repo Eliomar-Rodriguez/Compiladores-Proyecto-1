@@ -12,4 +12,25 @@
 
 let x= [false,0,0,0,1,"hola",true, [2,3,5,6]]
 
-let c= 1+ x[4];
+let c=  x[7];
+
+let g= false == false
+
+if (a > 20){
+    let a= a+10;
+
+}
+
+
+else{
+    let a= true;
+    let t= 3;
+    let b = a; 
+
+}
+
+let t= fn (x,y){
+    let u = fn(s){
+
+	}
+}

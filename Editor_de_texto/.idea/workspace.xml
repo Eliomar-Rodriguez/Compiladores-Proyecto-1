@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5f80c922-144b-4841-99d5-e534a49d9697" name="Default" comment="" />
+    <list default="true" id="053e9ecd-1747-45b2-b576-6cd175c05b6d" name="Default" comment="" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -9,7 +9,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/Editor_de_texto$Editor_de_texto.coverage" NAME="Editor_de_texto Coverage Results" MODIFIED="1526452519517" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/Editor_de_texto$Editor_de_texto.coverage" NAME="Editor_de_texto Coverage Results" MODIFIED="1526623100142" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>editor_de_texto.*</FILTER>
     </SUITE>
   </component>
@@ -18,13 +18,15 @@
       <file leaf-file-name="Interpreter.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/Interpreter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="806" column="0" lean-forward="true" selection-start-line="806" selection-start-column="0" selection-end-line="806" selection-end-column="0" />
+            <state relative-caret-position="202">
+              <caret line="1000" column="46" lean-forward="true" selection-start-line="1000" selection-start-column="46" selection-end-line="1000" selection-end-column="46" />
               <folding>
-                <element signature="e#20565#20566#0" expanded="true" />
-                <element signature="e#20612#20613#0" expanded="true" />
-                <element signature="e#21112#21113#0" expanded="true" />
-                <element signature="e#21148#21149#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="method#lenEvaluation#0;class#Interpreter#0" expanded="false" />
+                <element signature="method#firstEvaluation#0;class#Interpreter#0" expanded="false" />
+                <element signature="method#lastEvaluation#0;class#Interpreter#0" expanded="false" />
+                <element signature="method#restEvaluation#0;class#Interpreter#0" expanded="false" />
+                <element signature="method#pushEvaluation#0;class#Interpreter#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -33,51 +35,18 @@
       <file leaf-file-name="TextEditorController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/clases/TextEditorController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="370" column="0" lean-forward="false" selection-start-line="370" selection-start-column="0" selection-end-line="370" selection-end-column="0" />
+            <state relative-caret-position="2362">
+              <caret line="368" column="0" lean-forward="false" selection-start-line="368" selection-start-column="0" selection-end-line="368" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Editor_de_texto.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/editor_de_texto/Editor_de_texto.java">
+      <file leaf-file-name="MonkeyParser.g4" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/MonkeyParser.g4">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="264">
-              <caret line="19" column="20" lean-forward="false" selection-start-line="19" selection-start-column="20" selection-end-line="19" selection-end-column="20" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MonkeyParser.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/generated/MonkeyParser.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="2574" column="0" lean-forward="false" selection-start-line="2574" selection-start-column="0" selection-end-line="2574" selection-end-column="0" />
-              <folding>
-                <element signature="e#11817#11818#0" expanded="true" />
-                <element signature="e#11874#11875#0" expanded="true" />
-                <element signature="e#19020#19021#0" expanded="true" />
-                <element signature="e#19085#19086#0" expanded="true" />
-                <element signature="e#36084#36085#0" expanded="true" />
-                <element signature="e#36148#36149#0" expanded="true" />
-                <element signature="e#44514#44515#0" expanded="true" />
-                <element signature="e#44580#44581#0" expanded="true" />
-                <element signature="e#62193#62194#0" expanded="true" />
-                <element signature="e#62251#62252#0" expanded="true" />
-                <element signature="e#84919#84920#0" expanded="true" />
-                <element signature="e#84976#84977#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Checker.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/clases/checker/Checker.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="232">
-              <caret line="1049" column="33" lean-forward="false" selection-start-line="1049" selection-start-column="33" selection-end-line="1049" selection-end-column="33" />
+            <state relative-caret-position="276">
+              <caret line="60" column="86" lean-forward="true" selection-start-line="60" selection-start-column="74" selection-end-line="60" selection-end-column="86" />
               <folding />
             </state>
           </provider>
@@ -95,6 +64,14 @@
       <find>ExprID_Mky</find>
       <find>lemExprElemAccess_Mky</find>
       <find>(Integer)</find>
+      <find>puts</find>
+      <find>uts</find>
+      <find>Puts</find>
+      <find>ExprArrayFunc_Mky</find>
+      <find>rrayFuncLen_Mky</find>
+      <find>prList_Mky</find>
+      <find>lene</find>
+      <find>rintExpr_Mky</find>
     </findStrings>
   </component>
   <component name="GradleLocalSettings">
@@ -123,7 +100,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="Scratches" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
@@ -173,6 +149,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="RunDashboard">
@@ -299,23 +276,26 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="0d3468fb-21d1-49a3-bacb-b65333583c8b" name="Default" comment="" />
+      <changelist id="5f80c922-144b-4841-99d5-e534a49d9697" name="Default" comment="" />
       <created>1526349769655</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1526349769655</updated>
       <workItem from="1526349771008" duration="4514000" />
       <workItem from="1526445440763" duration="3738000" />
-      <workItem from="1526449317723" duration="3332000" />
+      <workItem from="1526449317723" duration="3433000" />
+      <workItem from="1526508767717" duration="596000" />
+      <workItem from="1526573978997" duration="465000" />
+      <workItem from="1526589935865" duration="623000" />
+      <workItem from="1526616866956" duration="11670000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11584000" />
+    <option name="totallyTimeSpent" value="25039000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -325,18 +305,18 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290398" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32975295" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3290398" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32975295" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25725028" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26852846" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="ANTLR Preview" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39929742" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.41100702" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -356,42 +336,48 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/clases/Interpreter/Interpreter.java</url>
-          <line>482</line>
+          <line>487</line>
           <properties />
           <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/clases/Interpreter/Interpreter.java</url>
-          <line>478</line>
+          <line>483</line>
           <properties />
           <option name="timeStamp" value="14" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/clases/Interpreter/Interpreter.java</url>
-          <line>476</line>
+          <line>481</line>
           <properties />
           <option name="timeStamp" value="15" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/clases/Interpreter/Interpreter.java</url>
-          <line>494</line>
+          <line>499</line>
           <properties />
           <option name="timeStamp" value="16" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/clases/Interpreter/Interpreter.java</url>
-          <line>443</line>
+          <line>448</line>
           <properties />
           <option name="timeStamp" value="17" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/clases/Interpreter/Interpreter.java</url>
-          <line>249</line>
+          <line>781</line>
           <properties />
-          <option name="timeStamp" value="21" />
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/clases/Interpreter/Interpreter.java</url>
+          <line>682</line>
+          <properties />
+          <option name="timeStamp" value="24" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="22" />
+      <option name="time" value="29" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -401,10 +387,200 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#20565#20566#0" expanded="true" />
-            <element signature="e#20612#20613#0" expanded="true" />
-            <element signature="e#21112#21113#0" expanded="true" />
-            <element signature="e#21148#21149#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="method#lenEvaluation#0;class#Interpreter#0" expanded="false" />
+            <element signature="method#firstEvaluation#0;class#Interpreter#0" expanded="false" />
+            <element signature="method#lastEvaluation#0;class#Interpreter#0" expanded="false" />
+            <element signature="method#restEvaluation#0;class#Interpreter#0" expanded="false" />
+            <element signature="method#pushEvaluation#0;class#Interpreter#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/TextEditorController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8140">
+          <caret line="370" column="0" lean-forward="false" selection-start-line="370" selection-start-column="0" selection-end-line="370" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/generated/MonkeyParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="56628">
+          <caret line="2574" column="0" lean-forward="false" selection-start-line="2574" selection-start-column="0" selection-end-line="2574" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/editor_de_texto/Editor_de_texto.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="19" column="20" lean-forward="false" selection-start-line="19" selection-start-column="20" selection-end-line="19" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/checker/Checker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="23078">
+          <caret line="1049" column="33" lean-forward="false" selection-start-line="1049" selection-start-column="33" selection-end-line="1049" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/Interpreter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#lenEvaluation#0;class#Interpreter#0" expanded="false" />
+            <element signature="method#firstEvaluation#0;class#Interpreter#0" expanded="false" />
+            <element signature="method#lastEvaluation#0;class#Interpreter#0" expanded="false" />
+            <element signature="method#restEvaluation#0;class#Interpreter#0" expanded="false" />
+            <element signature="method#pushEvaluation#0;class#Interpreter#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/TextEditorController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8140">
+          <caret line="370" column="0" lean-forward="false" selection-start-line="370" selection-start-column="0" selection-end-line="370" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/editor_de_texto/Editor_de_texto.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="19" column="20" lean-forward="false" selection-start-line="19" selection-start-column="20" selection-end-line="19" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/generated/MonkeyParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="56628">
+          <caret line="2574" column="0" lean-forward="false" selection-start-line="2574" selection-start-column="0" selection-end-line="2574" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/checker/Checker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="23078">
+          <caret line="1049" column="33" lean-forward="false" selection-start-line="1049" selection-start-column="33" selection-end-line="1049" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/Interpreter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#lenEvaluation#0;class#Interpreter#0" expanded="false" />
+            <element signature="method#firstEvaluation#0;class#Interpreter#0" expanded="false" />
+            <element signature="method#lastEvaluation#0;class#Interpreter#0" expanded="false" />
+            <element signature="method#restEvaluation#0;class#Interpreter#0" expanded="false" />
+            <element signature="method#pushEvaluation#0;class#Interpreter#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/TextEditorController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8140">
+          <caret line="370" column="0" lean-forward="false" selection-start-line="370" selection-start-column="0" selection-end-line="370" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/editor_de_texto/Editor_de_texto.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="19" column="20" lean-forward="false" selection-start-line="19" selection-start-column="20" selection-end-line="19" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/generated/MonkeyParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="56628">
+          <caret line="2574" column="0" lean-forward="false" selection-start-line="2574" selection-start-column="0" selection-end-line="2574" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/checker/Checker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22528">
+          <caret line="1049" column="33" lean-forward="false" selection-start-line="1049" selection-start-column="33" selection-end-line="1049" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/Interpreter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#lenEvaluation#0;class#Interpreter#0" expanded="false" />
+            <element signature="method#firstEvaluation#0;class#Interpreter#0" expanded="false" />
+            <element signature="method#lastEvaluation#0;class#Interpreter#0" expanded="false" />
+            <element signature="method#restEvaluation#0;class#Interpreter#0" expanded="false" />
+            <element signature="method#pushEvaluation#0;class#Interpreter#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/TextEditorController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8140">
+          <caret line="370" column="0" lean-forward="false" selection-start-line="370" selection-start-column="0" selection-end-line="370" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/editor_de_texto/Editor_de_texto.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="19" column="20" lean-forward="false" selection-start-line="19" selection-start-column="20" selection-end-line="19" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/generated/MonkeyParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="56628">
+          <caret line="2574" column="0" lean-forward="false" selection-start-line="2574" selection-start-column="0" selection-end-line="2574" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/checker/Checker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22528">
+          <caret line="1049" column="33" lean-forward="false" selection-start-line="1049" selection-start-column="33" selection-end-line="1049" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/Interpreter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#lenEvaluation#0;class#Interpreter#0" expanded="false" />
+            <element signature="method#firstEvaluation#0;class#Interpreter#0" expanded="false" />
+            <element signature="method#lastEvaluation#0;class#Interpreter#0" expanded="false" />
+            <element signature="method#restEvaluation#0;class#Interpreter#0" expanded="false" />
+            <element signature="method#pushEvaluation#0;class#Interpreter#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -413,10 +589,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="286">
           <caret line="19" column="33" lean-forward="false" selection-start-line="19" selection-start-column="33" selection-end-line="19" selection-end-column="33" />
-          <folding>
-            <element signature="e#414#415#0" expanded="false" />
-            <element signature="e#454#455#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -427,35 +599,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/dataStorage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="120" column="14" lean-forward="true" selection-start-line="120" selection-start-column="14" selection-end-line="120" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/dataStorageItem.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="44">
           <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/ProgramStackElement.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="44">
-          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MonkeyParser.g4">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="44">
-          <caret line="26" column="95" lean-forward="false" selection-start-line="26" selection-start-column="74" selection-end-line="26" selection-end-column="95" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -463,15 +610,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="360" column="26" lean-forward="false" selection-start-line="360" selection-start-column="26" selection-end-line="360" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/clases/checker/Checker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="232">
-          <caret line="1049" column="33" lean-forward="false" selection-start-line="1049" selection-start-column="33" selection-end-line="1049" selection-end-column="33" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -487,38 +625,22 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="139">
           <caret line="190" column="0" lean-forward="false" selection-start-line="190" selection-start-column="0" selection-end-line="190" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/checker/Checker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="824" column="28" lean-forward="false" selection-start-line="824" selection-start-column="28" selection-end-line="824" selection-end-column="28" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/src.zip!/java/util/ArrayList.java">
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/src.zip!/com/sun/org/apache/xpath/internal/operations/String.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22">
-          <caret line="845" column="0" lean-forward="false" selection-start-line="845" selection-start-column="0" selection-end-line="845" selection-end-column="0" />
-          <folding>
-            <element signature="e#31086#31087#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/generated/MonkeyParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="2574" column="0" lean-forward="false" selection-start-line="2574" selection-start-column="0" selection-end-line="2574" selection-end-column="0" />
-          <folding>
-            <element signature="e#11817#11818#0" expanded="true" />
-            <element signature="e#11874#11875#0" expanded="true" />
-            <element signature="e#19020#19021#0" expanded="true" />
-            <element signature="e#19085#19086#0" expanded="true" />
-            <element signature="e#36084#36085#0" expanded="true" />
-            <element signature="e#36148#36149#0" expanded="true" />
-            <element signature="e#44514#44515#0" expanded="true" />
-            <element signature="e#44580#44581#0" expanded="true" />
-            <element signature="e#62193#62194#0" expanded="true" />
-            <element signature="e#62251#62252#0" expanded="true" />
-            <element signature="e#84919#84920#0" expanded="true" />
-            <element signature="e#84976#84977#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="176">
+          <caret line="30" column="13" lean-forward="false" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -532,23 +654,72 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/src.zip!/java/util/ArrayList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="994" column="15" lean-forward="false" selection-start-line="994" selection-start-column="11" selection-end-line="994" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MonkeyParser.g4">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="60" column="86" lean-forward="true" selection-start-line="60" selection-start-column="74" selection-end-line="60" selection-end-column="86" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/generated/MonkeyParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="624" column="42" lean-forward="false" selection-start-line="624" selection-start-column="42" selection-end-line="624" selection-end-column="42" />
+          <folding>
+            <element signature="e#18679#18680#0" expanded="true" />
+            <element signature="e#18716#18717#0" expanded="true" />
+            <element signature="e#94849#94850#0" expanded="true" />
+            <element signature="e#94906#94907#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/dataStorage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="44">
+          <caret line="2" column="7" lean-forward="true" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/ProgramStackElement.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+          <folding>
+            <element signature="e#289#290#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/clases/TextEditorController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="370" column="0" lean-forward="false" selection-start-line="370" selection-start-column="0" selection-end-line="370" selection-end-column="0" />
+        <state relative-caret-position="2362">
+          <caret line="368" column="0" lean-forward="false" selection-start-line="368" selection-start-column="0" selection-end-line="368" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/Interpreter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="806" column="0" lean-forward="true" selection-start-line="806" selection-start-column="0" selection-end-line="806" selection-end-column="0" />
+        <state relative-caret-position="202">
+          <caret line="1000" column="46" lean-forward="true" selection-start-line="1000" selection-start-column="46" selection-end-line="1000" selection-end-column="46" />
           <folding>
-            <element signature="e#20565#20566#0" expanded="true" />
-            <element signature="e#20612#20613#0" expanded="true" />
-            <element signature="e#21112#21113#0" expanded="true" />
-            <element signature="e#21148#21149#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="method#lenEvaluation#0;class#Interpreter#0" expanded="false" />
+            <element signature="method#firstEvaluation#0;class#Interpreter#0" expanded="false" />
+            <element signature="method#lastEvaluation#0;class#Interpreter#0" expanded="false" />
+            <element signature="method#restEvaluation#0;class#Interpreter#0" expanded="false" />
+            <element signature="method#pushEvaluation#0;class#Interpreter#0" expanded="false" />
           </folding>
         </state>
       </provider>

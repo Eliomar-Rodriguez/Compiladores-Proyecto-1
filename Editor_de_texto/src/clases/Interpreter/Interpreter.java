@@ -1,9 +1,11 @@
 package clases.Interpreter;
 
+import clases.TextEditorController;
 import clases.checker.FnSpecialElement;
 import clases.checker.FuncTableElement;
 import clases.checker.IdentifierElement;
 import clases.checker.RecursivityObject;
+//import com.sun.org.apache.xpath.internal.operations.String;
 import generated.MonkeyParser;
 import generated.MonkeyParserBaseVisitor;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -219,6 +221,9 @@ public class Interpreter extends MonkeyParserBaseVisitor{
          * */
         visit(ctx.expression());
         ProgramStackElement element = evaluationStack.pop();
+        System.out.println("==============");
+        System.out.println(element.toString());
+        System.out.println("==============");
 
         this.DataStorage.addData(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText(),
                 element.getValue(),this.DataStorage.getCurrentIndex(),
@@ -644,18 +649,158 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         return null;
     }
 
+    public void lenEvaluation(){
+        ProgramStackElement valor = new ProgramStackElement("",0);
+        ProgramStackElement nuevoElemento = new ProgramStackElement("",0);
+        if(this.evaluationStack.size() > 0) {
+            valor = this.evaluationStack.pop();
+        }
+        else
+            System.out.println("Error, debe enviar parametros a la funcion especial.");
 
-    //retorna el valor de retorno de la función al evaluarlo
-    public Object manageDefaultFunctions(MonkeyParser.PExprArrayFunc_MkyContext ctx){
+        if(valor.getType() == this.STRING){
+            nuevoElemento.setType(this.INTEGER);
+            nuevoElemento.setValue(valor.getValue().toString().length());
+        }
+        else if(valor.getType() == this.ARRAY_LITERAL){
+            nuevoElemento.setType(this.INTEGER);
+            nuevoElemento.setValue(((ArrayList) valor.getValue()).size());
+        }
+        else{
+            System.out.println("ERROR: Valor enviado a funcion predeterminada erroneo.\n");
+        }
+        this.evaluationStack.push(nuevoElemento);
+    }
 
-        visit(ctx.expressionList());
+    public void firstEvaluation(){
+        ProgramStackElement id = new ProgramStackElement("",0);
+        ProgramStackElement nuevoElemento = new ProgramStackElement("",0);
 
-        return null;
+        if(this.evaluationStack.size() > 0) {
+            id = this.evaluationStack.pop();
+        }
+
+        if(id.getType() == this.ARRAY_LITERAL){
+            if(((ArrayList)id.getValue()).size() > 0){
+                nuevoElemento.setValue(((ArrayList)id.getValue()).get(0));
+                nuevoElemento.setType(this.getTypeOfElement(nuevoElemento.getValue()));
+            }
+            else{
+                System.out.println("Error");
+            }
+
+        }
+        else{
+            System.out.println("ERROR: Valor enviado a funcion predeterminada erroneo.\n");
+        }
+        this.evaluationStack.push(nuevoElemento);
+    }
+
+    public void lastEvaluation(){
+        ProgramStackElement id = new ProgramStackElement("",0);
+        ProgramStackElement nuevoElemento = new ProgramStackElement("",0);
+
+        if(this.evaluationStack.size() > 0) {
+            id = this.evaluationStack.pop();
+        }
+
+        if(id.getType() == this.ARRAY_LITERAL){
+            if(((ArrayList)id.getValue()).size() > 0){
+                nuevoElemento.setValue(((ArrayList)id.getValue()).get(((ArrayList)id.getValue()).size() - 1));
+                nuevoElemento.setType(this.getTypeOfElement(nuevoElemento.getValue()));
+            }
+            else{
+                System.out.println("Error");
+            }
+
+        }
+        else{
+            System.out.println("ERROR: Valor enviado a funcion predeterminada erroneo.\n");
+        }
+        this.evaluationStack.push(nuevoElemento);
+    }
+
+    public void restEvaluation(){
+        ProgramStackElement id = new ProgramStackElement("",0);
+        ProgramStackElement nuevoElemento = new ProgramStackElement("",0);
+
+        if(this.evaluationStack.size() > 0) {
+            id = this.evaluationStack.pop();
+        }
+
+        if(id.getType() == this.ARRAY_LITERAL){
+            if(((ArrayList)id.getValue()).size() > 1){
+                ArrayList array = (ArrayList)id.getValue();
+                ArrayList nuevoArray = new ArrayList();
+
+                for (int i = 1; i < array.size(); i++) {
+                    nuevoArray.add(array.get(i));
+                }
+
+                nuevoElemento.setValue(nuevoArray);
+                nuevoElemento.setType(this.getTypeOfElement(nuevoElemento.getValue()));
+            }
+            else if (((ArrayList)id.getValue()).size() == 0){
+                nuevoElemento.setValue(new ArrayList<>());
+                nuevoElemento.setType(this.getTypeOfElement(nuevoElemento.getValue()));
+            }
+            else{
+                System.out.println("Error");
+            }
+
+        }
+        else{
+            System.out.println("ERROR: Valor enviado a funcion predeterminada erroneo.\n");
+        }
+        this.evaluationStack.push(nuevoElemento);
+    }
+
+    public void pushEvaluation(){
+        ProgramStackElement valor = new ProgramStackElement("",0);
+        ProgramStackElement id = new ProgramStackElement("",0);
+        ProgramStackElement nuevoElemento = new ProgramStackElement("",0);
+
+        if(this.evaluationStack.size() > 1) {
+            valor = this.evaluationStack.pop();
+            id = this.evaluationStack.pop();
+        }
+
+        if(id.getType() == this.ARRAY_LITERAL){
+            boolean estado = ((ArrayList)id.getValue()).add(valor.getValue());
+            nuevoElemento.setValue(id.getValue());
+            nuevoElemento.setType(this.getTypeOfElement(nuevoElemento.getValue()));
+        }
+        else{
+            System.out.println("ERROR: Valor enviado a funcion predeterminada erroneo.\n");
+        }
+        this.evaluationStack.push(nuevoElemento);
     }
 
     @Override
     public Object visitPExprArrayFunc_Mky(MonkeyParser.PExprArrayFunc_MkyContext ctx) {
-        return this.manageDefaultFunctions(ctx);
+        java.lang.String arrayFunction = (java.lang.String) visit(ctx.arrayFunctions());
+        visit(ctx.expressionList());
+        switch (arrayFunction){
+            case "len":
+                lenEvaluation();
+                break;
+            case "first":
+                firstEvaluation();
+                break;
+            case "last":
+                lastEvaluation();
+                break;
+            case "rest":
+                restEvaluation();
+                break;
+            case "push":
+                pushEvaluation();
+                break;
+            default:
+                System.out.println("Error en el tipo de operacion predeterminada de arreglo a usar.");
+
+        }
+        return null;
     }
 
 
@@ -684,27 +829,27 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     //al visitar las fuciones predefinidas retornar tipo neutro, o el elemento que representa a las funciones
     @Override
     public Object visitArrayFuncLen_Mky(MonkeyParser.ArrayFuncLen_MkyContext ctx) {
-        return null;//CAMBIAR
+        return ctx.LEN().getText();//CAMBIAR
     }
 
     @Override
     public Object visitArrayFuncFirst_Mky(MonkeyParser.ArrayFuncFirst_MkyContext ctx) {
-        return null;//CAMBIAR
+        return ctx.FIRST().getText();//CAMBIAR
     }
 
     @Override
     public Object visitArrayFuncLast_Mky(MonkeyParser.ArrayFuncLast_MkyContext ctx) {
-        return null;//CAMBIAR
+        return ctx.LAST().getText();//CAMBIAR
     }
 
     @Override
     public Object visitArrayFuncRest_Mky(MonkeyParser.ArrayFuncRest_MkyContext ctx) {
-        return null;//CAMBIAR
+        return ctx.REST().getText();//CAMBIAR
     }
 
     @Override
     public Object visitArrayFuncPush_Mky(MonkeyParser.ArrayFuncPush_MkyContext ctx) {
-        return null;//CAMBIAR
+        return ctx.PUSH().getText();//CAMBIAR
     }
 
     //array declaration
@@ -854,11 +999,10 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     public Object visitPrintExpr_Mky(MonkeyParser.PrintExpr_MkyContext ctx) {
 
         Object type = visit(ctx.expression());
-        if(type.equals(-1) | type.equals(-2)) {
-            /*this.errorsList.add("Error: Print error: "+ctx.expression().getStart().getLine()+
-                    " column: "+ ctx.expression().getStart().getCharPositionInLine());
-            */
-        }
+        ProgramStackElement elemento = this.evaluationStack.pop();
+
+        System.out.println(elemento.getValue().toString());//CAMBIAR
+
         return null;
     }
 

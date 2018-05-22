@@ -30,7 +30,14 @@ else{
 }
 
 let t= fn (x,y){
-    let u = fn(s){
 
-	}
+    if (x==0){
+       return 0;	
+    }
+  let t =fn(c){
+   return t(3);
+  }
+    let x=t(4);
+    return t(2,3)+ t(3,7)
+
 }

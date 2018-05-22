@@ -5,13 +5,15 @@
  */
 package clases;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.*;
+import java.awt.event.*;
+import javax.activation.FileDataSource;
 import javax.swing.*;
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
@@ -24,9 +26,13 @@ import static java.awt.Color.RED;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.Element;
+
 import generated.MonkeyParser;
 import generated.MonkeyScanner;
-import org.antlr.v4.runtime.Parser;
+import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
 import org.antlr.v4.runtime.tree.ParseTree;
 
@@ -34,7 +40,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
  *
  * @author Josua
  */
-public class TextEditorController extends WindowAdapter implements ActionListener, CaretListener {
+public class TextEditorController extends WindowAdapter implements ActionListener, CaretListener, KeyListener {
 
     private int currentLine;
     private int currentCol;
@@ -59,7 +65,6 @@ public class TextEditorController extends WindowAdapter implements ActionListene
         this.editor.errorsArea.setEditable(false);
         this.editor.executionArea.setEditable(true);
         this.editor.executionPanel.setSelectedIndex(0);
-        this.editor.executionArea.setEditable(false); // desactivar edicion
         this.editor.errorsArea.setEditable(false); // desactivar edicion
     }
 
@@ -140,7 +145,6 @@ public class TextEditorController extends WindowAdapter implements ActionListene
                 this.editor.executionArea.setText("Cambios guardados\n\nCompilación exitosa");
                 //JOptionPane.showMessageDialog(this.editor.getRootPane(), "Compilación exitosa", "Done", JOptionPane.INFORMATION_MESSAGE);
             }
-
         }
         catch (IOException exception){
             this.showException(errorArea,exception);
@@ -317,6 +321,42 @@ public class TextEditorController extends WindowAdapter implements ActionListene
         this.askForSaving();
     }
 
+    private void executionAreaKeyPressed(java.awt.event.KeyEvent evt) throws BadLocationException, IOException {//GEN-FIRST:event_executionAreaKeyPressed
+
+        String linea = "";
+        Document doc = this.editor.executionArea.getDocument();
+        Element root = doc.getDefaultRootElement();
+        Element element = root.getElement(root.getElementCount()-1);
+        int start = element.getStartOffset();
+        int end = element.getEndOffset();
+        if(evt.getExtendedKeyCode() == 10){
+            linea = doc.getText(start, end - start);
+            System.out.println(linea);
+
+            ANTLRInputStream input = new ANTLRInputStream(linea);
+            MonkeyScanner scanner = new MonkeyScanner(input);
+            CommonTokenStream tkn = new CommonTokenStream(scanner);
+            MonkeyParser parser = new MonkeyParser(tkn);
+            /*
+            * Generando arbol de la insercion de instrucciones en consola
+            * */
+            List<Token> lista = (List<Token>) scanner.getAllTokens();
+            System.out.println(lista.size());
+            for (int i = 0; i < lista.size(); i++){
+                System.out.println(lista.get(i));
+            }
+            scanner.reset();
+            ParseTree arbol = parser.program();
+            try{
+                JFrame treeGUI = (JFrame) org.antlr.v4.gui.Trees.inspect(arbol,parser);
+                treeGUI.setVisible(true);
+            }
+            catch (Exception e){
+                System.out.println(e);
+            }
+        }
+    }//GEN-LAST:event_executionAreaKeyPressed
+
     @Override
     public void actionPerformed(ActionEvent event) {
         try {
@@ -374,4 +414,24 @@ public class TextEditorController extends WindowAdapter implements ActionListene
         }
     }
 
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        try {
+            executionAreaKeyPressed(e);
+        } catch (BadLocationException e1) {
+            e1.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
 }

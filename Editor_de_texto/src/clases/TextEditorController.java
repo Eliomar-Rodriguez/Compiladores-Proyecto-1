@@ -19,6 +19,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import clases.Interpreter.Interpreter;
 import com.sun.prism.paint.Color;
 import editor_de_texto.EditorFrame;
 
@@ -49,9 +50,12 @@ public class TextEditorController extends WindowAdapter implements ActionListene
     private int fontSize;
     private TextEditorModel model;
     private boolean executeState;
+    private List<String> consoleHistory;
+    private int indexConsoleHistory = 0;
 
 
     public TextEditorController(EditorFrame window) {
+        this.consoleHistory = new ArrayList<String>();
         this.editor = window;
         this.currentCol = 1;
         this.currentLine = 1;
@@ -141,8 +145,8 @@ public class TextEditorController extends WindowAdapter implements ActionListene
             else{
                 this.executeState=true;
                 //go to code interpretation
-                this.model.codeInterpretation(this.model.getTree());
-                this.editor.executionArea.setText("Cambios guardados\n\nCompilación exitosa");
+                this.model.codeInterpretation(this.model.getTree(),this.editor.executionArea);
+                this.editor.executionArea.setText("Cambios guardados\n\nCompilación exitosa\n\n");
                 //JOptionPane.showMessageDialog(this.editor.getRootPane(), "Compilación exitosa", "Done", JOptionPane.INFORMATION_MESSAGE);
             }
         }
@@ -154,9 +158,7 @@ public class TextEditorController extends WindowAdapter implements ActionListene
             this.showException(errorArea,exception);
             this.executeState=false;
         }
-
     }
-
 
     public void createFile(File file) {
         try {
@@ -322,37 +324,40 @@ public class TextEditorController extends WindowAdapter implements ActionListene
     }
 
     private void executionAreaKeyPressed(java.awt.event.KeyEvent evt) throws BadLocationException, IOException {//GEN-FIRST:event_executionAreaKeyPressed
-
         String linea = "";
         Document doc = this.editor.executionArea.getDocument();
         Element root = doc.getDefaultRootElement();
         Element element = root.getElement(root.getElementCount()-1);
         int start = element.getStartOffset();
         int end = element.getEndOffset();
+        linea = doc.getText(start, end - start);
+        System.out.println(linea);
         if(evt.getExtendedKeyCode() == 10){
-            linea = doc.getText(start, end - start);
-            System.out.println(linea);
-
-            ANTLRInputStream input = new ANTLRInputStream(linea);
-            MonkeyScanner scanner = new MonkeyScanner(input);
-            CommonTokenStream tkn = new CommonTokenStream(scanner);
-            MonkeyParser parser = new MonkeyParser(tkn);
-            /*
-            * Generando arbol de la insercion de instrucciones en consola
-            * */
-            List<Token> lista = (List<Token>) scanner.getAllTokens();
-            System.out.println(lista.size());
-            for (int i = 0; i < lista.size(); i++){
-                System.out.println(lista.get(i));
-            }
-            scanner.reset();
-            ParseTree arbol = parser.program();
             try{
-                JFrame treeGUI = (JFrame) org.antlr.v4.gui.Trees.inspect(arbol,parser);
-                treeGUI.setVisible(true);
+                this.consoleHistory.add(linea);
+                this.indexConsoleHistory = this.consoleHistory.size() - 1;
+                Interpreter interpreter = this.model.getInterpreter();
+                interpreter.setFlagConsole(1); // find by for
+                ANTLRInputStream input = new ANTLRInputStream(linea);
+                MonkeyScanner scanner = new MonkeyScanner(input);
+                CommonTokenStream tkn = new CommonTokenStream(scanner);
+                MonkeyParser parser = new MonkeyParser(tkn);
+                scanner.reset();
+
+                ParseTree tree = parser.program();
+                interpreter.visit(tree);
+                interpreter.setFlagConsole(0); // find by storageIndex
+            }catch(Exception e){
+                String mensaje = "\nError with the expression: "+linea;
+                this.editor.executionArea.setText(this.editor.executionArea.getText() + mensaje);
             }
-            catch (Exception e){
-                System.out.println(e);
+        }
+        else if(evt.getExtendedKeyCode() == 38){
+            String respaldo = this.editor.executionArea.getText();
+            System.out.println(indexConsoleHistory);
+            if(this.indexConsoleHistory >= 0){
+                this.editor.executionArea.setText(respaldo+this.consoleHistory.get(this.indexConsoleHistory));
+                this.indexConsoleHistory--;
             }
         }
     }//GEN-LAST:event_executionAreaKeyPressed

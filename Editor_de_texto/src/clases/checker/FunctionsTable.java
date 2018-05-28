@@ -1,5 +1,6 @@
 package clases.checker;
 
+import generated.MonkeyParser;
 import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
@@ -90,6 +91,8 @@ public class FunctionsTable {
         while (j < this.table.size() && this.table.get(j).getLevel() <= this.currentLevel) {
             if (this.table.get(j).getToken().getText().equals(nombre)){
                 temp= this.table.get(j);
+
+                return temp;
             }
             j++;
         }

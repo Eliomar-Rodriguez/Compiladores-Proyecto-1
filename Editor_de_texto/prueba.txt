@@ -1,4 +1,99 @@
- let a =0;
+
+let ag = fn ( t, y ,u ){
+   let r=0;
+  return 4;
+}
+
+let res= ag(3,4,5) +6;
+puts ("*****************************");
+puts (res);
+puts ("*****************************");
+
+
+
+
+/*
+ 
+let d=8;
+
+
+let a= fn (u){
+       return 0;
+}
+
+
+let fun = fn (x){
+     if (x==0){
+         return 1;
+    }
+     else{
+        return x* fun(x-1)
+} 
+
+}
+let as=0;
+let g=7;
+let algo= true;
+
+
+
+let d= 3;
+ let d= fun(4);
+*/
+
+let fibonacci= fn (x){
+    if (x ==0){
+      return 0;
+    }
+   else{
+       if (x==1){
+      return 1;
+
+           }
+  else{
+   return fibonacci(x-1)+fibonacci(x-2);
+}
+    }
+}
+
+let r= fn(x){
+
+       let a=0;
+}
+
+ // r(0);
+
+let result= fibonacci(8);
+
+/*
+let fact= fn (x){
+    //let d= x+7;
+    if (d > 7){
+         puts("dentro if");
+         return 1;
+     }
+    else{
+       return "no es cero";    
+}
+
+}
+
+let tt= fact(0);
+*/
+
+
+/*
+puts ("*****************************");
+puts (t);
+puts ("*****************************");
+
+
+*/
+
+ // let yu= ag (3,"hola",7)
+/*
+
+let a =0;
 
  let a=2+4;
 
@@ -35,9 +130,14 @@ let t= fn (x,y){
        return 0;	
     }
   let t =fn(c){
-   return t(3);
+   return t(3,7);
   }
-    let x=t(4);
+    let x=t(4,7);
     return t(2,3)+ t(3,7)
 
 }
+
+let a = len ([1,2,3,4]);
+
+puts(a);
+*/

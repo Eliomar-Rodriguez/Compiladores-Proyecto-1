@@ -11,6 +11,7 @@ public class ProgramStack {
 
     public ProgramStackElement pop(){
         return this.Stack.pop();
+
     }
 
     public void push(ProgramStackElement el){

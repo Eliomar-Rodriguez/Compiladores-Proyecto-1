@@ -33,6 +33,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
     private boolean haveToReturn;
 
+    private int countConsoleExecution;
     private final JTextArea console;
     private int flagConsole = 0; // if is 0 then find by storageIndex else, is 1 find by for
 
@@ -61,6 +62,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         this.elementsCount=0;
         this.haveToReturn=false;
         this.console = c;
+
 
     }
 
@@ -133,8 +135,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     }
     public void printInConsole(String msj){
         this.console.append("\n" + msj + "\n");
-        //String message = this.console.getText() + "\n" + msj + "\n";
-        //this.console.setText(message);
+
     }
 
     public String setSpecialArrayName(String possibleName){
@@ -252,6 +253,8 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     public Object visitProg_Mky(MonkeyParser.Prog_MkyContext ctx) {
         if(this.DataStorage.getProgramData().size() == 0)
             this.DataStorage.openScope();
+
+        this.countConsoleExecution= 0;
         for(MonkeyParser.StatementContext elem: ctx.statement()) {
             visit(elem);
         }
@@ -290,7 +293,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
 
         visit(ctx.expression());
-        
+
         ProgramStackElement element = evaluationStack.pop();
 
         //if the identifier have a declaration linked we update directly the data
@@ -708,7 +711,8 @@ public class Interpreter extends MonkeyParserBaseVisitor{
                 boolean haveTReturn= this.haveToReturn;
                 //go to execute the function
                 visit(func.blockStatement());
-
+                //important to allow that program search in global frame when the recursion end in console call
+                this.countConsoleExecution=0;
                 this.haveToReturn= haveTReturn;
 
                 //then remove the frame after get the value in the stack
@@ -834,13 +838,26 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         /* PENDING CHECK IF WORKS WITH MANY LEVELs, HOWEVER IT SHOULD WORKS */
 
         dataStorageItem element;
+
         if(this.flagConsole == 0) {
             element= this.programFrames.searchElement( (MonkeyParser.Id_MkyContext)ctx.identifier());
 
         }
         else{
-            element =this.DataStorage.findElement(ctx.identifier().getText());
 
+            if (countConsoleExecution>0){
+                //call for recursion
+                element= this.programFrames.searchElement( (MonkeyParser.Id_MkyContext)ctx.identifier());
+            }
+            else{
+                element =this.DataStorage.findElement(ctx.identifier().getText());
+                //building letstatementcontext for function call type by console and for any var
+                MonkeyParser.LetStatementContext letContex =new MonkeyParser.LetStatementContext(null,0);
+                letContex.storageIndex=element.getIndex();
+                ctx.identifier().decl=letContex;
+            }
+
+            this.countConsoleExecution++;
         }
 
         if (element== null) {
@@ -1228,9 +1245,9 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
         visit(ctx.expression());
         ProgramStackElement elemento = this.evaluationStack.pop();
-        this.printInConsole(elemento.getValue().toString());
-
-        //System.out.println(elemento.getValue().toString());//CAMBIAR
+        if (this.flagConsole==1){
+            this.printInConsole(elemento.getValue().toString());
+        }
 
         return null;
     }

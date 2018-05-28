@@ -21,6 +21,10 @@ public class FrameList {
         return this.programFrames.get(currentFrame);
     }
 
+    public ArrayList<Frame> getProgramFrames() {
+        return programFrames;
+    }
+
     //type is for receive function type
     public boolean insertFrame(Frame newFrame, MonkeyParser.Id_MkyContext id,int type){
 

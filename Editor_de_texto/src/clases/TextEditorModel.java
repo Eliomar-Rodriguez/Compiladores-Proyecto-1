@@ -65,8 +65,9 @@ public class TextEditorModel {
 
 
     // for code interpretation
-    public void  codeInterpretation(ParseTree tree){
-            this.interpreter.visit(tree);
+    public void  codeInterpretation(ParseTree tree,JTextArea ex){
+        this.interpreter = new Interpreter(ex);
+        this.interpreter.visit(tree);
     }
 
 
@@ -91,7 +92,7 @@ public class TextEditorModel {
          this.tree= this.parser.program();
 
          this.checker= new Checker();
-         this.interpreter = new Interpreter();
+
          //semantic checker
          this.checker.visit(this.tree);
 

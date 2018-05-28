@@ -2,6 +2,7 @@ package editor_de_texto;
 
 import clases.TextEditorController;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -53,6 +54,7 @@ public class EditorFrame extends javax.swing.JFrame {
         this.execute.addActionListener((ActionListener) controller);
         this.display.addCaretListener((CaretListener)controller);
         this.viewTree.addActionListener((ActionListener) controller);
+        this.executionArea.addKeyListener((KeyListener) controller);
         this.addWindowListener((WindowAdapter)controller);
     }
 
@@ -146,6 +148,7 @@ public class EditorFrame extends javax.swing.JFrame {
 
         executionArea.setColumns(20);
         executionArea.setRows(5);
+
         execution.setViewportView(executionArea);
 
         executionPanel.addTab("Execute", execution);
@@ -197,6 +200,7 @@ public class EditorFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

@@ -5,18 +5,21 @@
  */
 package clases;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.*;
+import java.awt.event.*;
+import javax.activation.FileDataSource;
 import javax.swing.*;
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import clases.Interpreter.Interpreter;
 import com.sun.prism.paint.Color;
 import editor_de_texto.EditorFrame;
 
@@ -24,9 +27,13 @@ import static java.awt.Color.RED;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.Element;
+
 import generated.MonkeyParser;
 import generated.MonkeyScanner;
-import org.antlr.v4.runtime.Parser;
+import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
 import org.antlr.v4.runtime.tree.ParseTree;
 
@@ -34,7 +41,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
  *
  * @author Josua
  */
-public class TextEditorController extends WindowAdapter implements ActionListener, CaretListener {
+public class TextEditorController extends WindowAdapter implements ActionListener, CaretListener, KeyListener {
 
     private int currentLine;
     private int currentCol;
@@ -43,9 +50,12 @@ public class TextEditorController extends WindowAdapter implements ActionListene
     private int fontSize;
     private TextEditorModel model;
     private boolean executeState;
+    private List<String> consoleHistory;
+    private int indexConsoleHistory = 0;
 
 
     public TextEditorController(EditorFrame window) {
+        this.consoleHistory = new ArrayList<String>();
         this.editor = window;
         this.currentCol = 1;
         this.currentLine = 1;
@@ -59,7 +69,6 @@ public class TextEditorController extends WindowAdapter implements ActionListene
         this.editor.errorsArea.setEditable(false);
         this.editor.executionArea.setEditable(true);
         this.editor.executionPanel.setSelectedIndex(0);
-        this.editor.executionArea.setEditable(false); // desactivar edicion
         this.editor.errorsArea.setEditable(false); // desactivar edicion
     }
 
@@ -136,11 +145,10 @@ public class TextEditorController extends WindowAdapter implements ActionListene
             else{
                 this.executeState=true;
                 //go to code interpretation
-                this.model.codeInterpretation(this.model.getTree());
-                this.editor.executionArea.setText("Cambios guardados\n\nCompilación exitosa");
+                this.model.codeInterpretation(this.model.getTree(),this.editor.executionArea);
+                this.editor.executionArea.setText("Cambios guardados\n\nCompilación exitosa\n\n");
                 //JOptionPane.showMessageDialog(this.editor.getRootPane(), "Compilación exitosa", "Done", JOptionPane.INFORMATION_MESSAGE);
             }
-
         }
         catch (IOException exception){
             this.showException(errorArea,exception);
@@ -150,9 +158,7 @@ public class TextEditorController extends WindowAdapter implements ActionListene
             this.showException(errorArea,exception);
             this.executeState=false;
         }
-
     }
-
 
     public void createFile(File file) {
         try {
@@ -317,6 +323,45 @@ public class TextEditorController extends WindowAdapter implements ActionListene
         this.askForSaving();
     }
 
+    private void executionAreaKeyPressed(java.awt.event.KeyEvent evt) throws BadLocationException, IOException {//GEN-FIRST:event_executionAreaKeyPressed
+        String linea = "";
+        Document doc = this.editor.executionArea.getDocument();
+        Element root = doc.getDefaultRootElement();
+        Element element = root.getElement(root.getElementCount()-1);
+        int start = element.getStartOffset();
+        int end = element.getEndOffset();
+        linea = doc.getText(start, end - start);
+        System.out.println(linea);
+        if(evt.getExtendedKeyCode() == 10){
+            try{
+                this.consoleHistory.add(linea);
+                this.indexConsoleHistory = this.consoleHistory.size() - 1;
+                Interpreter interpreter = this.model.getInterpreter();
+                interpreter.setFlagConsole(1); // find by for
+                ANTLRInputStream input = new ANTLRInputStream(linea);
+                MonkeyScanner scanner = new MonkeyScanner(input);
+                CommonTokenStream tkn = new CommonTokenStream(scanner);
+                MonkeyParser parser = new MonkeyParser(tkn);
+                scanner.reset();
+
+                ParseTree tree = parser.program();
+                interpreter.visit(tree);
+                interpreter.setFlagConsole(0); // find by storageIndex
+            }catch(Exception e){
+                String mensaje = "\nError with the expression: "+linea;
+                this.editor.executionArea.setText(this.editor.executionArea.getText() + mensaje);
+            }
+        }
+        else if(evt.getExtendedKeyCode() == 38){
+            String respaldo = this.editor.executionArea.getText();
+            System.out.println(indexConsoleHistory);
+            if(this.indexConsoleHistory >= 0){
+                this.editor.executionArea.setText(respaldo+this.consoleHistory.get(this.indexConsoleHistory));
+                this.indexConsoleHistory--;
+            }
+        }
+    }//GEN-LAST:event_executionAreaKeyPressed
+
     @Override
     public void actionPerformed(ActionEvent event) {
         try {
@@ -374,4 +419,24 @@ public class TextEditorController extends WindowAdapter implements ActionListene
         }
     }
 
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        try {
+            executionAreaKeyPressed(e);
+        } catch (BadLocationException e1) {
+            e1.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
 }

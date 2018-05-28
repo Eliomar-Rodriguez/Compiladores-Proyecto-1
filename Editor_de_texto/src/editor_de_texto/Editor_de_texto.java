@@ -18,7 +18,6 @@ public class Editor_de_texto {
     public static void main(String[] args) {
         EditorFrame editor = new EditorFrame();
         editor.setVisible(true);
-//        prueba p = new prueba();
 //        p.setHash("Clave saica","Valor saico");
 //        p.setHash(0,12);
 //        p.setHash("False",false);

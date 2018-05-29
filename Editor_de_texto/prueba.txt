@@ -12,7 +12,7 @@ puts ("*****************************");
 
 
 
-/*
+
  
 let d=8;
 
@@ -39,7 +39,7 @@ let algo= true;
 
 let d= 3;
  let d= fun(4);
-*/
+
 
 let fibonacci= fn (x){
     if (x ==0){
@@ -58,14 +58,15 @@ let fibonacci= fn (x){
 
 let r= fn(x){
 
-       let a=0;
+       let a=9;
+       return a ;
 }
 
  // r(0);
 
 let result= fibonacci(8);
 
-/*
+
 let fact= fn (x){
     //let d= x+7;
     if (d > 7){
@@ -79,23 +80,19 @@ let fact= fn (x){
 }
 
 let tt= fact(0);
-*/
 
 
-/*
+
+
 puts ("*****************************");
-puts (t);
 puts ("*****************************");
 
 
-*/
 
  // let yu= ag (3,"hola",7)
-/*
 
-let a =0;
 
- let a=2+4;
+
 
  let x= "hola"+ " como estas";
 
@@ -103,7 +100,7 @@ let a =0;
 
  let f=2;
 
- let r=a + 18+ a /2;
+
 
 let x= [false,0,0,0,1,"hola",true, [2,3,5,6]]
 
@@ -111,8 +108,9 @@ let c=  x[7];
 
 let g= false == false
 
-if (a > 20){
-    let a= a+10;
+if (f  < 20){
+    let a= fun(3)+10;
+    let vv= a;
 
 }
 
@@ -129,15 +127,13 @@ let t= fn (x,y){
     if (x==0){
        return 0;	
     }
-  let t =fn(c){
-   return t(3,7);
+  let o =fn(c){
+   return o(7);
   }
     let x=t(4,7);
     return t(2,3)+ t(3,7)
 
 }
 
-let a = len ([1,2,3,4]);
 
 puts(a);
-*/

@@ -33,7 +33,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
     private boolean haveToReturn;
 
-    private int countConsoleExecution;
+
     private final JTextArea console;
     private int flagConsole = 0; // if is 0 then find by storageIndex else, is 1 find by for
 
@@ -97,83 +97,10 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         }
     }
 
-    /**
-     *
-     * @param name: name of the function to check if it's a default function
-     * @return
-     */
-    public boolean isReservedWord(String name){
 
-        String[] reservedWords= {"len","first","last","rest","push","puts"};
-        int size=reservedWords.length;
-        for (int i = 0; i < size ; i++) {
-            if (reservedWords[i].equals(name)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public int setSpecialIndex(String ArrayName,String text){
-        int res;
-
-        if (ArrayName==null){
-            res= -2;
-        }
-        else if (ArrayName.equals("none")){
-            res=-2;
-        }
-        else{
-            try{
-                res= Integer.parseInt(text);
-            }
-            catch (NumberFormatException e){
-                res= -2;
-            }
-        }
-        return res;
-    }
     public void printInConsole(String msj){
         this.console.append("\n" + msj + "\n");
 
-    }
-
-    public String setSpecialArrayName(String possibleName){
-        String res;
-        try{
-            res= String.valueOf(possibleName);
-        }
-        catch (Exception e){
-            res="none";
-        }
-        return res;
-    }
-
-//Funciones para validar otros aspectos no relacionados con estructura sino con compatibilidad
-
-    public String getTypeName(int code){
-
-        if (code==0){
-            return "Neutral";
-        }
-        else if(code==1){
-            return "Integer";
-        }
-        else if(code==2){
-            return "String";
-        }
-        else if(code==3){
-            return "Boolean";
-        }
-        else if(code==4){
-            return "Array Literal";
-        }
-        else if(code==5){ // code 5
-            return "Hash literal";
-        }
-        else{
-            return "Statement or invalid type";
-        }
     }
 
     /**
@@ -212,41 +139,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         }
     }
 
-    public boolean checkTypesCompatibility(int type1,int type2){
-        if (type1==-1||type2==-1){
-            return false;
-        }
-        else if (type1==type2){
-            return true;
-        }
-        else if ((type1==0 || type2==0)){
-            return true;
-        }
-        return false;
-    }
 
-    public boolean isValidOperator(String operator,int type){
-        //tipo neutro
-        boolean res=false;
-        if (type==0){
-            res= true;
-        }
-        //tipo entero
-        else if(type==1){
-            res=true;
-        }
-        //permitir suma de strings
-        else if (type==2 && operator.equals("+")){
-            res=true;
-        }
-        else {
-            //tipo boolean, string
-            if ((type == 2 || type == 3 ) && operator.equals("==")) {
-                res = true;
-            }
-        }
-        return res;
-    }
 
 
     @Override
@@ -254,7 +147,6 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         if(this.DataStorage.getProgramData().size() == 0)
             this.DataStorage.openScope();
 
-        this.countConsoleExecution= 0;
         for(MonkeyParser.StatementContext elem: ctx.statement()) {
             visit(elem);
         }
@@ -262,6 +154,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
          through the command line
         */
         System.out.println(this.DataStorage.toString());
+        System.out.println(this.evaluationStack.toString());
 
         return null;
     }
@@ -664,7 +557,6 @@ public class Interpreter extends MonkeyParserBaseVisitor{
                 //create new let Statement context
                 MonkeyParser.LetStatementContext letContex;
 
-                String a="";
                 temp=newFrame.getStorage();
 
 
@@ -675,7 +567,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
                     element=this.evaluationStack.pop();
                     letContex =new MonkeyParser.LetStatementContext(null,0);
                     letContex.storageIndex= temp.getCurrentIndex();
-                    a= identifiers.getChild(i).getText();
+
                     temp.addData(identifiers.getChild(i).getText(),element.getValue(),
                             temp.getCurrentIndex(),this.getTypeOfElement(element.getValue()),letContex);
 
@@ -684,7 +576,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
                 element=this.evaluationStack.pop();
                 letContex =new MonkeyParser.LetStatementContext(null,0);
                 letContex.storageIndex= temp.getCurrentIndex();
-                a = func.functionParameters().getChild(0).getText();
+
                 temp.addData(func.functionParameters().getChild(0).getText(),element.getValue(),
                         temp.getCurrentIndex(),this.getTypeOfElement(element.getValue()),letContex);
 
@@ -712,7 +604,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
                 //go to execute the function
                 visit(func.blockStatement());
                 //important to allow that program search in global frame when the recursion end in console call
-                this.countConsoleExecution=0;
+
                 this.haveToReturn= haveTReturn;
 
                 //then remove the frame after get the value in the stack
@@ -748,39 +640,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     @Override
     public Object visitSpecialCall_Mky(MonkeyParser.SpecialCall_MkyContext ctx) {
 
-        /**
-        if (ctx.expressionList().getChildCount()> 0){
-            int temp=globalCounterParams;  //por si está siendo utilizado en algún otro lugar
-            this.globalCounterParams=0;
-
-            // backup special array name because value could change in visit expresion list
-            String specialArray= this.specialArrayName;
-            // backup special array name because value could change in visit expresion list
-            int indexBackup= this.specialIndex;
-            type= (Integer) visit (ctx.expressionList());
-
-            this.specialArrayName=specialArray;
-            this.specialIndex=indexBackup;
-
-            // if there are problems with the function call
-            if (type==-1){
-                this.errorsList.add("Error: with types or functions parameters.At line:"+ ctx.expressionList().getStart().getLine()+
-                        " column: "+ ctx.expressionList().getStart().getCharPositionInLine());
-            }
-            else{
-                type=this.evaluateSpecialFunctionCall(this.specialArrayName,this.specialIndex,this.globalCounterParams ,ctx.expressionList());
-            }
-            this.globalCounterParams=temp; //reasignación del valor previo que poseía.
-        }
-
-        else{
-            type= this.evaluateSpecialFunctionCall(this.specialArrayName,this.specialIndex,0,ctx.expressionList());
-        }
-        return type;
-         **/
-        /***********************************/
         visit (ctx.expressionList());
-
         return null;
     }
 
@@ -833,31 +693,31 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     @Override
     public Object visitPExprID_Mky(MonkeyParser.PExprID_MkyContext ctx) {
 
-
-
-        /* PENDING CHECK IF WORKS WITH MANY LEVELs, HOWEVER IT SHOULD WORKS */
-
         dataStorageItem element;
 
+        // if execution is not trough console
         if(this.flagConsole == 0) {
             element= this.programFrames.searchElement( (MonkeyParser.Id_MkyContext)ctx.identifier());
 
         }
-        else{
+        else
+            {
 
-            if (countConsoleExecution>0){
+            if (ctx.identifier().decl!=null){
                 //call for recursion
                 element= this.programFrames.searchElement( (MonkeyParser.Id_MkyContext)ctx.identifier());
             }
             else{
+                // first call through console
                 element =this.DataStorage.findElement(ctx.identifier().getText());
                 //building letstatementcontext for function call type by console and for any var
                 MonkeyParser.LetStatementContext letContex =new MonkeyParser.LetStatementContext(null,0);
                 letContex.storageIndex=element.getIndex();
                 ctx.identifier().decl=letContex;
+
+
             }
 
-            this.countConsoleExecution++;
         }
 
         if (element== null) {

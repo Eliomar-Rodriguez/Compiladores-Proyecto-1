@@ -348,7 +348,7 @@ public class TextEditorController extends WindowAdapter implements ActionListene
                 interpreter.visit(tree);
                 interpreter.setFlagConsole(0); // find by storageIndex
             }catch(Exception e){
-                System.out.println(e.getMessage());
+
                 String mensaje = "\nError with the expression: "+linea;
                 this.editor.executionArea.setText(this.editor.executionArea.getText() + mensaje);
             }

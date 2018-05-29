@@ -20,4 +20,18 @@ public class ProgramStack {
     public int size(){
         return this.Stack.size();
     }
+
+
+    public String  toString (){
+        String message = new String("");
+        message += "****** ESTADO DE Stack ******\n";
+        if (!this.Stack.isEmpty()) {
+            for (ProgramStackElement i : this.Stack) {
+                message += i.getValue() + " --> " + i.getType() + "\n";
+            }
+            message += "------------------------------------------";
+        } else
+            message += "Data Storage is Empty!!";
+        return message;
+    }
 }

@@ -10,12 +10,12 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="TextEditorController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/clases/TextEditorController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="258">
-              <caret line="349" column="0" lean-forward="false" selection-start-line="349" selection-start-column="0" selection-end-line="349" selection-end-column="0" />
+            <state relative-caret-position="-34">
+              <caret line="355" column="48" lean-forward="true" selection-start-line="355" selection-start-column="48" selection-end-line="355" selection-end-column="48" />
               <folding />
             </state>
           </provider>
@@ -27,7 +27,21 @@
             <state relative-caret-position="153">
               <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
               <folding>
-                <element signature="e#347#348#0" expanded="true" />
+                <marker date="1521081091346" expanded="false" signature="0:104" ph="/.../" />
+                <marker date="1521081091346" expanded="true" signature="263:270" ph="{}" />
+                <marker date="1521081091346" expanded="true" signature="306:317" ph=" { " />
+                <marker date="1521081091346" expanded="true" signature="342:348" ph=" }" />
+                <marker date="1521081091346" expanded="true" signature="392:745" ph="{...}" />
+                <marker date="1521081091346" expanded="false" signature="792:803" ph=" { " />
+                <marker date="1521081091346" expanded="false" signature="831:837" ph=" }" />
+                <marker date="1521081091346" expanded="false" signature="882:893" ph=" { " />
+                <marker date="1521081091346" expanded="false" signature="921:927" ph=" }" />
+                <marker date="1521081091346" expanded="false" signature="960:971" ph=" { " />
+                <marker date="1521081091346" expanded="false" signature="983:989" ph=" }" />
+                <marker date="1521081091346" expanded="false" signature="1049:1060" ph=" { " />
+                <marker date="1521081091346" expanded="false" signature="1078:1084" ph=" }" />
+                <marker date="1521081091346" expanded="false" signature="1160:1171" ph=" { " />
+                <marker date="1521081091346" expanded="false" signature="1183:1189" ph=" }" />
               </folding>
             </state>
           </provider>
@@ -36,29 +50,17 @@
       <file leaf-file-name="MonkeyParser.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/generated/MonkeyParser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
+            <state relative-caret-position="139">
               <caret line="1493" column="0" lean-forward="false" selection-start-line="1493" selection-start-column="0" selection-end-line="1493" selection-end-column="0" />
               <folding>
-                <element signature="e#7411#7412#0" expanded="true" />
-                <element signature="e#7477#7478#0" expanded="true" />
-                <element signature="e#14520#14521#0" expanded="true" />
-                <element signature="e#14577#14578#0" expanded="true" />
-                <element signature="e#16542#16543#0" expanded="true" />
-                <element signature="e#16607#16608#0" expanded="true" />
+                <element signature="e#25350#25351#0" expanded="true" />
+                <element signature="e#25411#25412#0" expanded="true" />
                 <element signature="e#30384#30385#0" expanded="true" />
                 <element signature="e#30448#30449#0" expanded="true" />
                 <element signature="e#36323#36324#0" expanded="true" />
                 <element signature="e#36389#36390#0" expanded="true" />
-                <element signature="e#36986#36987#0" expanded="true" />
-                <element signature="e#37052#37053#0" expanded="true" />
-                <element signature="e#47027#47028#0" expanded="true" />
-                <element signature="e#47086#47087#0" expanded="true" />
                 <element signature="e#47542#47543#0" expanded="true" />
                 <element signature="e#47599#47600#0" expanded="true" />
-                <element signature="e#48060#48061#0" expanded="true" />
-                <element signature="e#48122#48123#0" expanded="true" />
-                <element signature="e#60577#60578#0" expanded="true" />
-                <element signature="e#60638#60639#0" expanded="true" />
                 <element signature="e#75749#75750#0" expanded="true" />
                 <element signature="e#75806#75807#0" expanded="true" />
               </folding>
@@ -66,66 +68,74 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ParserRuleContext.class" pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/antlr-4.7.1-complete.jar!/org/antlr/v4/runtime/ParserRuleContext.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="96">
-              <caret line="190" column="0" lean-forward="false" selection-start-line="190" selection-start-column="0" selection-end-line="190" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="myAntlrErrorHandle.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/clases/myAntlrErrorHandle.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="InterpreterException.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/InterpreterException.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-              <folding>
-                <element signature="e#126#127#0" expanded="true" />
-                <element signature="e#150#151#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Interpreter.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Interpreter.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/Interpreter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="202">
-              <caret line="1250" column="0" lean-forward="false" selection-start-line="1250" selection-start-column="0" selection-end-line="1250" selection-end-column="0" />
+            <state relative-caret-position="127">
+              <caret line="714" column="38" lean-forward="false" selection-start-line="714" selection-start-column="38" selection-end-line="714" selection-end-column="38" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2083#2084#0" expanded="true" />
-                <element signature="e#2129#2130#0" expanded="true" />
-                <element signature="e#8029#8030#0" expanded="true" />
-                <element signature="e#8077#8078#0" expanded="true" />
-                <element signature="e#35846#35847#0" expanded="true" />
-                <element signature="e#35893#35894#0" expanded="true" />
-                <element signature="e#35988#35989#0" expanded="true" />
-                <element signature="e#36039#36040#0" expanded="true" />
-                <element signature="e#36136#36137#0" expanded="true" />
-                <element signature="e#36184#36185#0" expanded="true" />
+                <element signature="e#2045#2046#0" expanded="true" />
+                <element signature="e#2091#2092#0" expanded="true" />
+                <element signature="e#5398#5399#0" expanded="true" />
+                <element signature="e#5446#5447#0" expanded="true" />
+                <element signature="e#31540#31541#0" expanded="true" />
+                <element signature="e#31587#31588#0" expanded="true" />
+                <element signature="e#31682#31683#0" expanded="true" />
+                <element signature="e#31733#31734#0" expanded="true" />
+                <element signature="e#31830#31831#0" expanded="true" />
+                <element signature="e#31878#31879#0" expanded="true" />
+                <element signature="e#34481#34497#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TextEditorModel.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/clases/TextEditorModel.java">
+      <file leaf-file-name="IdentifiersTable.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/clases/checker/IdentifiersTable.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="16" column="13" lean-forward="false" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+            <state relative-caret-position="-238">
+              <caret line="7" column="13" lean-forward="false" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Checker.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/clases/checker/Checker.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="211">
+              <caret line="788" column="9" lean-forward="false" selection-start-line="788" selection-start-column="9" selection-end-line="788" selection-end-column="9" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FunctionsTable.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/clases/checker/FunctionsTable.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="161">
+              <caret line="91" column="69" lean-forward="false" selection-start-line="91" selection-start-column="69" selection-end-line="91" selection-end-column="69" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ProgramStackElement.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/ProgramStackElement.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ProgramStack.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/ProgramStack.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="207">
+              <caret line="23" column="0" lean-forward="false" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -134,24 +144,11 @@
       <file leaf-file-name="dataStorage.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/dataStorage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="28">
-              <caret line="34" column="0" lean-forward="false" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+            <state relative-caret-position="62">
+              <caret line="109" column="8" lean-forward="false" selection-start-line="109" selection-start-column="8" selection-end-line="118" selection-end-column="23" />
               <folding>
                 <element signature="e#2740#2741#0" expanded="true" />
                 <element signature="e#2779#2780#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FrameList.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/FrameList.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3">
-              <caret line="63" column="27" lean-forward="false" selection-start-line="63" selection-start-column="27" selection-end-line="63" selection-end-column="27" />
-              <folding>
-                <element signature="e#568#569#0" expanded="true" />
-                <element signature="e#604#605#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -166,6 +163,11 @@
       </list>
     </option>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>this.functionsTable</find>
+    </findStrings>
+  </component>
   <component name="GradleLocalSettings">
     <option name="externalProjectsViewState">
       <projects_view />
@@ -176,10 +178,13 @@
       <list>
         <option value="$PROJECT_DIR$/src/clases/checker/InterpreterException.java" />
         <option value="$PROJECT_DIR$/src/clases/Interpreter/InterpreterException.java" />
-        <option value="$PROJECT_DIR$/src/clases/TextEditorController.java" />
         <option value="$PROJECT_DIR$/src/clases/Interpreter/dataStorage.java" />
         <option value="$PROJECT_DIR$/src/clases/Interpreter/FrameList.java" />
+        <option value="$PROJECT_DIR$/src/clases/TextEditorController.java" />
+        <option value="$PROJECT_DIR$/src/clases/Interpreter/ProgramStack.java" />
         <option value="$PROJECT_DIR$/src/clases/Interpreter/Interpreter.java" />
+        <option value="$PROJECT_DIR$/src/clases/checker/FunctionsTable.java" />
+        <option value="$PROJECT_DIR$/src/clases/checker/Checker.java" />
       </list>
     </option>
   </component>
@@ -204,6 +209,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="AndroidView" />
+      <pane id="Scratches" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -248,13 +255,11 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
-      <pane id="Scratches" />
-      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -418,8 +423,8 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32843137" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32843137" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -429,8 +434,8 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39869282" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -449,16 +454,16 @@
           <url>file://$PROJECT_DIR$/src/clases/TextEditorController.java</url>
           <line>346</line>
           <properties />
-          <option name="timeStamp" value="1" />
+          <option name="timeStamp" value="9" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/clases/Interpreter/Interpreter.java</url>
-          <line>712</line>
+          <line>189</line>
           <properties />
-          <option name="timeStamp" value="7" />
+          <option name="timeStamp" value="29" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="8" />
+      <option name="time" value="30" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
@@ -468,11 +473,520 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/clases/TextEditorModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="16" column="13" lean-forward="false" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/dataStorage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="34" column="0" lean-forward="false" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+          <folding>
+            <element signature="e#2740#2741#0" expanded="true" />
+            <element signature="e#2779#2780#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/FrameList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="969">
+          <caret line="63" column="27" lean-forward="false" selection-start-line="63" selection-start-column="27" selection-end-line="63" selection-end-column="27" />
+          <folding>
+            <element signature="e#568#569#0" expanded="true" />
+            <element signature="e#604#605#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/Interpreter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="21165">
+          <caret line="1245" column="0" lean-forward="false" selection-start-line="1245" selection-start-column="0" selection-end-line="1245" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2045#2046#0" expanded="true" />
+            <element signature="e#2091#2092#0" expanded="true" />
+            <element signature="e#5398#5399#0" expanded="true" />
+            <element signature="e#5446#5447#0" expanded="true" />
+            <element signature="e#31540#31541#0" expanded="true" />
+            <element signature="e#31587#31588#0" expanded="true" />
+            <element signature="e#31682#31683#0" expanded="true" />
+            <element signature="e#31733#31734#0" expanded="true" />
+            <element signature="e#31830#31831#0" expanded="true" />
+            <element signature="e#31878#31879#0" expanded="true" />
+            <element signature="e#34481#34497#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/TextEditorController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5049">
+          <caret line="349" column="0" lean-forward="false" selection-start-line="349" selection-start-column="0" selection-end-line="349" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/generated/MonkeyParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="25381">
+          <caret line="1493" column="0" lean-forward="false" selection-start-line="1493" selection-start-column="0" selection-end-line="1493" selection-end-column="0" />
+          <folding>
+            <element signature="e#25350#25351#0" expanded="true" />
+            <element signature="e#25411#25412#0" expanded="true" />
+            <element signature="e#30384#30385#0" expanded="true" />
+            <element signature="e#30448#30449#0" expanded="true" />
+            <element signature="e#36323#36324#0" expanded="true" />
+            <element signature="e#36389#36390#0" expanded="true" />
+            <element signature="e#47542#47543#0" expanded="true" />
+            <element signature="e#47599#47600#0" expanded="true" />
+            <element signature="e#75749#75750#0" expanded="true" />
+            <element signature="e#75806#75807#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/antlr-4.7.1-complete.jar!/org/antlr/v4/runtime/ParserRuleContext.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2907">
+          <caret line="190" column="0" lean-forward="false" selection-start-line="190" selection-start-column="0" selection-end-line="190" selection-end-column="0" />
+          <folding>
+            <marker date="1521081091346" expanded="false" signature="0:104" ph="/.../" />
+            <marker date="1521081091346" expanded="false" signature="144:573" ph="..." />
+            <marker date="1521081091346" expanded="true" signature="787:794" ph="{}" />
+            <marker date="1521081091346" expanded="true" signature="844:1386" ph="{...}" />
+            <marker date="1521081091346" expanded="false" signature="1467:1478" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="1513:1519" ph=" }" />
+            <marker date="1521081091346" expanded="true" signature="1575:1582" ph="{}" />
+            <marker date="1521081091346" expanded="true" signature="1637:1644" ph="{}" />
+            <marker date="1521081091346" expanded="true" signature="1698:1846" ph="{...}" />
+            <marker date="1521081091346" expanded="false" signature="1907:1918" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="1971:1977" ph=" }" />
+            <marker date="1521081091346" expanded="true" signature="2028:2112" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="2169:2266" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="2272:2290" ph="/**...*/" />
+            <marker date="1521081091346" expanded="true" signature="2360:2506" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="2512:2530" ph="/**...*/" />
+            <marker date="1521081091346" expanded="true" signature="2597:2733" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="2769:2884" ph="{...}" />
+            <marker date="1521081091346" expanded="false" signature="2926:2937" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="2981:2987" ph=" }" />
+            <marker date="1521081091346" expanded="true" signature="3026:3150" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="3231:3777" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="3830:4562" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="4615:5508" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="5603:5671" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="5766:6463" ph="{...}" />
+            <marker date="1521081091346" expanded="false" signature="6495:6506" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="6562:6568" ph=" }" />
+            <marker date="1521081091346" expanded="true" signature="6610:6955" ph="{...}" />
+            <marker date="1521081091346" expanded="false" signature="6984:6995" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="7013:7019" ph=" }" />
+            <marker date="1521081091346" expanded="false" signature="7047:7058" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="7075:7081" ph=" }" />
+            <marker date="1521081091346" expanded="true" signature="7133:7345" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/myAntlrErrorHandle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/InterpreterException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/TextEditorModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="16" column="13" lean-forward="false" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/dataStorage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="34" column="0" lean-forward="false" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+          <folding>
+            <element signature="e#2740#2741#0" expanded="true" />
+            <element signature="e#2779#2780#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/FrameList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="969">
+          <caret line="63" column="27" lean-forward="false" selection-start-line="63" selection-start-column="27" selection-end-line="63" selection-end-column="27" />
+          <folding>
+            <element signature="e#568#569#0" expanded="true" />
+            <element signature="e#604#605#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/Interpreter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="21964">
+          <caret line="1292" column="5" lean-forward="false" selection-start-line="1292" selection-start-column="5" selection-end-line="1292" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2045#2046#0" expanded="true" />
+            <element signature="e#2091#2092#0" expanded="true" />
+            <element signature="e#5398#5399#0" expanded="true" />
+            <element signature="e#5446#5447#0" expanded="true" />
+            <element signature="e#31540#31541#0" expanded="true" />
+            <element signature="e#31587#31588#0" expanded="true" />
+            <element signature="e#31682#31683#0" expanded="true" />
+            <element signature="e#31733#31734#0" expanded="true" />
+            <element signature="e#31830#31831#0" expanded="true" />
+            <element signature="e#31878#31879#0" expanded="true" />
+            <element signature="e#34481#34497#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/TextEditorController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5049">
+          <caret line="349" column="0" lean-forward="false" selection-start-line="349" selection-start-column="0" selection-end-line="349" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/antlr-4.7.1-complete.jar!/org/antlr/v4/runtime/tree/AbstractParseTreeVisitor.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding>
+            <marker date="1521081091346" expanded="false" signature="0:104" ph="/.../" />
+            <marker date="1521081091346" expanded="true" signature="263:270" ph="{}" />
+            <marker date="1521081091346" expanded="true" signature="306:317" ph=" { " />
+            <marker date="1521081091346" expanded="true" signature="342:348" ph=" }" />
+            <marker date="1521081091346" expanded="true" signature="392:745" ph="{...}" />
+            <marker date="1521081091346" expanded="false" signature="792:803" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="831:837" ph=" }" />
+            <marker date="1521081091346" expanded="false" signature="882:893" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="921:927" ph=" }" />
+            <marker date="1521081091346" expanded="false" signature="960:971" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="983:989" ph=" }" />
+            <marker date="1521081091346" expanded="false" signature="1049:1060" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="1078:1084" ph=" }" />
+            <marker date="1521081091346" expanded="false" signature="1160:1171" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="1183:1189" ph=" }" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/generated/MonkeyParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="25381">
+          <caret line="1493" column="0" lean-forward="false" selection-start-line="1493" selection-start-column="0" selection-end-line="1493" selection-end-column="0" />
+          <folding>
+            <element signature="e#25350#25351#0" expanded="true" />
+            <element signature="e#25411#25412#0" expanded="true" />
+            <element signature="e#30384#30385#0" expanded="true" />
+            <element signature="e#30448#30449#0" expanded="true" />
+            <element signature="e#36323#36324#0" expanded="true" />
+            <element signature="e#36389#36390#0" expanded="true" />
+            <element signature="e#47542#47543#0" expanded="true" />
+            <element signature="e#47599#47600#0" expanded="true" />
+            <element signature="e#75749#75750#0" expanded="true" />
+            <element signature="e#75806#75807#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/antlr-4.7.1-complete.jar!/org/antlr/v4/runtime/ParserRuleContext.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2907">
+          <caret line="190" column="0" lean-forward="false" selection-start-line="190" selection-start-column="0" selection-end-line="190" selection-end-column="0" />
+          <folding>
+            <marker date="1521081091346" expanded="false" signature="0:104" ph="/.../" />
+            <marker date="1521081091346" expanded="false" signature="144:573" ph="..." />
+            <marker date="1521081091346" expanded="true" signature="787:794" ph="{}" />
+            <marker date="1521081091346" expanded="true" signature="844:1386" ph="{...}" />
+            <marker date="1521081091346" expanded="false" signature="1467:1478" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="1513:1519" ph=" }" />
+            <marker date="1521081091346" expanded="true" signature="1575:1582" ph="{}" />
+            <marker date="1521081091346" expanded="true" signature="1637:1644" ph="{}" />
+            <marker date="1521081091346" expanded="true" signature="1698:1846" ph="{...}" />
+            <marker date="1521081091346" expanded="false" signature="1907:1918" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="1971:1977" ph=" }" />
+            <marker date="1521081091346" expanded="true" signature="2028:2112" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="2169:2266" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="2272:2290" ph="/**...*/" />
+            <marker date="1521081091346" expanded="true" signature="2360:2506" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="2512:2530" ph="/**...*/" />
+            <marker date="1521081091346" expanded="true" signature="2597:2733" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="2769:2884" ph="{...}" />
+            <marker date="1521081091346" expanded="false" signature="2926:2937" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="2981:2987" ph=" }" />
+            <marker date="1521081091346" expanded="true" signature="3026:3150" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="3231:3777" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="3830:4562" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="4615:5508" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="5603:5671" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="5766:6463" ph="{...}" />
+            <marker date="1521081091346" expanded="false" signature="6495:6506" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="6562:6568" ph=" }" />
+            <marker date="1521081091346" expanded="true" signature="6610:6955" ph="{...}" />
+            <marker date="1521081091346" expanded="false" signature="6984:6995" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="7013:7019" ph=" }" />
+            <marker date="1521081091346" expanded="false" signature="7047:7058" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="7075:7081" ph=" }" />
+            <marker date="1521081091346" expanded="true" signature="7133:7345" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/myAntlrErrorHandle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/InterpreterException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/TextEditorModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="16" column="13" lean-forward="false" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/dataStorage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="34" column="0" lean-forward="false" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+          <folding>
+            <element signature="e#2740#2741#0" expanded="true" />
+            <element signature="e#2779#2780#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/FrameList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="969">
+          <caret line="63" column="27" lean-forward="false" selection-start-line="63" selection-start-column="27" selection-end-line="63" selection-end-column="27" />
+          <folding>
+            <element signature="e#568#569#0" expanded="true" />
+            <element signature="e#604#605#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/Interpreter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="21964">
+          <caret line="1292" column="5" lean-forward="false" selection-start-line="1292" selection-start-column="5" selection-end-line="1292" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2045#2046#0" expanded="true" />
+            <element signature="e#2091#2092#0" expanded="true" />
+            <element signature="e#5398#5399#0" expanded="true" />
+            <element signature="e#5446#5447#0" expanded="true" />
+            <element signature="e#31540#31541#0" expanded="true" />
+            <element signature="e#31587#31588#0" expanded="true" />
+            <element signature="e#31682#31683#0" expanded="true" />
+            <element signature="e#31733#31734#0" expanded="true" />
+            <element signature="e#31830#31831#0" expanded="true" />
+            <element signature="e#31878#31879#0" expanded="true" />
+            <element signature="e#34481#34497#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/TextEditorController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5049">
+          <caret line="349" column="0" lean-forward="false" selection-start-line="349" selection-start-column="0" selection-end-line="349" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/antlr-4.7.1-complete.jar!/org/antlr/v4/runtime/tree/AbstractParseTreeVisitor.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding>
+            <marker date="1521081091346" expanded="false" signature="0:104" ph="/.../" />
+            <marker date="1521081091346" expanded="true" signature="263:270" ph="{}" />
+            <marker date="1521081091346" expanded="true" signature="306:317" ph=" { " />
+            <marker date="1521081091346" expanded="true" signature="342:348" ph=" }" />
+            <marker date="1521081091346" expanded="true" signature="392:745" ph="{...}" />
+            <marker date="1521081091346" expanded="false" signature="792:803" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="831:837" ph=" }" />
+            <marker date="1521081091346" expanded="false" signature="882:893" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="921:927" ph=" }" />
+            <marker date="1521081091346" expanded="false" signature="960:971" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="983:989" ph=" }" />
+            <marker date="1521081091346" expanded="false" signature="1049:1060" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="1078:1084" ph=" }" />
+            <marker date="1521081091346" expanded="false" signature="1160:1171" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="1183:1189" ph=" }" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/generated/MonkeyParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="25381">
+          <caret line="1493" column="0" lean-forward="false" selection-start-line="1493" selection-start-column="0" selection-end-line="1493" selection-end-column="0" />
+          <folding>
+            <element signature="e#25350#25351#0" expanded="true" />
+            <element signature="e#25411#25412#0" expanded="true" />
+            <element signature="e#30384#30385#0" expanded="true" />
+            <element signature="e#30448#30449#0" expanded="true" />
+            <element signature="e#36323#36324#0" expanded="true" />
+            <element signature="e#36389#36390#0" expanded="true" />
+            <element signature="e#47542#47543#0" expanded="true" />
+            <element signature="e#47599#47600#0" expanded="true" />
+            <element signature="e#75749#75750#0" expanded="true" />
+            <element signature="e#75806#75807#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/antlr-4.7.1-complete.jar!/org/antlr/v4/runtime/ParserRuleContext.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2907">
+          <caret line="190" column="0" lean-forward="false" selection-start-line="190" selection-start-column="0" selection-end-line="190" selection-end-column="0" />
+          <folding>
+            <marker date="1521081091346" expanded="false" signature="0:104" ph="/.../" />
+            <marker date="1521081091346" expanded="false" signature="144:573" ph="..." />
+            <marker date="1521081091346" expanded="true" signature="787:794" ph="{}" />
+            <marker date="1521081091346" expanded="true" signature="844:1386" ph="{...}" />
+            <marker date="1521081091346" expanded="false" signature="1467:1478" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="1513:1519" ph=" }" />
+            <marker date="1521081091346" expanded="true" signature="1575:1582" ph="{}" />
+            <marker date="1521081091346" expanded="true" signature="1637:1644" ph="{}" />
+            <marker date="1521081091346" expanded="true" signature="1698:1846" ph="{...}" />
+            <marker date="1521081091346" expanded="false" signature="1907:1918" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="1971:1977" ph=" }" />
+            <marker date="1521081091346" expanded="true" signature="2028:2112" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="2169:2266" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="2272:2290" ph="/**...*/" />
+            <marker date="1521081091346" expanded="true" signature="2360:2506" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="2512:2530" ph="/**...*/" />
+            <marker date="1521081091346" expanded="true" signature="2597:2733" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="2769:2884" ph="{...}" />
+            <marker date="1521081091346" expanded="false" signature="2926:2937" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="2981:2987" ph=" }" />
+            <marker date="1521081091346" expanded="true" signature="3026:3150" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="3231:3777" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="3830:4562" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="4615:5508" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="5603:5671" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="5766:6463" ph="{...}" />
+            <marker date="1521081091346" expanded="false" signature="6495:6506" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="6562:6568" ph=" }" />
+            <marker date="1521081091346" expanded="true" signature="6610:6955" ph="{...}" />
+            <marker date="1521081091346" expanded="false" signature="6984:6995" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="7013:7019" ph=" }" />
+            <marker date="1521081091346" expanded="false" signature="7047:7058" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="7075:7081" ph=" }" />
+            <marker date="1521081091346" expanded="true" signature="7133:7345" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/myAntlrErrorHandle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/InterpreterException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/TextEditorModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="13" lean-forward="false" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/dataStorage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="34" column="0" lean-forward="false" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+          <folding>
+            <element signature="e#2740#2741#0" expanded="true" />
+            <element signature="e#2779#2780#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/FrameList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="969">
+          <caret line="63" column="27" lean-forward="false" selection-start-line="63" selection-start-column="27" selection-end-line="63" selection-end-column="27" />
+          <folding>
+            <element signature="e#568#569#0" expanded="true" />
+            <element signature="e#604#605#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/Interpreter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="21964">
+          <caret line="1292" column="5" lean-forward="true" selection-start-line="1292" selection-start-column="5" selection-end-line="1292" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2045#2046#0" expanded="true" />
+            <element signature="e#2091#2092#0" expanded="true" />
+            <element signature="e#5398#5399#0" expanded="true" />
+            <element signature="e#5446#5447#0" expanded="true" />
+            <element signature="e#31540#31541#0" expanded="true" />
+            <element signature="e#31587#31588#0" expanded="true" />
+            <element signature="e#31682#31683#0" expanded="true" />
+            <element signature="e#31733#31734#0" expanded="true" />
+            <element signature="e#31830#31831#0" expanded="true" />
+            <element signature="e#31878#31879#0" expanded="true" />
+            <element signature="e#34481#34497#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/MonkeyParser.g4">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="57">
           <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -492,88 +1006,60 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/InterpreterException.java">
+    <entry file="file://$PROJECT_DIR$/test.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-          <folding>
-            <element signature="e#126#127#0" expanded="true" />
-            <element signature="e#150#151#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/dataStorage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="28">
-          <caret line="34" column="0" lean-forward="false" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
-          <folding>
-            <element signature="e#2740#2741#0" expanded="true" />
-            <element signature="e#2779#2780#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="jar://$PROJECT_DIR$/antlr-4.7.1-complete.jar!/org/antlr/v4/runtime/ParserRuleContext.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="190" column="0" lean-forward="false" selection-start-line="190" selection-start-column="0" selection-end-line="190" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/antlr-4.7.1-complete.jar!/org/antlr/v4/runtime/tree/AbstractParseTreeVisitor.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+        <state relative-caret-position="147">
+          <caret line="214" column="0" lean-forward="false" selection-start-line="214" selection-start-column="0" selection-end-line="214" selection-end-column="0" />
           <folding>
-            <element signature="e#347#348#0" expanded="true" />
+            <marker date="1521081091346" expanded="false" signature="0:104" ph="/.../" />
+            <marker date="1521081091346" expanded="false" signature="144:573" ph="..." />
+            <marker date="1521081091346" expanded="true" signature="787:794" ph="{}" />
+            <marker date="1521081091346" expanded="true" signature="844:1386" ph="{...}" />
+            <marker date="1521081091346" expanded="false" signature="1467:1478" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="1513:1519" ph=" }" />
+            <marker date="1521081091346" expanded="true" signature="1575:1582" ph="{}" />
+            <marker date="1521081091346" expanded="true" signature="1637:1644" ph="{}" />
+            <marker date="1521081091346" expanded="true" signature="1698:1846" ph="{...}" />
+            <marker date="1521081091346" expanded="false" signature="1907:1918" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="1971:1977" ph=" }" />
+            <marker date="1521081091346" expanded="true" signature="2028:2112" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="2169:2266" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="2272:2290" ph="/**...*/" />
+            <marker date="1521081091346" expanded="true" signature="2360:2506" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="2512:2530" ph="/**...*/" />
+            <marker date="1521081091346" expanded="true" signature="2597:2733" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="2769:2884" ph="{...}" />
+            <marker date="1521081091346" expanded="false" signature="2926:2937" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="2981:2987" ph=" }" />
+            <marker date="1521081091346" expanded="true" signature="3026:3150" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="3231:3777" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="3830:4562" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="4615:5508" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="5603:5671" ph="{...}" />
+            <marker date="1521081091346" expanded="true" signature="5766:6463" ph="{...}" />
+            <marker date="1521081091346" expanded="false" signature="6495:6506" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="6562:6568" ph=" }" />
+            <marker date="1521081091346" expanded="true" signature="6610:6955" ph="{...}" />
+            <marker date="1521081091346" expanded="false" signature="6984:6995" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="7013:7019" ph=" }" />
+            <marker date="1521081091346" expanded="false" signature="7047:7058" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="7075:7081" ph=" }" />
+            <marker date="1521081091346" expanded="true" signature="7133:7345" ph="{...}" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/generated/MonkeyParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="1493" column="0" lean-forward="false" selection-start-line="1493" selection-start-column="0" selection-end-line="1493" selection-end-column="0" />
-          <folding>
-            <element signature="e#7411#7412#0" expanded="true" />
-            <element signature="e#7477#7478#0" expanded="true" />
-            <element signature="e#14520#14521#0" expanded="true" />
-            <element signature="e#14577#14578#0" expanded="true" />
-            <element signature="e#16542#16543#0" expanded="true" />
-            <element signature="e#16607#16608#0" expanded="true" />
-            <element signature="e#30384#30385#0" expanded="true" />
-            <element signature="e#30448#30449#0" expanded="true" />
-            <element signature="e#36323#36324#0" expanded="true" />
-            <element signature="e#36389#36390#0" expanded="true" />
-            <element signature="e#36986#36987#0" expanded="true" />
-            <element signature="e#37052#37053#0" expanded="true" />
-            <element signature="e#47027#47028#0" expanded="true" />
-            <element signature="e#47086#47087#0" expanded="true" />
-            <element signature="e#47542#47543#0" expanded="true" />
-            <element signature="e#47599#47600#0" expanded="true" />
-            <element signature="e#48060#48061#0" expanded="true" />
-            <element signature="e#48122#48123#0" expanded="true" />
-            <element signature="e#60577#60578#0" expanded="true" />
-            <element signature="e#60638#60639#0" expanded="true" />
-            <element signature="e#75749#75750#0" expanded="true" />
-            <element signature="e#75806#75807#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/clases/TextEditorController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="258">
-          <caret line="349" column="0" lean-forward="false" selection-start-line="349" selection-start-column="0" selection-end-line="349" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/FrameList.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3">
+        <state relative-caret-position="683">
           <caret line="63" column="27" lean-forward="false" selection-start-line="63" selection-start-column="27" selection-end-line="63" selection-end-column="27" />
           <folding>
             <element signature="e#568#569#0" expanded="true" />
@@ -582,23 +1068,142 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://$PROJECT_DIR$/antlr-4.7.1-complete.jar!/org/antlr/v4/runtime/RuleContext.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="249">
+          <caret line="68" column="0" lean-forward="false" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/generated/MonkeyParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="139">
+          <caret line="1493" column="0" lean-forward="false" selection-start-line="1493" selection-start-column="0" selection-end-line="1493" selection-end-column="0" />
+          <folding>
+            <element signature="e#25350#25351#0" expanded="true" />
+            <element signature="e#25411#25412#0" expanded="true" />
+            <element signature="e#30384#30385#0" expanded="true" />
+            <element signature="e#30448#30449#0" expanded="true" />
+            <element signature="e#36323#36324#0" expanded="true" />
+            <element signature="e#36389#36390#0" expanded="true" />
+            <element signature="e#47542#47543#0" expanded="true" />
+            <element signature="e#47599#47600#0" expanded="true" />
+            <element signature="e#75749#75750#0" expanded="true" />
+            <element signature="e#75806#75807#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/antlr-4.7.1-complete.jar!/org/antlr/v4/runtime/tree/AbstractParseTreeVisitor.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding>
+            <marker date="1521081091346" expanded="false" signature="0:104" ph="/.../" />
+            <marker date="1521081091346" expanded="true" signature="263:270" ph="{}" />
+            <marker date="1521081091346" expanded="true" signature="306:317" ph=" { " />
+            <marker date="1521081091346" expanded="true" signature="342:348" ph=" }" />
+            <marker date="1521081091346" expanded="true" signature="392:745" ph="{...}" />
+            <marker date="1521081091346" expanded="false" signature="792:803" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="831:837" ph=" }" />
+            <marker date="1521081091346" expanded="false" signature="882:893" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="921:927" ph=" }" />
+            <marker date="1521081091346" expanded="false" signature="960:971" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="983:989" ph=" }" />
+            <marker date="1521081091346" expanded="false" signature="1049:1060" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="1078:1084" ph=" }" />
+            <marker date="1521081091346" expanded="false" signature="1160:1171" ph=" { " />
+            <marker date="1521081091346" expanded="false" signature="1183:1189" ph=" }" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/InterpreterException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/TextEditorController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-34">
+          <caret line="355" column="48" lean-forward="true" selection-start-line="355" selection-start-column="48" selection-end-line="355" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/ProgramStackElement.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/ProgramStack.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="23" column="0" lean-forward="false" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/dataStorage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="62">
+          <caret line="109" column="8" lean-forward="false" selection-start-line="109" selection-start-column="8" selection-end-line="118" selection-end-column="23" />
+          <folding>
+            <element signature="e#2740#2741#0" expanded="true" />
+            <element signature="e#2779#2780#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/checker/IdentifiersTable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-238">
+          <caret line="7" column="13" lean-forward="false" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/clases/Interpreter/Interpreter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="1250" column="0" lean-forward="false" selection-start-line="1250" selection-start-column="0" selection-end-line="1250" selection-end-column="0" />
+        <state relative-caret-position="127">
+          <caret line="714" column="38" lean-forward="false" selection-start-line="714" selection-start-column="38" selection-end-line="714" selection-end-column="38" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2083#2084#0" expanded="true" />
-            <element signature="e#2129#2130#0" expanded="true" />
-            <element signature="e#8029#8030#0" expanded="true" />
-            <element signature="e#8077#8078#0" expanded="true" />
-            <element signature="e#35846#35847#0" expanded="true" />
-            <element signature="e#35893#35894#0" expanded="true" />
-            <element signature="e#35988#35989#0" expanded="true" />
-            <element signature="e#36039#36040#0" expanded="true" />
-            <element signature="e#36136#36137#0" expanded="true" />
-            <element signature="e#36184#36185#0" expanded="true" />
+            <element signature="e#2045#2046#0" expanded="true" />
+            <element signature="e#2091#2092#0" expanded="true" />
+            <element signature="e#5398#5399#0" expanded="true" />
+            <element signature="e#5446#5447#0" expanded="true" />
+            <element signature="e#31540#31541#0" expanded="true" />
+            <element signature="e#31587#31588#0" expanded="true" />
+            <element signature="e#31682#31683#0" expanded="true" />
+            <element signature="e#31733#31734#0" expanded="true" />
+            <element signature="e#31830#31831#0" expanded="true" />
+            <element signature="e#31878#31879#0" expanded="true" />
+            <element signature="e#34481#34497#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/checker/FunctionsTable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="91" column="69" lean-forward="false" selection-start-line="91" selection-start-column="69" selection-end-line="91" selection-end-column="69" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/clases/checker/Checker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="211">
+          <caret line="788" column="9" lean-forward="false" selection-start-line="788" selection-start-column="9" selection-end-line="788" selection-end-column="9" />
+          <folding />
         </state>
       </provider>
     </entry>

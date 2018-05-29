@@ -318,7 +318,7 @@ public class Checker extends MonkeyParserBaseVisitor {
                 return -1;
             }
 
-            if (this.functionsTable.buscar(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText())!=null){
+            if (this.functionsTable.buscar(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText(),this.functionsTable.getCurrentLevel())!=null){
                 this.errorsList.add("Error: The identifier " + ((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText() + " it's already declared like a function and" +
                         " can't not be change to variable. At line: " +
                         ctx.getStart().getLine() + " column: " + ctx.getStart().getCharPositionInLine());
@@ -763,7 +763,7 @@ public class Checker extends MonkeyParserBaseVisitor {
         //buscar en la tabla y rtPExprID_etornar el tipo
         int resType = -1;
         IdentifierElement elem = this.identifierTable.buscar(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText());
-        FuncTableElement elem2= this.functionsTable.buscar(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText());
+        FuncTableElement elem2= this.functionsTable.buscar(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText(),this.functionsTable.getCurrentLevel());
         if (elem==null && elem2==null){
             this.errorsList.add("Error: Variable or function "+ ((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText()+ " have not been declared. At line: "+
                     ((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getSymbol().getLine()+" Column: "+ ((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getSymbol().getCharPositionInLine());
@@ -778,12 +778,14 @@ public class Checker extends MonkeyParserBaseVisitor {
             resType= elem.getType();
 
         }
-        /***
-         * Pegar el puntero a la declaración de la función
-         */
-        if (elem2!=null){
-            ctx.identifier().decl= elem2.getDeclaration();
-            resType= elem2.getReturnType();
+        else {
+            /***
+             * Pegar el puntero a la declaración de la función
+             */
+            if (elem2 != null) {
+                ctx.identifier().decl = elem2.getDeclaration();
+                resType = elem2.getReturnType();
+            }
         }
 
         return resType;

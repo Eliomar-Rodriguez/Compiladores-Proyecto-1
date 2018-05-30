@@ -1,5 +1,6 @@
 // Generated from C:/Users/anton/Desktop/Compiladores.EliomarRodriguez-JosuaCarranza.PrimerProgra/Editor_de_texto\MonkeyParser.g4 by ANTLR 4.7
 package generated;
+import clases.Interpreter.InterpreteException;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**
@@ -73,35 +74,35 @@ public class MonkeyParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> impl
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCompMenor_Mky(MonkeyParser.CompMenor_MkyContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCompMenor_Mky(MonkeyParser.CompMenor_MkyContext ctx) throws Exception { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCompMayor_Mky(MonkeyParser.CompMayor_MkyContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCompMayor_Mky(MonkeyParser.CompMayor_MkyContext ctx) throws Exception { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCompMenorIg_Mky(MonkeyParser.CompMenorIg_MkyContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCompMenorIg_Mky(MonkeyParser.CompMenorIg_MkyContext ctx) throws Exception { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCompMayorIg_Mky(MonkeyParser.CompMayorIg_MkyContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCompMayorIg_Mky(MonkeyParser.CompMayorIg_MkyContext ctx) throws Exception { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCompIgComp_Mky(MonkeyParser.CompIgComp_MkyContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCompIgComp_Mky(MonkeyParser.CompIgComp_MkyContext ctx) throws Exception { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -115,14 +116,14 @@ public class MonkeyParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> impl
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitAddFactSum_Mky(MonkeyParser.AddFactSum_MkyContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAddFactSum_Mky(MonkeyParser.AddFactSum_MkyContext ctx) throws InterpreteException { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitAddFactSub_Mky(MonkeyParser.AddFactSub_MkyContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAddFactSub_Mky(MonkeyParser.AddFactSub_MkyContext ctx) throws InterpreteException { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -136,21 +137,21 @@ public class MonkeyParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> impl
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMultFactMul_Mky(MonkeyParser.MultFactMul_MkyContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMultFactMul_Mky(MonkeyParser.MultFactMul_MkyContext ctx) throws InterpreteException { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMultFactDiv_Mky(MonkeyParser.MultFactDiv_MkyContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMultFactDiv_Mky(MonkeyParser.MultFactDiv_MkyContext ctx) throws InterpreteException { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitElemExprElemAccess_Mky(MonkeyParser.ElemExprElemAccess_MkyContext ctx) { return visitChildren(ctx); }
+	@Override public T visitElemExprElemAccess_Mky(MonkeyParser.ElemExprElemAccess_MkyContext ctx) throws InterpreteException { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -185,7 +186,7 @@ public class MonkeyParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> impl
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitSpecialCallEmpty_Mky(MonkeyParser.SpecialCallEmpty_MkyContext ctx) { return visitChildren(ctx); }
+	@Override public T visitSpecialCallEmpty_Mky(MonkeyParser.SpecialCallEmpty_MkyContext ctx) throws InterpreteException { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -248,7 +249,7 @@ public class MonkeyParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> impl
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPExprArrayFunc_Mky(MonkeyParser.PExprArrayFunc_MkyContext ctx) { return visitChildren(ctx); }
+	@Override public T visitPExprArrayFunc_Mky(MonkeyParser.PExprArrayFunc_MkyContext ctx) throws InterpreteException { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -353,7 +354,7 @@ public class MonkeyParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> impl
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitHashCont_Mky(MonkeyParser.HashCont_MkyContext ctx) { return visitChildren(ctx); }
+	@Override public T visitHashCont_Mky(MonkeyParser.HashCont_MkyContext ctx) throws InterpreteException { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

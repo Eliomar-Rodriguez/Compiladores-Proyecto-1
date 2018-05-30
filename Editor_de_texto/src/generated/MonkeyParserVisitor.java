@@ -1,5 +1,6 @@
 // Generated from C:/Users/anton/Desktop/Compiladores.EliomarRodriguez-JosuaCarranza.PrimerProgra/Editor_de_texto\MonkeyParser.g4 by ANTLR 4.7
 package generated;
+import clases.Interpreter.InterpreteException;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -72,35 +73,35 @@ public interface MonkeyParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCompMenor_Mky(MonkeyParser.CompMenor_MkyContext ctx);
+	T visitCompMenor_Mky(MonkeyParser.CompMenor_MkyContext ctx) throws Exception;
 	/**
 	 * Visit a parse tree produced by the {@code compMayor_Mky}
 	 * labeled alternative in {@link MonkeyParser#comparison}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCompMayor_Mky(MonkeyParser.CompMayor_MkyContext ctx);
+	T visitCompMayor_Mky(MonkeyParser.CompMayor_MkyContext ctx) throws Exception;
 	/**
 	 * Visit a parse tree produced by the {@code compMenorIg_Mky}
 	 * labeled alternative in {@link MonkeyParser#comparison}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCompMenorIg_Mky(MonkeyParser.CompMenorIg_MkyContext ctx);
+	T visitCompMenorIg_Mky(MonkeyParser.CompMenorIg_MkyContext ctx) throws Exception;
 	/**
 	 * Visit a parse tree produced by the {@code compMayorIg_Mky}
 	 * labeled alternative in {@link MonkeyParser#comparison}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCompMayorIg_Mky(MonkeyParser.CompMayorIg_MkyContext ctx);
+	T visitCompMayorIg_Mky(MonkeyParser.CompMayorIg_MkyContext ctx) throws Exception;
 	/**
 	 * Visit a parse tree produced by the {@code compIgComp_Mky}
 	 * labeled alternative in {@link MonkeyParser#comparison}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCompIgComp_Mky(MonkeyParser.CompIgComp_MkyContext ctx);
+	T visitCompIgComp_Mky(MonkeyParser.CompIgComp_MkyContext ctx) throws Exception;
 	/**
 	 * Visit a parse tree produced by the {@code addExpr_Mky}
 	 * labeled alternative in {@link MonkeyParser#additionExpression}.
@@ -114,14 +115,14 @@ public interface MonkeyParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAddFactSum_Mky(MonkeyParser.AddFactSum_MkyContext ctx);
+	T visitAddFactSum_Mky(MonkeyParser.AddFactSum_MkyContext ctx) throws InterpreteException;
 	/**
 	 * Visit a parse tree produced by the {@code addFactSub_Mky}
 	 * labeled alternative in {@link MonkeyParser#additionFactor}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAddFactSub_Mky(MonkeyParser.AddFactSub_MkyContext ctx);
+	T visitAddFactSub_Mky(MonkeyParser.AddFactSub_MkyContext ctx) throws InterpreteException;
 	/**
 	 * Visit a parse tree produced by the {@code multExpr_Mky}
 	 * labeled alternative in {@link MonkeyParser#multiplicationExpression}.
@@ -135,21 +136,21 @@ public interface MonkeyParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMultFactMul_Mky(MonkeyParser.MultFactMul_MkyContext ctx);
+	T visitMultFactMul_Mky(MonkeyParser.MultFactMul_MkyContext ctx) throws InterpreteException;
 	/**
 	 * Visit a parse tree produced by the {@code multFactDiv_Mky}
 	 * labeled alternative in {@link MonkeyParser#multiplicationFactor}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMultFactDiv_Mky(MonkeyParser.MultFactDiv_MkyContext ctx);
+	T visitMultFactDiv_Mky(MonkeyParser.MultFactDiv_MkyContext ctx) throws InterpreteException;
 	/**
 	 * Visit a parse tree produced by the {@code elemExprElemAccess_Mky}
 	 * labeled alternative in {@link MonkeyParser#elementExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitElemExprElemAccess_Mky(MonkeyParser.ElemExprElemAccess_MkyContext ctx);
+	T visitElemExprElemAccess_Mky(MonkeyParser.ElemExprElemAccess_MkyContext ctx) throws InterpreteException;
 	/**
 	 * Visit a parse tree produced by the {@code elemExprCallExpr_Mky}
 	 * labeled alternative in {@link MonkeyParser#elementExpression}.
@@ -184,7 +185,7 @@ public interface MonkeyParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSpecialCallEmpty_Mky(MonkeyParser.SpecialCallEmpty_MkyContext ctx);
+	T visitSpecialCallEmpty_Mky(MonkeyParser.SpecialCallEmpty_MkyContext ctx) throws InterpreteException;
 	/**
 	 * Visit a parse tree produced by the {@code callExpr_Mky}
 	 * labeled alternative in {@link MonkeyParser#callExpression}.
@@ -247,7 +248,7 @@ public interface MonkeyParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitPExprArrayFunc_Mky(MonkeyParser.PExprArrayFunc_MkyContext ctx);
+	T visitPExprArrayFunc_Mky(MonkeyParser.PExprArrayFunc_MkyContext ctx) throws InterpreteException;
 	/**
 	 * Visit a parse tree produced by the {@code pExprFuncDecl_Mky}
 	 * labeled alternative in {@link MonkeyParser#primitiveExpression}.
@@ -352,7 +353,7 @@ public interface MonkeyParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitHashCont_Mky(MonkeyParser.HashCont_MkyContext ctx);
+	T visitHashCont_Mky(MonkeyParser.HashCont_MkyContext ctx) throws InterpreteException;
 	/**
 	 * Visit a parse tree produced by the {@code moreHashCont_Mky}
 	 * labeled alternative in {@link MonkeyParser#moreHashContent}.

@@ -52,6 +52,7 @@ public class TextEditorController extends WindowAdapter implements ActionListene
     private boolean executeState;
     private List<String> consoleHistory;
     private int indexConsoleHistory = 0;
+    private String respaldo = "";
 
 
     public TextEditorController(EditorFrame window) {
@@ -330,12 +331,18 @@ public class TextEditorController extends WindowAdapter implements ActionListene
         Element element = root.getElement(root.getElementCount()-1);
         int start = element.getStartOffset();
         int end = element.getEndOffset();
-        linea = doc.getText(start, end - start);
-        System.out.println(linea);
+
+        this.editor.executionArea.setCaretPosition(this.editor.executionArea.getDocument().getLength());
+
         if(evt.getExtendedKeyCode() == 10){
             try{
-                this.consoleHistory.add(linea);
+                linea = doc.getText(start, end - start - 1);
+                if(linea.length() > 0)
+                    this.consoleHistory.add(linea);
+                else
+                    linea = "";
                 this.indexConsoleHistory = this.consoleHistory.size() - 1;
+
                 Interpreter interpreter = this.model.getInterpreter();
                 interpreter.setFlagConsole(1); // find by for
                 ANTLRInputStream input = new ANTLRInputStream(linea);
@@ -347,20 +354,34 @@ public class TextEditorController extends WindowAdapter implements ActionListene
                 ParseTree tree = parser.program();
                 interpreter.visit(tree);
                 interpreter.setFlagConsole(0); // find by storageIndex
+
+                this.respaldo = this.editor.executionArea.getText()+"\n\n";
+                this.editor.executionArea.setCaretPosition(this.editor.executionArea.getDocument().getLength());
+
             }catch(Exception e){
                 String mensaje = "\nError with the expression: "+linea;
-                this.editor.executionArea.setText(this.editor.executionArea.getText() + mensaje);
+
+                this.editor.executionArea.setText(respaldo + mensaje);
+                this.editor.executionArea.setCaretPosition(this.editor.executionArea.getDocument().getLength());
             }
         }
         else if(evt.getExtendedKeyCode() == 38){
-            String respaldo = this.editor.executionArea.getText();
-            System.out.println(indexConsoleHistory);
-            if(this.indexConsoleHistory >= 0){
-                this.editor.executionArea.setText(respaldo+this.consoleHistory.get(this.indexConsoleHistory));
+            System.out.println(this.editor.executionArea.getCaretPosition());
+            System.out.println(this.editor.executionArea.getDocument().getLength());
+
+            if(this.consoleHistory.size() > 0 & indexConsoleHistory >= 0){
+
+                this.editor.executionArea.setCaretPosition(this.editor.executionArea.getDocument().getLength());
+                this.editor.executionArea.setText(this.respaldo + this.consoleHistory.get(this.indexConsoleHistory));
+
+                this.editor.executionArea.setCaretPosition(this.editor.executionArea.getDocument().getLength());
                 this.indexConsoleHistory--;
             }
+            else{
+                this.editor.executionArea.setCaretPosition(this.editor.executionArea.getDocument().getLength());
+            }
         }
-    }//GEN-LAST:event_executionAreaKeyPressed
+    }
 
     @Override
     public void actionPerformed(ActionEvent event) {

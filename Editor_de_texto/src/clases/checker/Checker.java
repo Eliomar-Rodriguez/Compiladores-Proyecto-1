@@ -61,7 +61,7 @@ public class Checker extends MonkeyParserBaseVisitor {
         this.specialIndex=-2;
         this.functionInsideOther=-1;
         this.finalCounterParams=0;
-        this.temporalObject = new RecursivityObject(null,-1);// -1 representa que es una funcion normal, no una funcion declarada dentro de un array
+        this.temporalObject = new RecursivityObject(null,-1,null);// -1 representa que es una funcion normal, no una funcion declarada dentro de un array
     }
 
     public ArrayList<String> getErrorsList() {
@@ -274,6 +274,7 @@ public class Checker extends MonkeyParserBaseVisitor {
         this.temporalObject.setIndex(-1);
         if (ctx.expression().toStringTree().replace(" ","").contains("fn(")){
             this.temporalObject.setFnName(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getSymbol());
+            this.temporalObject.setCtx(ctx);
         }
 
         this.specialIndex=-2;
@@ -302,9 +303,12 @@ public class Checker extends MonkeyParserBaseVisitor {
             FuncTableElement element = this.functionsTable.buscar(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText());
             if (element!= null){
                 //store pointer to the function declaration
-                element.setDeclaration(ctx.expression());
+                //test linking all the let statement to the future var uses
+                element.setDeclaration(ctx);
                 element.setReturnType(this.haveReturn);
+
             }
+
 
 
         }
@@ -314,7 +318,7 @@ public class Checker extends MonkeyParserBaseVisitor {
                 return -1;
             }
 
-            if (this.functionsTable.buscar(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText().toLowerCase())!=null){
+            if (this.functionsTable.buscar(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText(),this.functionsTable.getCurrentLevel())!=null){
                 this.errorsList.add("Error: The identifier " + ((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText() + " it's already declared like a function and" +
                         " can't not be change to variable. At line: " +
                         ctx.getStart().getLine() + " column: " + ctx.getStart().getCharPositionInLine());
@@ -324,10 +328,7 @@ public class Checker extends MonkeyParserBaseVisitor {
 
             //neutro type
             IdentifierElement element= this.identifierTable.insertar(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getSymbol(),type,ctx);
-            if (element!= null){
-                //set the pointer to the declaration
-                ctx.identifier().decl= element.getDeclaration();
-            }
+
         }
 
 
@@ -649,14 +650,14 @@ public class Checker extends MonkeyParserBaseVisitor {
 
         int type2= (Integer) visit(ctx.callExpression());
 
-        if (elem.getReturnType()==-1){
+        if ( elem.getReturnType()== -1 ){
             this.errorsList.add("Error: Function "+ ctx.primitiveExpression().getText() +
                     " doesn't return nothing, it could generate a type error .At line:"+
                     ctx.primitiveExpression().getStart().getLine()+
                     " column: "+ ctx.primitiveExpression().getStart().getCharPositionInLine());
         }
 
-        if (type2==-1){
+        if ( type2== -1 ){
             this.errorsList.add("Error: with types or functions parameters.At line:"+ ctx.callExpression().getStart().getLine()+
                     " column: "+ ctx.callExpression().getStart().getCharPositionInLine());
             resType= -1;
@@ -759,10 +760,10 @@ public class Checker extends MonkeyParserBaseVisitor {
 
     @Override
     public Object visitPExprID_Mky(MonkeyParser.PExprID_MkyContext ctx) {
-        //buscar en la tabla y retornar el tipo
+        //buscar en la tabla y rtPExprID_etornar el tipo
         int resType = -1;
         IdentifierElement elem = this.identifierTable.buscar(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText());
-        FuncTableElement elem2= this.functionsTable.buscar(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText());
+        FuncTableElement elem2= this.functionsTable.buscar(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText(),this.functionsTable.getCurrentLevel());
         if (elem==null && elem2==null){
             this.errorsList.add("Error: Variable or function "+ ((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText()+ " have not been declared. At line: "+
                     ((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getSymbol().getLine()+" Column: "+ ((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getSymbol().getCharPositionInLine());
@@ -777,12 +778,14 @@ public class Checker extends MonkeyParserBaseVisitor {
             resType= elem.getType();
 
         }
-        /***
-         * Pegar el puntero a la declaración de la función
-         */
-        if (elem2!=null){
-            ctx.identifier().decl= elem2.getDeclaration();
-            resType= elem2.getReturnType();
+        else {
+            /***
+             * Pegar el puntero a la declaración de la función
+             */
+            if (elem2 != null) {
+                ctx.identifier().decl = elem2.getDeclaration();
+                resType = elem2.getReturnType();
+            }
         }
 
         return resType;
@@ -916,7 +919,7 @@ public class Checker extends MonkeyParserBaseVisitor {
 
     @Override
     public Object visitFuncLit_Mky(MonkeyParser.FuncLit_MkyContext ctx) {
-        RecursivityObject respaldo = new RecursivityObject(this.temporalObject.getFnName(),this.temporalObject.getIndex());
+        RecursivityObject respaldo = new RecursivityObject(this.temporalObject.getFnName(),this.temporalObject.getIndex(),this.temporalObject.getCtx());
         int res=-1;
         int temp= this.globalCounterReturn;
         //update function inside other counter
@@ -946,7 +949,7 @@ public class Checker extends MonkeyParserBaseVisitor {
                         temporalObject.getFnName().getLine() + " column: " + temporalObject.getFnName().getCharPositionInLine());
                 return -1;
             }
-            FuncTableElement resp = this.functionsTable.insert(temporalObject.getFnName(),this.globalCounterParams,0,null);
+            FuncTableElement resp = this.functionsTable.insert(temporalObject.getFnName(),this.globalCounterParams,0,this.temporalObject.getCtx());
             if(resp == null){
                 this.errorsList.add("Error: The function " + this.temporalObject.getFnName().getText() + " it's already declared. At line: " +
                         ctx.getStart().getLine() + " column: " + ctx.getStart().getCharPositionInLine());

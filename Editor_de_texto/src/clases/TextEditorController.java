@@ -359,6 +359,7 @@ public class TextEditorController extends WindowAdapter implements ActionListene
                 this.editor.executionArea.setCaretPosition(this.editor.executionArea.getDocument().getLength());
 
             }catch(Exception e){
+
                 String mensaje = "\nError with the expression: "+linea;
 
                 this.editor.executionArea.setText(respaldo + mensaje);

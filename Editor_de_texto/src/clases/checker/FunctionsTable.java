@@ -1,5 +1,6 @@
 package clases.checker;
 
+import generated.MonkeyParser;
 import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
@@ -83,6 +84,21 @@ public class FunctionsTable {
      * @param nombre: nombre del identifcador de la función
      * @return
      */
+
+    public FuncTableElement buscar(String nombre,int level)
+    {
+        FuncTableElement temp=null;
+        int j=0;
+        while (j < this.table.size() && this.table.get(j).getLevel() == level) {
+            if (this.table.get(j).getToken().getText().equals(nombre)){
+                temp= this.table.get(j);
+
+                return temp;
+            }
+            j++;
+        }
+        return temp;
+    }
     public FuncTableElement buscar(String nombre)
     {
         FuncTableElement temp=null;
@@ -90,6 +106,8 @@ public class FunctionsTable {
         while (j < this.table.size() && this.table.get(j).getLevel() <= this.currentLevel) {
             if (this.table.get(j).getToken().getText().equals(nombre)){
                 temp= this.table.get(j);
+
+                return temp;
             }
             j++;
         }

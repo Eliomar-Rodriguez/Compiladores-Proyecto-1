@@ -35,6 +35,10 @@ public class IdentifiersTable{
             if (this.IDs_table.get(j).getToken().getText().equals(tkn.getText())) {
                 this.IDs_table.get(j).setType(type); //change the type of the var
 
+                //link pointer
+                if (declaracion!=null){
+                    ((MonkeyParser.Lt_asign_MkyContext) declaracion).identifier().decl=this.IDs_table.get(j).getDeclaration();
+                }
                 return null;
             }
             j++;

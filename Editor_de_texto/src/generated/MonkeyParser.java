@@ -1,5 +1,6 @@
 // Generated from C:/Users/anton/Desktop/Compiladores.EliomarRodriguez-JosuaCarranza.PrimerProgra/Editor_de_texto\MonkeyParser.g4 by ANTLR 4.7
 package generated;
+import clases.Interpreter.InterpreteException;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -678,8 +679,15 @@ public class MonkeyParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitCompMenorIg_Mky(this);
-			else return visitor.visitChildren(this);
+			if (visitor instanceof MonkeyParserVisitor)
+				try {
+					return ((MonkeyParserVisitor<? extends T>) visitor).visitCompMenorIg_Mky(this);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			else
+				return visitor.visitChildren(this);
+			return null;
 		}
 	}
 	public static class CompIgComp_MkyContext extends ComparisonContext {
@@ -704,8 +712,13 @@ public class MonkeyParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitCompIgComp_Mky(this);
+			if ( visitor instanceof MonkeyParserVisitor ) try {
+				return ((MonkeyParserVisitor<? extends T>)visitor).visitCompIgComp_Mky(this);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			else return visitor.visitChildren(this);
+			return null;
 		}
 	}
 	public static class CompMenor_MkyContext extends ComparisonContext {
@@ -730,8 +743,13 @@ public class MonkeyParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitCompMenor_Mky(this);
+			if ( visitor instanceof MonkeyParserVisitor ) try {
+				return ((MonkeyParserVisitor<? extends T>)visitor).visitCompMenor_Mky(this);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			else return visitor.visitChildren(this);
+			return null;
 		}
 	}
 	public static class CompMayor_MkyContext extends ComparisonContext {
@@ -756,8 +774,13 @@ public class MonkeyParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitCompMayor_Mky(this);
+			if ( visitor instanceof MonkeyParserVisitor ) try {
+				return ((MonkeyParserVisitor<? extends T>)visitor).visitCompMayor_Mky(this);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			else return visitor.visitChildren(this);
+			return null;
 		}
 	}
 	public static class CompMayorIg_MkyContext extends ComparisonContext {
@@ -782,8 +805,13 @@ public class MonkeyParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitCompMayorIg_Mky(this);
+			if ( visitor instanceof MonkeyParserVisitor ) try {
+				return ((MonkeyParserVisitor<? extends T>)visitor).visitCompMayorIg_Mky(this);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			else return visitor.visitChildren(this);
+			return null;
 		}
 	}
 
@@ -1009,8 +1037,13 @@ public class MonkeyParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitAddFactSub_Mky(this);
+			if ( visitor instanceof MonkeyParserVisitor ) try {
+				return ((MonkeyParserVisitor<? extends T>)visitor).visitAddFactSub_Mky(this);
+			} catch (InterpreteException e) {
+				e.printStackTrace();
+			}
 			else return visitor.visitChildren(this);
+			return null;
 		}
 	}
 	public static class AddFactSum_MkyContext extends AdditionFactorContext {
@@ -1035,8 +1068,13 @@ public class MonkeyParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitAddFactSum_Mky(this);
+			if ( visitor instanceof MonkeyParserVisitor ) try {
+				return ((MonkeyParserVisitor<? extends T>)visitor).visitAddFactSum_Mky(this);
+			} catch (InterpreteException e) {
+				e.printStackTrace();
+			}
 			else return visitor.visitChildren(this);
+			return null;
 		}
 	}
 
@@ -1196,8 +1234,13 @@ public class MonkeyParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitMultFactMul_Mky(this);
+			if ( visitor instanceof MonkeyParserVisitor ) try {
+				return ((MonkeyParserVisitor<? extends T>)visitor).visitMultFactMul_Mky(this);
+			} catch (InterpreteException e) {
+				e.printStackTrace();
+			}
 			else return visitor.visitChildren(this);
+			return null;
 		}
 	}
 	public static class MultFactDiv_MkyContext extends MultiplicationFactorContext {
@@ -1222,8 +1265,13 @@ public class MonkeyParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitMultFactDiv_Mky(this);
+			if ( visitor instanceof MonkeyParserVisitor ) try {
+				return ((MonkeyParserVisitor<? extends T>)visitor).visitMultFactDiv_Mky(this);
+			} catch (InterpreteException e) {
+				e.printStackTrace();
+			}
 			else return visitor.visitChildren(this);
+			return null;
 		}
 	}
 
@@ -1324,8 +1372,13 @@ public class MonkeyParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitElemExprElemAccess_Mky(this);
+			if ( visitor instanceof MonkeyParserVisitor ) try {
+				return ((MonkeyParserVisitor<? extends T>)visitor).visitElemExprElemAccess_Mky(this);
+			} catch (InterpreteException e) {
+				e.printStackTrace();
+			}
 			else return visitor.visitChildren(this);
+			return null;
 		}
 	}
 	public static class ElemExprCallExpr_MkyContext extends ElementExpressionContext {
@@ -1523,8 +1576,13 @@ public class MonkeyParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitSpecialCallEmpty_Mky(this);
+			if ( visitor instanceof MonkeyParserVisitor ) try {
+				return ((MonkeyParserVisitor<? extends T>)visitor).visitSpecialCallEmpty_Mky(this);
+			} catch (InterpreteException e) {
+				e.printStackTrace();
+			}
 			else return visitor.visitChildren(this);
+			return null;
 		}
 	}
 
@@ -1709,8 +1767,13 @@ public class MonkeyParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitPExprArrayFunc_Mky(this);
+			if ( visitor instanceof MonkeyParserVisitor ) try {
+				return ((MonkeyParserVisitor<? extends T>)visitor).visitPExprArrayFunc_Mky(this);
+			} catch (InterpreteException e) {
+				e.printStackTrace();
+			}
 			else return visitor.visitChildren(this);
+			return null;
 		}
 	}
 	public static class PExprIfExpr_MkyContext extends PrimitiveExpressionContext {
@@ -2508,8 +2571,13 @@ public class MonkeyParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MonkeyParserVisitor ) return ((MonkeyParserVisitor<? extends T>)visitor).visitHashCont_Mky(this);
+			if ( visitor instanceof MonkeyParserVisitor ) try {
+				return ((MonkeyParserVisitor<? extends T>)visitor).visitHashCont_Mky(this);
+			} catch (InterpreteException e) {
+				e.printStackTrace();
+			}
 			else return visitor.visitChildren(this);
+			return null;
 		}
 	}
 

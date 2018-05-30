@@ -2,9 +2,8 @@ let age = 1;
 let name = "Monkey";
 let name = " s  @ ";
 let result = 10 * (20 / 2);
-/****
-ddfd
-*/
+
+
 let myArray=  [1, 2, 3, 4, 5];
 
 let thorsten = {"name": "Thorsten", "age": 28};
@@ -14,13 +13,33 @@ thorsten["name"] // => "Thorsten"
 let add = fn(a, b) { return a + b; };
 
 let fibonacci = fn(x) {
-if (x == 0) {
- let x=0
-} else {
-if (x == 1) {
- let x=1
-} else {
-fibonacci(x - 1) + fibonacci(x - 2);
+	
+	if (x == 0) {
+ 	 return 0;
+	} 
+	if (x == 1) {
+	 return 1;  
+	} 
+	return fibonacci(x - 1) + fibonacci(x - 2);
 }
+
+let result = fibonacci(10);
+let sumados= add(3,4);
+
+let prueba= fn (g,y){
+            let u= g+y;
+            let fnn= fn(f,t){
+  	
+                  if (f==0){
+                       puts ("retornar: " );
+                       puts (t);
+                       return t;
+                   }
+                 return fnn(f-1,9);
+                 
+            }
+           return fnn(5,6)+ (g*y);
+
 }
-};
+
+let resPrueba= prueba (6,7)+age * 3;

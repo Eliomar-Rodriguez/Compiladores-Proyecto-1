@@ -18,18 +18,20 @@ public class dataStorage {
     }
 
 
+    public dataStorageItem deepSearch(String name){
+        int j=this.programData.size()-1;
+        //search from the end to the begininn to find the var faster if it's in many levels
+        while(j >= 0){
+            if (this.programData.get(j).getName().equals(name)){
+                return this.programData.get(j);
+            }
+            j--;
+        }
+        return null;
+    }
+
     public dataStorageItem addData(String name, Object value,int index,int type,ParserRuleContext ctx){
         dataStorageItem newItem= new dataStorageItem(name,value,index,type,this.currentLevel);
-        int j=0;
-        while( j <this.programData.size() && this.programData.get(j).getLevel()== this.currentLevel ){
-            //if the var is already declared change the value and the type if it's necessary
-            if (this.programData.get(j).getName().equals(name)){
-                this.programData.get(j).setValue(value);
-                this.programData.get(j).setType(type);
-                return null;
-            }
-            j++;
-        }
 
         ((MonkeyParser.LetStatementContext) ctx).storageIndex=this.currentIndex;
 

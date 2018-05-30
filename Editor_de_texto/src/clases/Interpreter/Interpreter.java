@@ -5,15 +5,20 @@ import clases.checker.FnSpecialElement;
 import clases.checker.FuncTableElement;
 import clases.checker.IdentifierElement;
 import clases.checker.RecursivityObject;
-//import com.sun.org.apache.xpath.internal.operations.String;
 import generated.MonkeyParser;
 import generated.MonkeyParserBaseVisitor;
+import clases.Interpreter.InterpreteException;
+import generated.MonkeyScanner;
+import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 import javax.jws.Oneway;
 import javax.swing.*;
 import javax.xml.crypto.Data;
+
+import java.io.FileReader;
 import java.awt.*;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -23,10 +28,12 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     private dataStorage DataStorage = null;
     private ProgramStack evaluationStack;
 
-    private final int TYPE_ERROR=-1;
-    private final int STATEMENT_TYPE= -2;
+    private boolean haveToReturn;
+
+
     private final JTextArea console;
     private int flagConsole = 0; // if is 0 then find by storageIndex else, is 1 find by for
+
 
     /**
      * to control all related to expression List rule, how many params to call a function, how many elements
@@ -40,13 +47,20 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     private final int ARRAY_LITERAL =4;
     private final int HASH_LITERAL =5;
     private final int FUNCTION =6;
+    //private Frame currentFrame;
+    private FrameList programFrames;
 
 
     public Interpreter(JTextArea c){
-        this.DataStorage = new dataStorage();
-        this.evaluationStack = new ProgramStack();
+        this.programFrames= new FrameList();
+        //set stack and data storage of the current frame
+        this.DataStorage = this.programFrames.getCurrentProgramFrame().getStorage();
+        this.evaluationStack = this.programFrames.getCurrentProgramFrame().getStack();
         this.elementsCount=0;
+        this.haveToReturn=false;
         this.console = c;
+
+
     }
 
     public void setFlagConsole(int flagConsole) {
@@ -80,84 +94,10 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         }
     }
 
-    /**
-     *
-     * @param name: name of the function to check if it's a default function
-     * @return
-     */
-    public boolean isReservedWord(String name){
 
-        String[] reservedWords= {"len","first","last","rest","push","puts"};
-        int size=reservedWords.length;
-        for (int i = 0; i < size ; i++) {
-            if (reservedWords[i].equals(name)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public int setSpecialIndex(String ArrayName,String text){
-        int res;
-
-        if (ArrayName==null){
-            res= -2;
-        }
-        else if (ArrayName.equals("none")){
-            res=-2;
-        }
-        else{
-            try{
-                res= Integer.parseInt(text);
-            }
-            catch (NumberFormatException e){
-                res= -2;
-            }
-        }
-        return res;
-    }
     public void printInConsole(String msj){
         this.console.append("\n" + msj + "\n");
-        //String message = this.console.getText() + "\n" + msj + "\n";
-        //this.console.setText(message);
-    }
 
-    public String setSpecialArrayName(String possibleName){
-        String res;
-        try{
-            res= String.valueOf(possibleName);
-        }
-        catch (Exception e){
-            res="none";
-        }
-        return res;
-    }
-
-//Funciones para validar otros aspectos no relacionados con estructura sino con compatibilidad
-
-    public String getTypeName(int code){
-
-        if (code==0){
-            return "Neutral";
-        }
-        else if(code==1){
-            return "Integer";
-        }
-        else if(code==2){
-            return "String";
-        }
-        else if(code==3){
-            return "Boolean";
-        }
-        else if(code==4){
-            return "Array Literal";
-        }
-        else if(code==5){ // code 5
-            return "Hash literal";
-        }
-        else{
-            return "Statement or invalid type";
-        }
     }
 
     /**
@@ -196,47 +136,14 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         }
     }
 
-    public boolean checkTypesCompatibility(int type1,int type2){
-        if (type1==-1||type2==-1){
-            return false;
-        }
-        else if (type1==type2){
-            return true;
-        }
-        else if ((type1==0 || type2==0)){
-            return true;
-        }
-        return false;
-    }
 
-    public boolean isValidOperator(String operator,int type){
-        //tipo neutro
-        boolean res=false;
-        if (type==0){
-            res= true;
-        }
-        //tipo entero
-        else if(type==1){
-            res=true;
-        }
-        //permitir suma de strings
-        else if (type==2 && operator.equals("+")){
-            res=true;
-        }
-        else {
-            //tipo boolean, string
-            if ((type == 2 || type == 3 ) && operator.equals("==")) {
-                res = true;
-            }
-        }
-        return res;
-    }
 
 
     @Override
     public Object visitProg_Mky(MonkeyParser.Prog_MkyContext ctx) {
         if(this.DataStorage.getProgramData().size() == 0)
             this.DataStorage.openScope();
+
         for(MonkeyParser.StatementContext elem: ctx.statement()) {
             visit(elem);
         }
@@ -244,6 +151,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
          through the command line
         */
         this.DataStorage.printDataStorage();
+        System.out.println(this.evaluationStack.toString());
 
         return null;
     }
@@ -255,6 +163,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
     @Override
     public Object visitSt_return_Mky(MonkeyParser.St_return_MkyContext ctx) {
+
         return visit(ctx.returnStatement());
 
     }
@@ -271,13 +180,27 @@ public class Interpreter extends MonkeyParserBaseVisitor{
          * Check if there is a function declaration in a variable and add it to FunctionsTable
          * and increment the functions counter
          * */
+
+
         visit(ctx.expression());
+
         ProgramStackElement element = evaluationStack.pop();
 
-        this.DataStorage.addData(((MonkeyParser.Id_MkyContext)ctx.identifier()).ID().getText(),
-                element.getValue(),this.DataStorage.getCurrentIndex(),
-                element.getType(),ctx);
+        //if the identifier have a declaration linked we update directly the data
+        if (ctx.identifier().decl !=null ){
+            MonkeyParser.LetStatementContext letCtx= (MonkeyParser.LetStatementContext) ctx.identifier().decl;
+            dataStorageItem temp= this.DataStorage.getData(letCtx.storageIndex);
+            temp.setValue(element.getValue());
+            temp.setType(element.getType());
 
+        }
+
+        else {
+            this.DataStorage.addData(((MonkeyParser.Id_MkyContext) ctx.identifier()).ID().getText(),
+                    element.getValue(), this.DataStorage.getCurrentIndex(),
+                    element.getType(), ctx);
+
+        }
         this.DataStorage.printDataStorage();
 
         return null;
@@ -286,7 +209,9 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     @Override
     public Object visitReturnSt_Mky(MonkeyParser.ReturnSt_MkyContext ctx) {
         visit(ctx.expression());
-
+        this.haveToReturn=true;  //set return flag to true value
+        //then remove the frame after get the value in the stack
+       // this.programFrames.deleteCurrentFrame();
         return null;
     }
 
@@ -443,6 +368,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         int size= ctx.size();
 
         visit(ctx.get(0));
+        //error en devolución de funcion aqui
         value2= this.evaluationStack.pop();
         value1= this.evaluationStack.pop();
         this.evaluationStack.push(this.makeOperation(value1,value2,operator));
@@ -535,7 +461,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         /**
          * If there are error types in hash literal
          */
-        if ( index.getType() == this.TYPE_ERROR){
+        if ( index.getType() == -1){
             throw new InterpreteException("There is an error in hash literal");
         }
 
@@ -580,9 +506,107 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
         visit(ctx.primitiveExpression());
 
-        visit(ctx.callExpression());
+        ProgramStackElement element= this.evaluationStack.pop();
 
-        return null;//CAMBIAR
+        //if the element is not  a funtion
+        if (element.getType() != this.FUNCTION){
+            System.out.println("******************************");
+            System.out.println("ERROR ELEMENT IS NOT A FUNCTION");
+            System.out.println("******************************");
+        }
+        else {
+            visit(ctx.callExpression());
+            //check if the stack have at least the amount of elements required for the funtion
+
+            MonkeyParser.FuncLit_MkyContext func= (MonkeyParser.FuncLit_MkyContext)(element.getValue());
+
+            int paramsAmount;
+            //get function params
+
+            MonkeyParser.MoreIdentifiersContext identifiers= ((MonkeyParser.FuncParams_MkyContext )func.functionParameters()).moreIdentifiers();
+            paramsAmount= (identifiers.getChildCount()/2)+1;
+
+            //check if the stack size is not the necessary to call the function
+            if (this.evaluationStack.size() < paramsAmount){
+                System.out.println("******************************");
+                System.out.println("ERROR IN FUNCTION PARAMS");
+                System.out.println("******************************");
+            }
+            else{
+                this.elementsCount++;
+                dataStorage temp;
+
+
+                // for normal functions
+                Frame newFrame=new Frame(this.elementsCount,ctx.primitiveExpression().getText());
+
+                //create new let Statement context
+                MonkeyParser.LetStatementContext letContex;
+
+                temp=newFrame.getStorage();
+
+
+
+                paramsAmount= ((paramsAmount-1)*2)-1;
+
+                for (int i = paramsAmount; i >= 0; i=i-2) {
+                    element=this.evaluationStack.pop();
+                    letContex =new MonkeyParser.LetStatementContext(null,0);
+                    letContex.storageIndex= temp.getCurrentIndex();
+
+                    temp.addData(identifiers.getChild(i).getText(),element.getValue(),
+                            temp.getCurrentIndex(),this.getTypeOfElement(element.getValue()),letContex);
+
+                }
+
+                element=this.evaluationStack.pop();
+                letContex =new MonkeyParser.LetStatementContext(null,0);
+                letContex.storageIndex= temp.getCurrentIndex();
+
+                temp.addData(func.functionParameters().getChild(0).getText(),element.getValue(),
+                        temp.getCurrentIndex(),this.getTypeOfElement(element.getValue()),letContex);
+
+                System.out.println("*************************************");
+
+                //add the frame to the list
+                boolean res =this.programFrames.insertFrame(newFrame,
+                        (MonkeyParser.Id_MkyContext)(((MonkeyParser.PExprID_MkyContext) ctx.primitiveExpression()).identifier()),
+                        this.FUNCTION);
+                if (res==false){
+                    System.out.println("******************************");
+                    System.out.println("ERROR INSERTING FRAMES");
+                    System.out.println("******************************");
+                }
+
+                //set stack and data storage globals vars
+                this.evaluationStack= newFrame.getStack();
+                this.DataStorage= newFrame.getStorage();
+
+
+
+
+                //backup control of return statement
+                boolean haveTReturn= this.haveToReturn;
+                //go to execute the function
+                visit(func.blockStatement());
+                //important to allow that program search in global frame when the recursion end in console call
+
+                this.haveToReturn= haveTReturn;
+
+                //then remove the frame after get the value in the stack
+                this.programFrames.deleteCurrentFrame();
+
+                this.evaluationStack= this.programFrames.getCurrentProgramFrame().getStack();
+                this.DataStorage= this.programFrames.getCurrentProgramFrame().getStorage();
+
+
+
+
+            }
+
+        }
+
+        return null;
     }
 
     @Override
@@ -602,39 +626,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     @Override
     public Object visitSpecialCall_Mky(MonkeyParser.SpecialCall_MkyContext ctx) {
 
-        /**
-        if (ctx.expressionList().getChildCount()> 0){
-            int temp=globalCounterParams;  //por si está siendo utilizado en algún otro lugar
-            this.globalCounterParams=0;
-
-            // backup special array name because value could change in visit expresion list
-            String specialArray= this.specialArrayName;
-            // backup special array name because value could change in visit expresion list
-            int indexBackup= this.specialIndex;
-            type= (Integer) visit (ctx.expressionList());
-
-            this.specialArrayName=specialArray;
-            this.specialIndex=indexBackup;
-
-            // if there are problems with the function call
-            if (type==-1){
-                this.errorsList.add("Error: with types or functions parameters.At line:"+ ctx.expressionList().getStart().getLine()+
-                        " column: "+ ctx.expressionList().getStart().getCharPositionInLine());
-            }
-            else{
-                type=this.evaluateSpecialFunctionCall(this.specialArrayName,this.specialIndex,this.globalCounterParams ,ctx.expressionList());
-            }
-            this.globalCounterParams=temp; //reasignación del valor previo que poseía.
-        }
-
-        else{
-            type= this.evaluateSpecialFunctionCall(this.specialArrayName,this.specialIndex,0,ctx.expressionList());
-        }
-        return type;
-         **/
-        /***********************************/
         visit (ctx.expressionList());
-
         return null;
     }
 
@@ -686,20 +678,39 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
     @Override
     public Object visitPExprID_Mky(MonkeyParser.PExprID_MkyContext ctx) {
-        /*
-        look for the identifier position in the data storage
 
-        PENDING CHECK IF WORKS WITH MANY LEVELs, HOWEVER IT SHOULD WORKS
-         */
-        int identifierIndex = 0;
-        if(this.flagConsole == 0)
-            identifierIndex = ((MonkeyParser.LetStatementContext) ctx.identifier().decl).storageIndex;
-        else
-            identifierIndex = this.DataStorage.findElement(ctx.identifier().getText()).getIndex();
-        dataStorageItem element = this.DataStorage.getData(identifierIndex);
-        if (element.getType() != this.FUNCTION){
-            this.evaluationStack.push(new ProgramStackElement(element.getValue(),element.getType()));
+        dataStorageItem element;
+
+        // if execution is not trough console
+        if(this.flagConsole == 0) {
+            element= this.programFrames.searchElement( (MonkeyParser.Id_MkyContext)ctx.identifier());
+
         }
+        else
+            {
+
+            if (ctx.identifier().decl!=null){
+                //call for recursion
+                element= this.programFrames.searchElement( (MonkeyParser.Id_MkyContext)ctx.identifier());
+            }
+            else{
+                // first call through console
+                element =this.DataStorage.findElement(ctx.identifier().getText());
+                //building letstatementcontext for function call type by console and for any var
+                MonkeyParser.LetStatementContext letContex =new MonkeyParser.LetStatementContext(null,0);
+                letContex.storageIndex=element.getIndex();
+                ctx.identifier().decl=letContex;
+
+
+            }
+
+        }
+
+        if (element== null) {
+            System.out.println("throw an exception");
+        }
+
+        this.evaluationStack.push(new ProgramStackElement(element.getValue(),element.getType()));
 
         return null;
     }
@@ -1071,7 +1082,10 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
         visit(ctx.expression());
         ProgramStackElement elemento = this.evaluationStack.pop();
-        this.printInConsole(">> "+elemento.getValue().toString());
+
+        if (this.flagConsole==1){
+            this.printInConsole(elemento.getValue().toString());
+        }
 
         return null;
     }
@@ -1084,9 +1098,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
         //execute the if block statement
         if ( Boolean.parseBoolean(element.getValue().toString()) ==true ){
-            System.out.println("************---------- **************************");
-            System.out.println("inside if statement");
-            System.out.println("************---------- **************************");
+
             this.DataStorage.openScope();
             visit(ctx.blockStatement(0));
             this.DataStorage.closeScope();
@@ -1096,9 +1108,6 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         else{
             // check if there is an else statement
             if (ctx.blockStatement().size()> 1){
-                System.out.println("************---------- **************************");
-                System.out.println(" inside else statement");
-                System.out.println("************---------- **************************");
                 this.DataStorage.openScope();
                 visit(ctx.blockStatement(1));
                 this.DataStorage.closeScope();
@@ -1111,8 +1120,12 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     @Override
     public Object visitBlockSt_Mky(MonkeyParser.BlockSt_MkyContext ctx) {
 
-        for(MonkeyParser.StatementContext stm : ctx.statement())
+        for(MonkeyParser.StatementContext stm : ctx.statement()){
             visit(stm);
+            if (this.haveToReturn==true){
+                return null;
+            }
+        }
 
         return null;
     }

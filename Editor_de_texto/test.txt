@@ -8,8 +8,8 @@ let myArray=  [1, 2, 3, 4, 5];
 
 let thorsten = {"name": "Thorsten", "age": 28};
 
-myArray[0] // => 1
-thorsten["name"] // => "Thorsten"
+  //myArray[0] // => 1
+ // thorsten["name"] // => "Thorsten"
 let add = fn(a, b) { return a + b; };
 
 let fibonacci = fn(x) {

@@ -5,9 +5,9 @@ import clases.checker.FnSpecialElement;
 import clases.checker.FuncTableElement;
 import clases.checker.IdentifierElement;
 import clases.checker.RecursivityObject;
+//import com.sun.org.apache.xpath.internal.operations.String;
 import generated.MonkeyParser;
 import generated.MonkeyParserBaseVisitor;
-import clases.Interpreter.InterpreteException;
 import generated.MonkeyScanner;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -27,8 +27,13 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
     private dataStorage DataStorage = null;
     private ProgramStack evaluationStack;
+    private Frame temporal;
+    private final int TYPE_ERROR=-1;
+    private final int STATEMENT_TYPE= -2;
 
     private boolean haveToReturn;
+
+    private MonkeyParser.IdentifierContext ArrayIdentifierTemp=null;
 
 
     private final JTextArea console;
@@ -147,10 +152,17 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         for(MonkeyParser.StatementContext elem: ctx.statement()) {
             visit(elem);
         }
+
+        //here we can verify is there something in the stack to write in console.
+        if (this.flagConsole ==1 && this.evaluationStack.size() > 0){
+            this.printInConsole(this.evaluationStack.pop().getValue().toString());
+
+        }
+
         /*here we don't close scope because var values are necesary for the moment in that we have to execute something
          through the command line
         */
-        this.DataStorage.printDataStorage();
+        System.out.println(this.DataStorage.toString());
         System.out.println(this.evaluationStack.toString());
 
         return null;
@@ -195,6 +207,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
         }
 
+        //aqui cambiar para que desde consola no se le cambie el valor a la variable
         else {
             this.DataStorage.addData(((MonkeyParser.Id_MkyContext) ctx.identifier()).ID().getText(),
                     element.getValue(), this.DataStorage.getCurrentIndex(),
@@ -202,6 +215,8 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
         }
         this.DataStorage.printDataStorage();
+        //int type = (Integer) visit(ctx.expression());
+        //this.DataStorage.toString();
 
         return null;
     }
@@ -233,10 +248,9 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
     }
 
-    public boolean checkRestrictionsForComparison(ProgramStackElement value1, ProgramStackElement value2, String operator) throws InterpreteException {
+    public boolean checkRestrictionsForComparison(ProgramStackElement value1, ProgramStackElement value2, String operator){
 
-        boolean res;
-        res = true;
+        boolean res=true;
         if (operator.equals("==")){
             if ((value1.getType()!= this.ARRAY_LITERAL && value1.getType()!= this.HASH_LITERAL && value1.getType() != this.FUNCTION)
                     && (value2.getType()!= this.ARRAY_LITERAL && value2.getType()!= this.HASH_LITERAL && value2.getType() != this.FUNCTION))
@@ -244,27 +258,26 @@ public class Interpreter extends MonkeyParserBaseVisitor{
                     //types error for the comparisons,
                     if (value1.getType()!=value2.getType()){
                         res= false;
-                        throw new InterpreteException("Error with the comparison, both types are different");
                     }
+
                 }
             else{
                 //types incompatible for the operator.
                 res=false;
-                throw new InterpreteException("Incompatible types for the operator");
             }
         }
         else{
             // FOR <,>,<=,>= Operators, the two values have to be Integer
             if (value1.getType() != this.INTEGER || value2.getType()!=this.INTEGER){
                 res= false;
-                throw new InterpreteException("Both values have to be Integer");
             }
+
         }
         return res; //success operation
     }
 
 
-    public void operatorComparisonMethod(List<MonkeyParser.AdditionExpressionContext> ctx, String operator) throws Exception {
+    public void operatorComparisonMethod(List<MonkeyParser.AdditionExpressionContext> ctx, String operator){
 
         ProgramStackElement value1;
         ProgramStackElement value2;
@@ -277,40 +290,47 @@ public class Interpreter extends MonkeyParserBaseVisitor{
             //  get values to the comparison
             value2= this.evaluationStack.pop();
             value1= this.evaluationStack.pop();
-            if (this.checkRestrictionsForComparison(value1,value2,operator)){
+            if (this.checkRestrictionsForComparison(value1,value2,operator)==true){
                 this.evaluateComparison(value1,value2,operator);
             }
+            // could generate and exception to stop the program
+            else{
+
+            }
         }
+
     }
 
     @Override
-    public Object visitCompMenor_Mky(MonkeyParser.CompMenor_MkyContext ctx) throws Exception {
+    public Object visitCompMenor_Mky(MonkeyParser.CompMenor_MkyContext ctx) {
+
         this.operatorComparisonMethod(ctx.additionExpression(),"<");
         return null;
 
     }
 
     @Override
-    public Object visitCompMayor_Mky(MonkeyParser.CompMayor_MkyContext ctx) throws Exception {
+    public Object visitCompMayor_Mky(MonkeyParser.CompMayor_MkyContext ctx) {
         this.operatorComparisonMethod(ctx.additionExpression(),">");
         return null;
     }
 
     @Override
-    public Object visitCompMenorIg_Mky(MonkeyParser.CompMenorIg_MkyContext ctx) throws Exception {
+    public Object visitCompMenorIg_Mky(MonkeyParser.CompMenorIg_MkyContext ctx) {
+
         this.operatorComparisonMethod(ctx.additionExpression(),"<=");
         return null;
 
     }
 
     @Override
-    public Object visitCompMayorIg_Mky(MonkeyParser.CompMayorIg_MkyContext ctx) throws Exception {
+    public Object visitCompMayorIg_Mky(MonkeyParser.CompMayorIg_MkyContext ctx) {
         this.operatorComparisonMethod(ctx.additionExpression(),">=");
         return null;
     }
 
     @Override
-    public Object visitCompIgComp_Mky(MonkeyParser.CompIgComp_MkyContext ctx) throws Exception {
+    public Object visitCompIgComp_Mky(MonkeyParser.CompIgComp_MkyContext ctx) {
         this.operatorComparisonMethod(ctx.additionExpression(),"==");
         return null;
     }
@@ -324,26 +344,24 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     }
 
 
-    private ProgramStackElement makeOperation(ProgramStackElement value1, ProgramStackElement value2,String operator) throws InterpreteException {
+    private ProgramStackElement makeOperation(ProgramStackElement value1, ProgramStackElement value2,String operator){
         ProgramStackElement res = null;
         if (operator.equals("+")){
             if (value1.getType()==this.STRING && value2.getType()==this.STRING){
                 return new ProgramStackElement((String.valueOf(value1.getValue()))+String.valueOf(value2.getValue()),this.STRING);
             }
-            else if (value1.getType()==this.INTEGER && value2.getType()==this.INTEGER){
+            if (value1.getType()==this.INTEGER && value2.getType()==this.INTEGER){
                 res= new ProgramStackElement((Integer.parseInt(value1.getValue().toString()))+
                         Integer.parseInt(value2.getValue().toString()),this.INTEGER);
             }
-            else
-                throw new InterpreteException("Both values have to be same, Integer - Integer or String - Integer");
+
+
         }
         else if (operator.equals("-")){
             if (value1.getType()==this.INTEGER && value2.getType()==this.INTEGER){
                 res= new ProgramStackElement((Integer.parseInt(value1.getValue().toString())) -
                         Integer.parseInt(value2.getValue().toString()),this.INTEGER);
             }
-            else
-                throw new InterpreteException("Both values have to be Integer");
         }
         else if (operator.equals("*")){
             if (value1.getType()==this.INTEGER && value2.getType()==this.INTEGER){
@@ -351,17 +369,20 @@ public class Interpreter extends MonkeyParserBaseVisitor{
                         Integer.parseInt(value2.getValue().toString()),this.INTEGER);
             }
         }
-        else{//div operator
+
+        //div operator
+        else{
             if (value1.getType()==this.INTEGER && value2.getType()==this.INTEGER){
                 res= new ProgramStackElement((Integer.parseInt(value1.getValue().toString())) /
                         Integer.parseInt(value2.getValue().toString()),this.INTEGER);
             }
         }
         return res;
+
     }
 
 
-    public void addSumSub(List<MonkeyParser.MultiplicationExpressionContext> ctx, String operator) throws InterpreteException {
+    public void addSumSub(List<MonkeyParser.MultiplicationExpressionContext> ctx, String operator){
 
         ProgramStackElement value1;
         ProgramStackElement value2;
@@ -379,10 +400,12 @@ public class Interpreter extends MonkeyParserBaseVisitor{
             value1= this.evaluationStack.pop();
             this.evaluationStack.push(this.makeOperation(value1,value2,operator));
         }
+
+
     }
 
     @Override
-    public Object visitAddFactSum_Mky(MonkeyParser.AddFactSum_MkyContext ctx) throws InterpreteException {
+    public Object visitAddFactSum_Mky(MonkeyParser.AddFactSum_MkyContext ctx) {
         if (ctx.multiplicationExpression().size()>0){
             this.addSumSub(ctx.multiplicationExpression(), "+");
         }
@@ -390,7 +413,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     }
 
     @Override
-    public Object visitAddFactSub_Mky(MonkeyParser.AddFactSub_MkyContext ctx) throws InterpreteException {
+    public Object visitAddFactSub_Mky(MonkeyParser.AddFactSub_MkyContext ctx) {
         if (ctx.multiplicationExpression().size()>0){
             this.addSumSub(ctx.multiplicationExpression(), "-");
         }
@@ -406,7 +429,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         return null;
     }
 
-    public void mutlFactMulDiv(List<MonkeyParser.ElementExpressionContext>ctx,String operator) throws InterpreteException {
+    public void mutlFactMulDiv(List<MonkeyParser.ElementExpressionContext>ctx,String operator) {
 
         ProgramStackElement value1;
         ProgramStackElement value2;
@@ -427,7 +450,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     }
 
     @Override
-    public Object visitMultFactMul_Mky(MonkeyParser.MultFactMul_MkyContext ctx) throws InterpreteException {
+    public Object visitMultFactMul_Mky(MonkeyParser.MultFactMul_MkyContext ctx) {
         if (ctx.elementExpression().size()>0){
             this.mutlFactMulDiv(ctx.elementExpression(),"*");
         }
@@ -435,7 +458,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     }
 
     @Override
-    public Object visitMultFactDiv_Mky(MonkeyParser.MultFactDiv_MkyContext ctx) throws InterpreteException {
+    public Object visitMultFactDiv_Mky(MonkeyParser.MultFactDiv_MkyContext ctx) {
         if (ctx.elementExpression().size()>0){
             this.mutlFactMulDiv(ctx.elementExpression(),"/");
         }
@@ -443,15 +466,19 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     }
 
     @Override
-    public Object visitElemExprElemAccess_Mky(MonkeyParser.ElemExprElemAccess_MkyContext ctx) throws InterpreteException {
+    public Object visitElemExprElemAccess_Mky(MonkeyParser.ElemExprElemAccess_MkyContext ctx) {
 
         //visit the name of the array or hash literal to get the array value or hash value
         visit(ctx.primitiveExpression());
 
+
+
+
         ProgramStackElement element= this.evaluationStack.pop();
 
         if ( (element.getType() != this.ARRAY_LITERAL && element.getType()!= this.HASH_LITERAL )){ //if it's not a neutral type, or array or hash literal
-            throw new InterpreteException("The element isn't an array literal or hash literal");
+
+            return this.TYPE_ERROR;
         }
 
         visit(ctx.elementAccess());
@@ -461,17 +488,17 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         /**
          * If there are error types in hash literal
          */
-        if ( index.getType() == -1){
-            throw new InterpreteException("There is an error in hash literal");
+        if ( index.getType() ==this.TYPE_ERROR){
+            return this.TYPE_ERROR;
         }
 
         //if primitive expression is an array it can't be indexed through an string index
         if (element.getType() == this.ARRAY_LITERAL && index.getType() ==this.STRING){
-            throw new InterpreteException("Array literal can't be indexed by string index, only by integer index");//DUDA
+            return this.TYPE_ERROR;
         }
 
         /**
-         * IF WE ARE INDEXING A HASH LITERAL, the index have to be a key in string
+         * IF WE ARE INDEXING A HASH LITERAL, the index must to be a key in string
          */
         if (element.getType()== this.HASH_LITERAL){
             if(index.getType()== this.STRING | index.getType() == this.INTEGER){
@@ -487,13 +514,13 @@ public class Interpreter extends MonkeyParserBaseVisitor{
                 this.evaluationStack.push(elemento);
             }
             else{
-                throw new InterpreteException("A hash literal only can be indexed by String or Integer key");
+                return this.TYPE_ERROR;
             }
         }
         else{
             // restart stack to use or not in the special call
-            this.evaluationStack.push(index);
             this.evaluationStack.push(element);
+            this.evaluationStack.push(index);
             visit(ctx.specialCall());
         }
         return null;
@@ -626,14 +653,126 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     @Override
     public Object visitSpecialCall_Mky(MonkeyParser.SpecialCall_MkyContext ctx) {
 
+
+        /**
+         ProgramStackElement index= this.evaluationStack.pop();
+         ProgramStackElement element= this.evaluationStack.pop();
+         ArrayList temp= ( ArrayList ) element.getValue();
+         int ind= (Integer) index.getValue();
+
+
+         * check if the index is inside the array
+
+        if (ind < temp.size()){
+            //obtener tipo de dato del elemento en el array, ahorita solo va a servir para números enteros
+            this.evaluationStack.push(new ProgramStackElement(temp.get(ind),this.getTypeOfElement(temp.get(ind))));
+        }
+        /* INDEX OUT OF BOUNDS throw exception to avoid null pointer exception in program
+        else{
+            return this.TYPE_ERROR;
+        }
+
+        //load params for the function
         visit (ctx.expressionList());
+
+        MonkeyParser.FuncLit_MkyContext func= (MonkeyParser.FuncLit_MkyContext)(element.getValue());
+
+        int paramsAmount;
+        //get function params
+
+        MonkeyParser.MoreIdentifiersContext identifiers= ((MonkeyParser.FuncParams_MkyContext )func.functionParameters()).moreIdentifiers();
+        paramsAmount= (identifiers.getChildCount()/2)+1;
+
+        //check if the stack size is not the necessary to call the function
+        if (this.evaluationStack.size() < paramsAmount){
+            System.out.println("******************************");
+            System.out.println("ERROR IN FUNCTION PARAMS");
+            System.out.println("******************************");
+        }
+        else{
+            this.elementsCount++;
+
+            dataStorage temporal;
+
+
+            // for special function require identifier
+            Frame newFrame=new Frame(this.elementsCount,ctx.primitiveExpression().getText());
+
+            //create new let Statement context
+            MonkeyParser.LetStatementContext letContex;
+
+            temp=newFrame.getStorage();
+
+
+
+            paramsAmount= ((paramsAmount-1)*2)-1;
+
+            for (int i = paramsAmount; i >= 0; i=i-2) {
+                element=this.evaluationStack.pop();
+                letContex =new MonkeyParser.LetStatementContext(null,0);
+                letContex.storageIndex= temp.getCurrentIndex();
+
+                temp.addData(identifiers.getChild(i).getText(),element.getValue(),
+                        temp.getCurrentIndex(),this.getTypeOfElement(element.getValue()),letContex);
+
+            }
+
+            element=this.evaluationStack.pop();
+            letContex =new MonkeyParser.LetStatementContext(null,0);
+            letContex.storageIndex= temp.getCurrentIndex();
+
+            temp.addData(func.functionParameters().getChild(0).getText(),element.getValue(),
+                    temp.getCurrentIndex(),this.getTypeOfElement(element.getValue()),letContex);
+
+            System.out.println("*************************************");
+
+            //add the frame to the list
+            boolean res =this.programFrames.insertFrame(newFrame,
+                    (MonkeyParser.Id_MkyContext)(((MonkeyParser.PExprID_MkyContext) ctx.primitiveExpression()).identifier()),
+                    this.FUNCTION);
+            if (res==false){
+                System.out.println("******************************");
+                System.out.println("ERROR INSERTING FRAMES");
+                System.out.println("******************************");
+            }
+
+            //set stack and data storage globals vars
+            this.evaluationStack= newFrame.getStack();
+            this.DataStorage= newFrame.getStorage();
+
+
+
+
+            //backup control of return statement
+            boolean haveTReturn= this.haveToReturn;
+            //go to execute the function
+            visit(func.blockStatement());
+            //important to allow that program search in global frame when the recursion end in console call
+
+            this.haveToReturn= haveTReturn;
+
+            //then remove the frame after get the value in the stack
+            this.programFrames.deleteCurrentFrame();
+
+            this.evaluationStack= this.programFrames.getCurrentProgramFrame().getStack();
+            this.DataStorage= this.programFrames.getCurrentProgramFrame().getStorage();
+
+
+
+
+        }
+
+        */
+
+        visit (ctx.expressionList());
+
         return null;
     }
 
 
 
     @Override
-    public Object visitSpecialCallEmpty_Mky(MonkeyParser.SpecialCallEmpty_MkyContext ctx) throws InterpreteException {
+    public Object visitSpecialCallEmpty_Mky(MonkeyParser.SpecialCallEmpty_MkyContext ctx) {
 
         //here we know that is a normal array indexation without a special call
         ProgramStackElement index= this.evaluationStack.pop();
@@ -650,7 +789,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         }
         /* INDEX OUT OF BOUNDS throw exception to avoid null pointer exception in program*/
         else{
-            throw new InterpreteException("Null Pointer Exception, the index is out of array");
+            return this.TYPE_ERROR;
         }
 
         return null; // here it always goes to return a valid value.
@@ -686,6 +825,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
             element= this.programFrames.searchElement( (MonkeyParser.Id_MkyContext)ctx.identifier());
 
         }
+
         else
             {
 
@@ -740,14 +880,14 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         return null;
     }
 
-    public void lenEvaluation() throws InterpreteException {
+    public void lenEvaluation(){
         ProgramStackElement valor = new ProgramStackElement("",0);
         ProgramStackElement nuevoElemento = new ProgramStackElement("",0);
         if(this.evaluationStack.size() > 0) {
             valor = this.evaluationStack.pop();
         }
         else
-            throw new InterpreteException("Must to send a parameter to len function.");
+            this.printInConsole("Must to send a parameter to len function.");
 
         if(valor.getType() == this.STRING){
             nuevoElemento.setType(this.INTEGER);
@@ -758,12 +898,13 @@ public class Interpreter extends MonkeyParserBaseVisitor{
             nuevoElemento.setValue(((ArrayList) valor.getValue()).size());
         }
         else{
-            throw new InterpreteException("The LEN function only use String or Array Literal elements.");
+            this.printInConsole("The LEN function only use String or Array Literal elements.");
+            return;
         }
         this.evaluationStack.push(nuevoElemento);
     }
 
-    public void firstEvaluation() throws InterpreteException {
+    public void firstEvaluation(){
         ProgramStackElement id = new ProgramStackElement("",0);
         ProgramStackElement nuevoElemento = new ProgramStackElement("",0);
 
@@ -777,16 +918,18 @@ public class Interpreter extends MonkeyParserBaseVisitor{
                 nuevoElemento.setType(this.getTypeOfElement(nuevoElemento.getValue()));
             }
             else{
-                throw new InterpreteException("The Array List used it's empty.");
+                this.printInConsole("The Array List used it's empty.");
+                return;
             }
         }
         else{
-            throw new InterpreteException("The function FIRST only use Array Literal elements.");
+            this.printInConsole("The function FIRST only use Array Literal elements.");
+            return;
         }
         this.evaluationStack.push(nuevoElemento);
     }
 
-    public void lastEvaluation() throws InterpreteException {
+    public void lastEvaluation(){
         ProgramStackElement id = new ProgramStackElement("",0);
         ProgramStackElement nuevoElemento = new ProgramStackElement("",0);
 
@@ -800,16 +943,18 @@ public class Interpreter extends MonkeyParserBaseVisitor{
                 nuevoElemento.setType(this.getTypeOfElement(nuevoElemento.getValue()));
             }
             else{
-                throw new InterpreteException("The Array List used it's empty.");
+                this.printInConsole("The Array List used it's empty.");
+                return;
             }
         }
         else{
-            throw new InterpreteException("The function LAST only use Array Literal elements.");
+            this.printInConsole("The function LAST only use Array Literal elements.");
+            return;
         }
         this.evaluationStack.push(nuevoElemento);
     }
 
-    public void restEvaluation() throws InterpreteException {
+    public void restEvaluation(){
         ProgramStackElement id = new ProgramStackElement("",0);
         ProgramStackElement nuevoElemento = new ProgramStackElement("",0);
 
@@ -834,16 +979,18 @@ public class Interpreter extends MonkeyParserBaseVisitor{
                 nuevoElemento.setType(this.getTypeOfElement(nuevoElemento.getValue()));
             }
             else{
-                throw new InterpreteException("The Array List used it's empty.");
+                this.printInConsole("The Array List used it's empty.");
+                return;
             }
         }
         else{
-            throw new InterpreteException("The function REST only use Array Literal elements.");
+            this.printInConsole("The function REST only use Array Literal elements.");
+            return;
         }
         this.evaluationStack.push(nuevoElemento);
     }
 
-    public void pushEvaluation() throws InterpreteException {
+    public void pushEvaluation(){
         ProgramStackElement valor = new ProgramStackElement("",0);
         ProgramStackElement id = new ProgramStackElement("",0);
         ProgramStackElement nuevoElemento = new ProgramStackElement("",0);
@@ -859,13 +1006,14 @@ public class Interpreter extends MonkeyParserBaseVisitor{
             nuevoElemento.setType(this.getTypeOfElement(nuevoElemento.getValue()));
         }
         else{
-            throw new InterpreteException("The function PUSH only use Array Literal elements.");
+            this.printInConsole("The function PUSH only use Array Literal elements.");
+            return;
         }
         this.evaluationStack.push(nuevoElemento);
     }
 
     @Override
-    public Object visitPExprArrayFunc_Mky(MonkeyParser.PExprArrayFunc_MkyContext ctx) throws InterpreteException {
+    public Object visitPExprArrayFunc_Mky(MonkeyParser.PExprArrayFunc_MkyContext ctx) {
         java.lang.String arrayFunction = (java.lang.String) visit(ctx.arrayFunctions());
         visit(ctx.expressionList());
         switch (arrayFunction){
@@ -885,7 +1033,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
                 pushEvaluation();
                 break;
             default:
-                throw new InterpreteException("Error en el tipo de operacion predeterminada de arreglo a usar.");
+                this.printInConsole("Error en el tipo de operacion predeterminada de arreglo a usar.");
         }
         return null;
     }
@@ -893,6 +1041,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     @Override
     public Object visitPExprFuncDecl_Mky(MonkeyParser.PExprFuncDecl_MkyContext ctx) {
         return visit(ctx.functionLiteral());
+
     }
 
     @Override
@@ -989,7 +1138,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         int size = ctx.identifier().size();
         IdentifierElement elem;
         for (int i = 0; i <size; i++){
-            //DUDA que se debe poner aqui, para que el for?
+
         }
         return null;
     }
@@ -1015,7 +1164,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     }
 
     @Override
-    public Object visitHashCont_Mky(MonkeyParser.HashCont_MkyContext ctx) throws InterpreteException {
+    public Object visitHashCont_Mky(MonkeyParser.HashCont_MkyContext ctx) {
         visit(ctx.expression(0));
         ProgramStackElement el = this.evaluationStack.pop();
         //if the key it's an integer or string
@@ -1024,7 +1173,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
             visit(ctx.expression(1));
         }
         else{
-            throw new InterpreteException("The hash key must to be integer or string");
+            System.out.println("Error");
         }
         return null;
     }
@@ -1082,7 +1231,6 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
         visit(ctx.expression());
         ProgramStackElement elemento = this.evaluationStack.pop();
-
         if (this.flagConsole==1){
             this.printInConsole(elemento.getValue().toString());
         }

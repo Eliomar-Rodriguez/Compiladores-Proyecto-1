@@ -43,3 +43,4 @@ let prueba= fn (g,y){
 }
 
 let resPrueba= prueba (6,7)+age * 3;
+let ty= 0 + prueba (6,7);

@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import clases.Interpreter.Interpreter;
+import clases.Interpreter.InterpreterException;
 import com.sun.prism.paint.Color;
 import editor_de_texto.EditorFrame;
 
@@ -157,6 +158,13 @@ public class TextEditorController extends WindowAdapter implements ActionListene
         catch (ParseCancellationException exception){
             this.showException(errorArea,exception);
             this.executeState=false;
+        }
+        catch (InterpreterException e){
+            this.executeState=false;
+            errorArea.setForeground(RED);
+            this.editor.executionArea.setText("The interpretation process ended due to an error found\n\n"
+                    + e.getMessage());
+
         }
     }
 
@@ -332,7 +340,13 @@ public class TextEditorController extends WindowAdapter implements ActionListene
         int end = element.getEndOffset();
         linea = doc.getText(start, end - start);
         System.out.println(linea);
-        if(evt.getExtendedKeyCode() == 10){
+        if(evt.getExtendedKeyCode() == 10) {
+
+            // if there were errros in interpretation process
+            if ( this.executeState==false ){
+                JOptionPane.showMessageDialog(editor.getRootPane(), "You can't use command line because interpretation process failed", "System Alert", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             try{
                 this.consoleHistory.add(linea);
                 this.indexConsoleHistory = this.consoleHistory.size() - 1;
@@ -347,11 +361,10 @@ public class TextEditorController extends WindowAdapter implements ActionListene
                 ParseTree tree = parser.program();
                 interpreter.visit(tree);
                 interpreter.setFlagConsole(0); // find by storageIndex
-            }catch(Exception e){
-
-                String mensaje = "\nError with the expression: "+linea;
-                this.editor.executionArea.setText(this.editor.executionArea.getText() + mensaje);
+            }catch (InterpreterException e){
+                this.editor.executionArea.setText(this.editor.executionArea.getText()+ "\nError: "+e.getMessage()+"\n");
             }
+
         }
         else if(evt.getExtendedKeyCode() == 38){
             String respaldo = this.editor.executionArea.getText();

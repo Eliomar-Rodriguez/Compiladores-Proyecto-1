@@ -892,9 +892,26 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         this.idTemp= (MonkeyParser.Id_MkyContext) ctx.identifier();
         // if execution is not trough console
         if(this.flagConsole == 0) {
-            element= this.programFrames.searchElement( (MonkeyParser.Id_MkyContext)ctx.identifier());
-        }
+            if (ctx.identifier().decl != null) {
+                element = this.programFrames.searchElement((MonkeyParser.Id_MkyContext) ctx.identifier());
+            }
+            else{
+                // first call through console
+                element = this.programFrames.DeepSearchElement((MonkeyParser.Id_MkyContext) ctx.identifier());
+                if (element== null) {
+                    throw new InterpreterException("Identifier "+ ((MonkeyParser.Id_MkyContext) ctx.identifier()).ID().getText()+ " doesn't exist."+
+                            " in line: "+ ((MonkeyParser.Id_MkyContext) ctx.identifier()).ID().getSymbol().getLine()+" column: "+
+                            ((MonkeyParser.Id_MkyContext) ctx.identifier()).ID().getSymbol().getCharPositionInLine());
+                }
 
+                //building letstatementcontext for function call type by console and for any var
+                MonkeyParser.LetStatementContext letContex =new MonkeyParser.LetStatementContext(null,0);
+                letContex.storageIndex=element.getIndex();
+                ctx.identifier().decl=letContex;
+                this.idTemp= (MonkeyParser.Id_MkyContext) ctx.identifier();
+
+            }
+        }
         else
             {
 

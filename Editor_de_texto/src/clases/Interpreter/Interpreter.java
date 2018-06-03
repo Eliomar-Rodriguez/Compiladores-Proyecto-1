@@ -202,7 +202,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
         //if the identifier have a declaration linked we update directly the data
         if (ctx.identifier().decl !=null ){
-            MonkeyParser.LetStatementContext letCtx= (MonkeyParser.LetStatementContext) ctx.identifier().decl;
+            MonkeyParser.LetStatementContext letCtx = (MonkeyParser.LetStatementContext) ctx.identifier().decl;
             dataStorageItem temp= this.DataStorage.getData(letCtx.storageIndex);
             temp.setValue(element.getValue());
             temp.setType(element.getType());
@@ -604,7 +604,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
             visit(ctx.callExpression());
             //check if the stack have at least the amount of elements required for the funtion
 
-            MonkeyParser.FuncLit_MkyContext func= (MonkeyParser.FuncLit_MkyContext)(element.getValue());
+            MonkeyParser.FuncLit_MkyContext func = (MonkeyParser.FuncLit_MkyContext)(element.getValue());
 
             int paramsAmount;
             //get function params

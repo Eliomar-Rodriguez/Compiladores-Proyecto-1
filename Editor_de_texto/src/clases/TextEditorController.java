@@ -332,6 +332,7 @@ public class TextEditorController extends WindowAdapter implements ActionListene
     }
 
     private void executionAreaKeyPressed(java.awt.event.KeyEvent evt) throws BadLocationException, IOException {//GEN-FIRST:event_executionAreaKeyPressed
+
         String linea = "";
         Document doc = this.editor.executionArea.getDocument();
         Element root = doc.getDefaultRootElement();
@@ -339,9 +340,11 @@ public class TextEditorController extends WindowAdapter implements ActionListene
         int start = element.getStartOffset();
         int end = element.getEndOffset();
         linea = doc.getText(start, end - start);
-        System.out.println(linea);
-        if(evt.getExtendedKeyCode() == 10) {
+        int indice_ultima_linea = this.editor.executionArea.getDocument().getLength(); //retorna el numero de lineas
 
+
+        if(evt.getExtendedKeyCode() == 10) {
+            System.out.println(linea);
             // if there were errros in interpretation process
             if ( this.executeState==false ){
                 JOptionPane.showMessageDialog(editor.getRootPane(), "You can't use command line because interpretation process failed", "System Alert", JOptionPane.ERROR_MESSAGE);
@@ -367,6 +370,10 @@ public class TextEditorController extends WindowAdapter implements ActionListene
 
         }
         else if(evt.getExtendedKeyCode() == 38){
+            if(consoleHistory.size() == 0){
+                this.editor.executionArea.setCaretPosition(indice_ultima_linea); //ubica el cursor al final
+                return;
+            }
             String respaldo = this.editor.executionArea.getText();
             System.out.println(indexConsoleHistory);
             if(this.indexConsoleHistory >= 0){

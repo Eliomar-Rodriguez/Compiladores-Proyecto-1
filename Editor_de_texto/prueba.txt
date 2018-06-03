@@ -125,13 +125,20 @@ else{
 let t= fn (x,y){
 
     if (x==0){
-       return 0;	
+       return y;	
     }
-  let o =fn(c){
-   return o(7);
+  let rec = fn(c){
+    if (c==0){
+     return 0;
+   }
+  if (c==1){
+    return 1;
+ }
+  return rec(c-1)+ rec(c-2);
+
   }
-    let x=t(4,7);
-    return t(2,3)+ t(3,7)
+    
+    return t(x-1,y) + rec(x)
 
 }
 

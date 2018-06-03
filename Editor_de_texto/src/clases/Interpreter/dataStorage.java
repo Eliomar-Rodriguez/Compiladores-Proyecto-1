@@ -40,14 +40,6 @@ public class dataStorage {
         return this.programData.get(0);
     }
 
-    public dataStorageItem findElement(String name){
-        for (int i = 0; i < this.programData.size(); i++) {
-            if (this.programData.get(i).getName().equals(name))
-                return this.programData.get(i);
-        }
-        return null;
-    }
-
     public void openScope(){
         this.currentLevel++;
     }
@@ -65,6 +57,7 @@ public class dataStorage {
             if (element.getLevel() == this.currentLevel) {
                 this.programData.remove(i);
                 i = i - 1;
+                this.currentIndex--;
             }
             i++;
         }

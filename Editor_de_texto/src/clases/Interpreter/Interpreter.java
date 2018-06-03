@@ -212,7 +212,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         //aqui cambiar para que desde consola no se le cambie el valor a la variable
         else {
             if (this.flagConsole==1){
-                dataStorageItem item = this.DataStorage.findElement(ctx.identifier().getText());
+                dataStorageItem item = this.DataStorage.deepSearch(ctx.identifier().getText());
                 if (item !=null){
                     item.setValue(element.getValue());
                     item.setType(element.getType());
@@ -720,6 +720,9 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
          ProgramStackElement index= this.evaluationStack.pop();
          ProgramStackElement element= this.evaluationStack.pop();
+         //remove function pushed to stack in element access
+         this.evaluationStack.pop();
+
          ProgramStackElement elem;
        //  ArrayList temp= ( ArrayList ) element.getValue();
        //  int ind= (Integer) index.getValue();
@@ -754,8 +757,10 @@ public class Interpreter extends MonkeyParserBaseVisitor{
          }
 
         //load params for the function
+        MonkeyParser.Id_MkyContext resp= this.idTemp;
         visit (ctx.expressionList());
 
+        this.idTemp=resp;
 
         int paramsAmount;
         //get function params
@@ -766,7 +771,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         //check if the stack size is not the necessary to call the function
         if (this.evaluationStack.size() < paramsAmount){
             throw new InterpreterException("The number of parameters are not the same that function "+
-                    ctx.getStart().getText()+" require, function was expected" +
+                    ctx.getStart().getText()+" require, function was expected " +
                     paramsAmount+
                     "params . in line: "+ ctx.getStart().getLine()+" column: "+ ctx.getStart().getCharPositionInLine());
         }
@@ -900,7 +905,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
             }
             else{
                 // first call through console
-                element =this.DataStorage.findElement(ctx.identifier().getText());
+                element = this.programFrames.DeepSearchElement((MonkeyParser.Id_MkyContext) ctx.identifier());
                 if (element== null) {
                     throw new InterpreterException("Identifier "+ ((MonkeyParser.Id_MkyContext) ctx.identifier()).ID().getText()+ " doesn't exist."+
                             " in line: "+ ((MonkeyParser.Id_MkyContext) ctx.identifier()).ID().getSymbol().getLine()+" column: "+

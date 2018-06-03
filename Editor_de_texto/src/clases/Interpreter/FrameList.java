@@ -64,6 +64,9 @@ public class FrameList {
         return res;
     }
 
+
+
+
     //type is for receive function type
     public boolean insertFrame(Frame newFrame, MonkeyParser.Id_MkyContext id,int type,boolean specialFunction,Object position){
 
@@ -111,6 +114,25 @@ public class FrameList {
         return false;
     }
 
+    public dataStorageItem DeepSearchElement(MonkeyParser.Id_MkyContext id){
+        Frame tempFrame= programFrames.get(this.currentFrame);
+        dataStorage tempStorage;
+        int storageIndex;
+        while (tempFrame!=null){
+            tempStorage= tempFrame.getStorage();
+            dataStorageItem element= tempStorage.deepSearch(id.getText());
+            //if it's a var inside a function
+            if (element!=null){
+                return element;
+            }
+            //continue looking for the parent frame
+            tempFrame= tempFrame.previousFrame;
+
+
+        }
+        return null;
+    }
+
     public dataStorageItem searchElement(MonkeyParser.Id_MkyContext id){
         Frame tempFrame= programFrames.get(this.currentFrame);
         dataStorage tempStorage;
@@ -128,7 +150,7 @@ public class FrameList {
             else {
 
 
-                //fail for search a function params value
+
                 storageIndex = ((MonkeyParser.LetStatementContext) id.decl).storageIndex;
 
                 /**

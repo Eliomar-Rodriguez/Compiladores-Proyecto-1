@@ -55,7 +55,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     private final int FUNCTION =6;
     //private Frame currentFrame;
     private FrameList programFrames;
-
+    private MonkeyParser.Id_MkyContext idTemp;
 
     public Interpreter(JTextArea c){
         this.programFrames= new FrameList();
@@ -150,6 +150,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         if(this.DataStorage.getProgramData().size() == 0)
             this.DataStorage.openScope();
 
+        this.elementsCount=0;
         for(MonkeyParser.StatementContext elem: ctx.statement()) {
             visit(elem);
         }
@@ -210,6 +211,15 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
         //aqui cambiar para que desde consola no se le cambie el valor a la variable
         else {
+            if (this.flagConsole==1){
+                dataStorageItem item = this.DataStorage.findElement(ctx.identifier().getText());
+                if (item !=null){
+                    item.setValue(element.getValue());
+                    item.setType(element.getType());
+                    return null;
+                }
+
+            }
             this.DataStorage.addData(((MonkeyParser.Id_MkyContext) ctx.identifier()).ID().getText(),
                     element.getValue(), this.DataStorage.getCurrentIndex(),
                     element.getType(), ctx);
@@ -513,7 +523,9 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
         //if primitive expression is an array it can't be indexed through an string index
         if (element.getType() == this.ARRAY_LITERAL && index.getType() ==this.STRING){
-            return this.TYPE_ERROR;
+            throw new InterpreterException("Array Literal can be indexing only through int index. "+
+                    "in line: "+ ctx.elementAccess().getStart().getLine()+" column: "+
+                    ctx.elementAccess().getStart().getCharPositionInLine());
         }
 
         /**
@@ -522,24 +534,55 @@ public class Interpreter extends MonkeyParserBaseVisitor{
         if (element.getType()== this.HASH_LITERAL){
             if(index.getType()== this.STRING | index.getType() == this.INTEGER){
                 //indexing hash literal in a simple way
+                //hash literal always is going to have at least one key and one value
+
+                //check if key exists in hast literal
+                if (((Hashtable) element.getValue()).containsKey(index.getValue())==true){
+                    ProgramStackElement elemento = new ProgramStackElement(((Hashtable) element.getValue()).get(index.getValue()),
+                            this.getTypeOfElement(((Hashtable) element.getValue()).get(index.getValue())));
+
+                    this.evaluationStack.push(elemento);
+                }
+                else{
+                    throw new InterpreterException("HASH literal var doesn't contain a key called "+
+                            index.getValue().toString() +" . "+
+                            "In line: "+ ctx.elementAccess().getStart().getLine()+" column: "+
+                                    ctx.elementAccess().getStart().getCharPositionInLine());
+                }
 
 
-                ProgramStackElement elemento = new ProgramStackElement(((Hashtable) element.getValue()).get(index.getValue()),this.getTypeOfElement(element.getValue()));
-
-
-                this.evaluationStack.push(elemento);
             }
             else{
                 throw new InterpreterException("HASH literal can be indexing only through String or int index. "+
-                        "in line: "+ ctx.elementAccess().getStart().getLine()+" column: "+ ctx.elementAccess().getStart().getCharPositionInLine());
+                        "in line: "+ ctx.elementAccess().getStart().getLine()+" column: "+
+                        ctx.elementAccess().getStart().getCharPositionInLine());
             }
         }
         else{
-            // restart stack to use or not in the special call
-            this.evaluationStack.push(element);
-            this.evaluationStack.push(index);
-            visit(ctx.specialCall());
+            // normal array literal access
+
+            ArrayList temp= ( ArrayList ) element.getValue();
+            int ind= (Integer) index.getValue();
+
+            /**
+             * check if the index is inside the array
+             */
+            if (ind < temp.size()){
+                //obtener tipo de dato del elemento en el array, ahorita solo va a servir para números enteros
+                this.evaluationStack.push(new ProgramStackElement(temp.get(ind),this.getTypeOfElement(temp.get(ind))));
+            }
+            /* INDEX OUT OF BOUNDS throw exception to avoid null pointer exception in program*/
+            else{
+                throw new InterpreterException("Index out of range."+
+                        " in line: "+ ctx.getStart().getLine()+" column: "+ ctx.getStart().getCharPositionInLine());
+            }
+
         }
+        //set for special call
+        this.evaluationStack.push(element);
+        this.evaluationStack.push(index);
+        //possible special function call
+        visit(ctx.specialCall());
         return null;
 
     }
@@ -574,15 +617,15 @@ public class Interpreter extends MonkeyParserBaseVisitor{
                 throw new InterpreterException("The number of parameters are not the same that function "+
                         ctx.primitiveExpression().getText()+" require, function was expected" +
                         paramsAmount+
-                        " . in line: "+ ctx.getStart().getLine()+" column: "+ ctx.getStart().getCharPositionInLine());
+                        "params . in line: "+ ctx.getStart().getLine()+" column: "+ ctx.getStart().getCharPositionInLine());
             }
             else{
-                this.elementsCount++;
+
                 dataStorage temp;
 
 
                 // for normal functions
-                Frame newFrame=new Frame(this.elementsCount,ctx.primitiveExpression().getText());
+                Frame newFrame=new Frame(this.elementsCount);
 
                 //create new let Statement context
                 MonkeyParser.LetStatementContext letContex;
@@ -610,17 +653,19 @@ public class Interpreter extends MonkeyParserBaseVisitor{
                 temp.addData(func.functionParameters().getChild(0).getText(),element.getValue(),
                         temp.getCurrentIndex(),this.getTypeOfElement(element.getValue()),letContex);
 
-                System.out.println("*************************************");
+
 
                 //add the frame to the list
                 boolean res =this.programFrames.insertFrame(newFrame,
                         (MonkeyParser.Id_MkyContext)(((MonkeyParser.PExprID_MkyContext) ctx.primitiveExpression()).identifier()),
-                        this.FUNCTION);
+                        this.FUNCTION,false,null);
                 if (res==false){
                     throw new InterpreterException("Error in function call."+
                             " in line: "+ ctx.primitiveExpression().getStart().getLine()+" column: "+
                             ctx.primitiveExpression().getStart().getCharPositionInLine());
                 }
+
+                this.elementsCount++;
 
                 //set stack and data storage globals vars
                 this.evaluationStack= newFrame.getStack();
@@ -639,6 +684,8 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
                 //then remove the frame after get the value in the stack
                 this.programFrames.deleteCurrentFrame();
+
+                this.elementsCount--;
 
                 this.evaluationStack= this.programFrames.getCurrentProgramFrame().getStack();
                 this.DataStorage= this.programFrames.getCurrentProgramFrame().getStorage();
@@ -671,28 +718,44 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     public Object visitSpecialCall_Mky(MonkeyParser.SpecialCall_MkyContext ctx) {
 
 
-        /**
          ProgramStackElement index= this.evaluationStack.pop();
          ProgramStackElement element= this.evaluationStack.pop();
-         ArrayList temp= ( ArrayList ) element.getValue();
-         int ind= (Integer) index.getValue();
+         ProgramStackElement elem;
+       //  ArrayList temp= ( ArrayList ) element.getValue();
+       //  int ind= (Integer) index.getValue();
 
+        MonkeyParser.FuncLit_MkyContext func=null;
 
-         * check if the index is inside the array
-
-        if (ind < temp.size()){
-            //obtener tipo de dato del elemento en el array, ahorita solo va a servir para números enteros
-            this.evaluationStack.push(new ProgramStackElement(temp.get(ind),this.getTypeOfElement(temp.get(ind))));
-        }
-        /* INDEX OUT OF BOUNDS throw exception to avoid null pointer exception in program
-        else{
-            return this.TYPE_ERROR;
-        }
+         // calling array literal function
+         if (element.getType()== ARRAY_LITERAL){
+             if (this.getTypeOfElement(((ArrayList) element.getValue()).get((Integer) index.getValue()))!= FUNCTION){
+                 throw new InterpreterException("Array Literal var doesn't contain a function in the position"
+                         + index.getValue().toString()
+                         +" ."+
+                         " in line: "+ ctx.getStart().getLine()+" column: "+
+                         ctx.getStart().getCharPositionInLine());
+             }
+             else{
+                 func= (MonkeyParser.FuncLit_MkyContext)((ArrayList) element.getValue()).get((Integer) index.getValue());
+             }
+         }
+         //calling hash literal function
+         else{
+             if (this.getTypeOfElement(((Hashtable) element.getValue()).get( index.getValue()))!= FUNCTION){
+                 throw new InterpreterException("Hash Literal var doesn't contain a function in the key"
+                         + index.getValue().toString()
+                         +" ."+
+                         " in line: "+ ctx.getStart().getLine()+" column: "+
+                         ctx.getStart().getCharPositionInLine());
+             }
+             else{
+                 func= (MonkeyParser.FuncLit_MkyContext)((Hashtable) element.getValue()).get( index.getValue());
+             }
+         }
 
         //load params for the function
         visit (ctx.expressionList());
 
-        MonkeyParser.FuncLit_MkyContext func= (MonkeyParser.FuncLit_MkyContext)(element.getValue());
 
         int paramsAmount;
         //get function params
@@ -702,18 +765,19 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
         //check if the stack size is not the necessary to call the function
         if (this.evaluationStack.size() < paramsAmount){
-            System.out.println("******************************");
-            System.out.println("ERROR IN FUNCTION PARAMS");
-            System.out.println("******************************");
+            throw new InterpreterException("The number of parameters are not the same that function "+
+                    ctx.getStart().getText()+" require, function was expected" +
+                    paramsAmount+
+                    "params . in line: "+ ctx.getStart().getLine()+" column: "+ ctx.getStart().getCharPositionInLine());
         }
         else{
-            this.elementsCount++;
 
-            dataStorage temporal;
+
+            dataStorage temp;
 
 
             // for special function require identifier
-            Frame newFrame=new Frame(this.elementsCount,ctx.primitiveExpression().getText());
+            Frame newFrame=new Frame(this.elementsCount);
 
             //create new let Statement context
             MonkeyParser.LetStatementContext letContex;
@@ -725,33 +789,34 @@ public class Interpreter extends MonkeyParserBaseVisitor{
             paramsAmount= ((paramsAmount-1)*2)-1;
 
             for (int i = paramsAmount; i >= 0; i=i-2) {
-                element=this.evaluationStack.pop();
+                elem=this.evaluationStack.pop();
                 letContex =new MonkeyParser.LetStatementContext(null,0);
                 letContex.storageIndex= temp.getCurrentIndex();
 
-                temp.addData(identifiers.getChild(i).getText(),element.getValue(),
-                        temp.getCurrentIndex(),this.getTypeOfElement(element.getValue()),letContex);
+                temp.addData(identifiers.getChild(i).getText(),elem.getValue(),
+                        temp.getCurrentIndex(),this.getTypeOfElement(elem.getValue()),letContex);
 
             }
 
-            element=this.evaluationStack.pop();
+            elem=this.evaluationStack.pop();
             letContex =new MonkeyParser.LetStatementContext(null,0);
             letContex.storageIndex= temp.getCurrentIndex();
 
-            temp.addData(func.functionParameters().getChild(0).getText(),element.getValue(),
-                    temp.getCurrentIndex(),this.getTypeOfElement(element.getValue()),letContex);
+            temp.addData(func.functionParameters().getChild(0).getText(),elem.getValue(),
+                    temp.getCurrentIndex(),this.getTypeOfElement(elem.getValue()),letContex);
 
-            System.out.println("*************************************");
+
 
             //add the frame to the list
             boolean res =this.programFrames.insertFrame(newFrame,
-                    (MonkeyParser.Id_MkyContext)(((MonkeyParser.PExprID_MkyContext) ctx.primitiveExpression()).identifier()),
-                    this.FUNCTION);
+                    this.idTemp, this.getTypeOfElement(element.getValue()) , true, index.getValue());
             if (res==false){
-                System.out.println("******************************");
-                System.out.println("ERROR INSERTING FRAMES");
-                System.out.println("******************************");
+                throw new InterpreterException(
+                        "Error in frame Insertion"+
+                        ". In line: "+ ctx.getStart().getLine()+ " column: "+ ctx.getStart().getCharPositionInLine());
             }
+
+            this.elementsCount++;
 
             //set stack and data storage globals vars
             this.evaluationStack= newFrame.getStack();
@@ -771,6 +836,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
             //then remove the frame after get the value in the stack
             this.programFrames.deleteCurrentFrame();
 
+            this.elementsCount--;
             this.evaluationStack= this.programFrames.getCurrentProgramFrame().getStack();
             this.DataStorage= this.programFrames.getCurrentProgramFrame().getStorage();
 
@@ -778,10 +844,6 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
 
         }
-
-        */
-
-        visit (ctx.expressionList());
 
         return null;
     }
@@ -791,26 +853,10 @@ public class Interpreter extends MonkeyParserBaseVisitor{
     @Override
     public Object visitSpecialCallEmpty_Mky(MonkeyParser.SpecialCallEmpty_MkyContext ctx) {
 
-        //here we know that is a normal array indexation without a special call
-        ProgramStackElement index= this.evaluationStack.pop();
-        ProgramStackElement element= this.evaluationStack.pop();
-        ArrayList temp= ( ArrayList ) element.getValue();
-        int ind= (Integer) index.getValue();
-
-        /**
-         * check if the index is inside the array
-         */
-        if (ind < temp.size()){
-            //obtener tipo de dato del elemento en el array, ahorita solo va a servir para números enteros
-            this.evaluationStack.push(new ProgramStackElement(temp.get(ind),this.getTypeOfElement(temp.get(ind))));
-        }
-        /* INDEX OUT OF BOUNDS throw exception to avoid null pointer exception in program*/
-        else{
-            throw new InterpreterException("Index out of range."+
-                    " in line: "+ ctx.getStart().getLine()+" column: "+ ctx.getStart().getCharPositionInLine());
-        }
-
-        return null; // here it always goes to return a valid value.
+        //remove element an index pushed
+        this.evaluationStack.pop();
+        this.evaluationStack.pop();
+        return null;
     }
 
     @Override
@@ -838,6 +884,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
         dataStorageItem element;
 
+        this.idTemp= (MonkeyParser.Id_MkyContext) ctx.identifier();
         // if execution is not trough console
         if(this.flagConsole == 0) {
             element= this.programFrames.searchElement( (MonkeyParser.Id_MkyContext)ctx.identifier());
@@ -864,7 +911,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
                 MonkeyParser.LetStatementContext letContex =new MonkeyParser.LetStatementContext(null,0);
                 letContex.storageIndex=element.getIndex();
                 ctx.identifier().decl=letContex;
-
+                this.idTemp= (MonkeyParser.Id_MkyContext) ctx.identifier();
 
             }
 
@@ -1041,7 +1088,7 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
         //if the stack is empty
         if (this.evaluationStack.size()==0){
-            throw new InterpreterException("Default functions like len,first,last and rest requiere one param " +
+            throw new InterpreterException("Default functions like len,first,last and rest requiere one param; " +
                     "push default function require two params. "+
                     "In line: "+ ctx.arrayFunctions().getStart().getLine()+" column: "+ctx.arrayFunctions().getStart().getCharPositionInLine());
         }
@@ -1130,6 +1177,8 @@ public class Interpreter extends MonkeyParserBaseVisitor{
             newArray.add(0, this.evaluationStack.pop().getValue());
             i++;
         }
+
+        this.elementsCount=0;
 
         // insert to the stack
         this.evaluationStack.push(new ProgramStackElement(newArray,this.ARRAY_LITERAL));
@@ -1276,6 +1325,11 @@ public class Interpreter extends MonkeyParserBaseVisitor{
 
         ProgramStackElement element = this.evaluationStack.pop();
 
+        if (element.getType() != BOOLEAN){
+            throw new InterpreterException("If condition epression must be a Boolean Expression . "+
+                    "In line: "+ ctx.expression().getStart().getLine()+" column: "+
+                    ctx.expression().getStart().getCharPositionInLine());
+        }
         //execute the if block statement
         if ( Boolean.parseBoolean(element.getValue().toString()) ==true ){
 

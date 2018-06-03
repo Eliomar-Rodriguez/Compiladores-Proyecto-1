@@ -3,12 +3,10 @@ package clases.Interpreter;
 public class Frame {
     private dataStorage storage;
     private ProgramStack stack;
-    private String functionName;
     private int level;
     Frame previousFrame;
 
-    public Frame(int frameLevel,String funcName){
-        this.functionName= funcName;
+    public Frame(int frameLevel){
         this.storage=new dataStorage();
         this.stack=new ProgramStack();
         this.level=  frameLevel;
@@ -47,11 +45,4 @@ public class Frame {
         this.level = level;
     }
 
-    public String getFunctionName() {
-        return functionName;
-    }
-
-    public void setFunctionName(String functionName) {
-        this.functionName = functionName;
-    }
 }

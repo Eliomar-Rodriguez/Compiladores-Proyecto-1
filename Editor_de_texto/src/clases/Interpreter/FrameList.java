@@ -3,6 +3,7 @@ package clases.Interpreter;
 import generated.MonkeyParser;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 public class FrameList {
 
@@ -12,7 +13,7 @@ public class FrameList {
     public FrameList (){
         this.programFrames= new ArrayList<Frame>();
         currentFrame=0;
-        Frame frame= new Frame(0,"none");
+        Frame frame= new Frame(0);
         frame.setPreviousFrame(null);
         this.programFrames.add(frame);
     }
@@ -25,8 +26,46 @@ public class FrameList {
         return programFrames;
     }
 
+    private boolean checkIfContainsFunction (dataStorage data, int index, int type, Object position){
+        boolean res=true;
+        if (type == 4){
+            ArrayList temp = (ArrayList) data.getData(index).getValue();
+            if (temp.size()> (Integer) position){
+                try {
+
+                    MonkeyParser.FuncLit_MkyContext f= ((MonkeyParser.FuncLit_MkyContext) temp.get((Integer) position));
+                    return true;
+                }
+                catch (Exception e){
+                    return false;
+                }
+            }
+            else{
+                res= false;
+            }
+
+        }
+        else{
+            Hashtable temp = (Hashtable) data.getData(index).getValue();
+            if (temp.containsKey(position)){
+                try {
+
+                    MonkeyParser.FuncLit_MkyContext f= ((MonkeyParser.FuncLit_MkyContext) temp.get(position));
+                    return true;
+                }
+                catch (Exception e){
+                    return false;
+                }
+            }
+            else{
+                res= false;
+            }
+        }
+        return res;
+    }
+
     //type is for receive function type
-    public boolean insertFrame(Frame newFrame, MonkeyParser.Id_MkyContext id,int type){
+    public boolean insertFrame(Frame newFrame, MonkeyParser.Id_MkyContext id,int type,boolean specialFunction,Object position){
 
         Frame tempFrame= this.programFrames.get(this.currentFrame);
         dataStorage tempStorage;
@@ -43,13 +82,24 @@ public class FrameList {
             if (tempFrame.getLevel() < newFrame.getLevel()) {
                 if ((tempStorage.getProgramData().size() > storageIndex)
                         &&
-                        ( (tempStorage.getProgramData().get(storageIndex).getType()== type)&&
+                        ( (tempStorage.getProgramData().get(storageIndex).getType()== type) &&
                                 (tempStorage.getProgramData().get(storageIndex).getName().equals(id.getText()) == true)))
                 {
-                    newFrame.setPreviousFrame(tempFrame);
-                    this.programFrames.add(newFrame); //add frame to the list
-                    this.currentFrame++; // set the new frame as current frame
-                    return true;
+                     //check if call belong to a special function
+                    if (specialFunction ==true){
+                       if (checkIfContainsFunction(tempStorage,storageIndex,type,position) ==true){
+                           newFrame.setPreviousFrame(tempFrame);
+                           this.programFrames.add(newFrame); //add frame to the list
+                           this.currentFrame++; // set the new frame as current frame
+                           return true;
+                       }
+                    }
+                    else {
+                        newFrame.setPreviousFrame(tempFrame);
+                        this.programFrames.add(newFrame); //add frame to the list
+                        this.currentFrame++; // set the new frame as current frame
+                        return true;
+                    }
                 }
             }
             //continue looking for the parent frame

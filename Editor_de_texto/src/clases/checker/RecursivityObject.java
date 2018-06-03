@@ -28,7 +28,7 @@ public class RecursivityObject {
     }
 
     public void setIndex(int index) {
-        index = index;
+        this.index = index;
     }
 
     public ParserRuleContext getCtx() {
